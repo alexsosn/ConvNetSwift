@@ -1,0 +1,815 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2B16E0821BD93A3300E0A2AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0811BD93A3300E0A2AA /* AppDelegate.swift */; };
+		2B16E0841BD93A3300E0A2AA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0831BD93A3300E0A2AA /* ViewController.swift */; };
+		2B16E0871BD93A3300E0A2AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B16E0851BD93A3300E0A2AA /* Main.storyboard */; };
+		2B16E0891BD93A3300E0A2AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B16E0881BD93A3300E0A2AA /* Assets.xcassets */; };
+		2B16E08C1BD93A3300E0A2AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B16E08A1BD93A3300E0A2AA /* LaunchScreen.storyboard */; };
+		2B16E0971BD93A3300E0A2AA /* ConvNetSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0961BD93A3300E0A2AA /* ConvNetSwiftTests.swift */; };
+		2B16E0B81BD93A5A00E0A2AA /* Magicnet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0A91BD93A5A00E0A2AA /* Magicnet.swift */; };
+		2B16E0B91BD93A5A00E0A2AA /* Net.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AA1BD93A5A00E0A2AA /* Net.swift */; };
+		2B16E0BA1BD93A5A00E0A2AA /* Trainers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AB1BD93A5A00E0A2AA /* Trainers.swift */; };
+		2B16E0BC1BD93A5A00E0A2AA /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AD1BD93A5A00E0A2AA /* Options.swift */; };
+		2B16E0BD1BD93A5A00E0A2AA /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AE1BD93A5A00E0A2AA /* Util.swift */; };
+		2B16E0BE1BD93A5A00E0A2AA /* Vol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AF1BD93A5A00E0A2AA /* Vol.swift */; };
+		2B16E0BF1BD93A5A00E0A2AA /* VolUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0B01BD93A5A00E0A2AA /* VolUtil.swift */; };
+		2B16E0CF1BD93BB100E0A2AA /* LayersDotproducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C21BD93BB100E0A2AA /* LayersDotproducts.swift */; };
+		2B16E0D01BD93BB100E0A2AA /* LayersDropout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C41BD93BB100E0A2AA /* LayersDropout.swift */; };
+		2B16E0D11BD93BB100E0A2AA /* LayersInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C61BD93BB100E0A2AA /* LayersInput.swift */; };
+		2B16E0D21BD93BB100E0A2AA /* LayersLoss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C81BD93BB100E0A2AA /* LayersLoss.swift */; };
+		2B16E0D31BD93BB100E0A2AA /* LayersNonlinearities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0CA1BD93BB100E0A2AA /* LayersNonlinearities.swift */; };
+		2B16E0D41BD93BB100E0A2AA /* LayersNormalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0CC1BD93BB100E0A2AA /* LayersNormalization.swift */; };
+		2B16E0D51BD93BB100E0A2AA /* LayersPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0CE1BD93BB100E0A2AA /* LayersPool.swift */; };
+		2B16E0D71BD93CA700E0A2AA /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0D61BD93CA700E0A2AA /* Layer.swift */; };
+		2B4064571BE8CA2000C0B618 /* autoencoder.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B40642B1BE8CA2000C0B618 /* autoencoder.html */; };
+		2B4064581BE8CA2000C0B618 /* automatic.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B40642C1BE8CA2000C0B618 /* automatic.html */; };
+		2B4064591BE8CA2000C0B618 /* cifar10.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B40642D1BE8CA2000C0B618 /* cifar10.html */; };
+		2B40645A1BE8CA2000C0B618 /* classify2d.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B40642E1BE8CA2000C0B618 /* classify2d.html */; };
+		2B40645B1BE8CA2000C0B618 /* automatic.css in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064301BE8CA2000C0B618 /* automatic.css */; };
+		2B40645C1BE8CA2000C0B618 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064311BE8CA2000C0B618 /* style.css */; };
+		2B40645D1BE8CA2000C0B618 /* image_regression.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064321BE8CA2000C0B618 /* image_regression.html */; };
+		2B40645E1BE8CA2000C0B618 /* autoencoder.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064341BE8CA2000C0B618 /* autoencoder.js */; };
+		2B40645F1BE8CA2000C0B618 /* automatic.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064351BE8CA2000C0B618 /* automatic.js */; };
+		2B4064601BE8CA2000C0B618 /* classify2d.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064361BE8CA2000C0B618 /* classify2d.js */; };
+		2B4064611BE8CA2000C0B618 /* image-helpers.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064371BE8CA2000C0B618 /* image-helpers.js */; };
+		2B4064621BE8CA2000C0B618 /* image_regression.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064381BE8CA2000C0B618 /* image_regression.js */; };
+		2B4064631BE8CA2000C0B618 /* images-demo.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064391BE8CA2000C0B618 /* images-demo.js */; };
+		2B4064641BE8CA2000C0B618 /* jquery-1.8.3.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40643A1BE8CA2000C0B618 /* jquery-1.8.3.min.js */; };
+		2B4064651BE8CA2000C0B618 /* npgmain.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40643B1BE8CA2000C0B618 /* npgmain.js */; };
+		2B4064661BE8CA2000C0B618 /* pica.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40643C1BE8CA2000C0B618 /* pica.js */; };
+		2B4064671BE8CA2000C0B618 /* regression.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40643D1BE8CA2000C0B618 /* regression.js */; };
+		2B4064681BE8CA2000C0B618 /* rldemo.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40643E1BE8CA2000C0B618 /* rldemo.js */; };
+		2B4064691BE8CA2000C0B618 /* trainers.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40643F1BE8CA2000C0B618 /* trainers.js */; };
+		2B40646A1BE8CA2000C0B618 /* mnist.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064401BE8CA2000C0B618 /* mnist.html */; };
+		2B40646B1BE8CA2000C0B618 /* regression.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064411BE8CA2000C0B618 /* regression.html */; };
+		2B40646C1BE8CA2000C0B618 /* rldemo.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064421BE8CA2000C0B618 /* rldemo.html */; };
+		2B40646D1BE8CA2000C0B618 /* speedtest.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064431BE8CA2000C0B618 /* speedtest.html */; };
+		2B40646E1BE8CA2000C0B618 /* trainers.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064441BE8CA2000C0B618 /* trainers.html */; };
+		2B40646F1BE8CA2000C0B618 /* NeuralNetSpec.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064461BE8CA2000C0B618 /* NeuralNetSpec.js */; };
+		2B4064701BE8CA2000C0B618 /* convnet_export.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064481BE8CA2000C0B618 /* convnet_export.js */; };
+		2B4064711BE8CA2000C0B618 /* convnet_init.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064491BE8CA2000C0B618 /* convnet_init.js */; };
+		2B4064721BE8CA2000C0B618 /* convnet_layers_dotproducts.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40644A1BE8CA2000C0B618 /* convnet_layers_dotproducts.js */; };
+		2B4064731BE8CA2000C0B618 /* convnet_layers_dropout.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40644B1BE8CA2000C0B618 /* convnet_layers_dropout.js */; };
+		2B4064741BE8CA2000C0B618 /* convnet_layers_input.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40644C1BE8CA2000C0B618 /* convnet_layers_input.js */; };
+		2B4064751BE8CA2000C0B618 /* convnet_layers_loss.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40644D1BE8CA2000C0B618 /* convnet_layers_loss.js */; };
+		2B4064761BE8CA2000C0B618 /* convnet_layers_nonlinearities.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40644E1BE8CA2000C0B618 /* convnet_layers_nonlinearities.js */; };
+		2B4064771BE8CA2000C0B618 /* convnet_layers_normalization.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40644F1BE8CA2000C0B618 /* convnet_layers_normalization.js */; };
+		2B4064781BE8CA2000C0B618 /* convnet_layers_pool.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064501BE8CA2000C0B618 /* convnet_layers_pool.js */; };
+		2B4064791BE8CA2000C0B618 /* convnet_magicnet.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064511BE8CA2000C0B618 /* convnet_magicnet.js */; };
+		2B40647A1BE8CA2000C0B618 /* convnet_net.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064521BE8CA2000C0B618 /* convnet_net.js */; };
+		2B40647B1BE8CA2000C0B618 /* convnet_trainers.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064531BE8CA2000C0B618 /* convnet_trainers.js */; };
+		2B40647C1BE8CA2000C0B618 /* convnet_util.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064541BE8CA2000C0B618 /* convnet_util.js */; };
+		2B40647D1BE8CA2000C0B618 /* convnet_vol.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064551BE8CA2000C0B618 /* convnet_vol.js */; };
+		2B40647E1BE8CA2000C0B618 /* convnet_vol_util.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064561BE8CA2000C0B618 /* convnet_vol_util.js */; };
+		2B4064801BE8CABD00C0B618 /* SimpleNetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40647F1BE8CABD00C0B618 /* SimpleNetTests.swift */; };
+		2B4064811BE92EAC00C0B618 /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0D61BD93CA700E0A2AA /* Layer.swift */; };
+		2B4064821BE92EB000C0B618 /* LayersDotproducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C21BD93BB100E0A2AA /* LayersDotproducts.swift */; };
+		2B4064831BE92EB600C0B618 /* Net.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AA1BD93A5A00E0A2AA /* Net.swift */; };
+		2B4064841BE92EBF00C0B618 /* LayersDropout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C41BD93BB100E0A2AA /* LayersDropout.swift */; };
+		2B4064851BE92EC100C0B618 /* LayersInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C61BD93BB100E0A2AA /* LayersInput.swift */; };
+		2B4064861BE92EC400C0B618 /* LayersLoss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C81BD93BB100E0A2AA /* LayersLoss.swift */; };
+		2B4064871BE92EC700C0B618 /* LayersNonlinearities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0CA1BD93BB100E0A2AA /* LayersNonlinearities.swift */; };
+		2B4064881BE92ECA00C0B618 /* LayersNormalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0CC1BD93BB100E0A2AA /* LayersNormalization.swift */; };
+		2B4064891BE92ECD00C0B618 /* LayersPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0CE1BD93BB100E0A2AA /* LayersPool.swift */; };
+		2B40648A1BE92ED000C0B618 /* Magicnet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0A91BD93A5A00E0A2AA /* Magicnet.swift */; };
+		2B40648B1BE92ED600C0B618 /* Trainers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AB1BD93A5A00E0A2AA /* Trainers.swift */; };
+		2B40648C1BE92F0F00C0B618 /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AD1BD93A5A00E0A2AA /* Options.swift */; };
+		2B40648D1BE92F1200C0B618 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AE1BD93A5A00E0A2AA /* Util.swift */; };
+		2B40648E1BE92F1500C0B618 /* Vol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AF1BD93A5A00E0A2AA /* Vol.swift */; };
+		2B40648F1BE92F1900C0B618 /* VolUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0B01BD93A5A00E0A2AA /* VolUtil.swift */; };
+		2B4064911BE9770900C0B618 /* JSTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4064901BE9770900C0B618 /* JSTest.swift */; };
+		2B4064961BEA7B9000C0B618 /* deepqlearn.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064931BEA7B9000C0B618 /* deepqlearn.js */; };
+		2B4064971BEA7B9000C0B618 /* util.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064941BEA7B9000C0B618 /* util.js */; };
+		2B4064981BEA7B9000C0B618 /* vis.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064951BEA7B9000C0B618 /* vis.js */; };
+		2B6625201BEFE93F00D59B65 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66251E1BEF902500D59B65 /* Brain.swift */; };
+		2B6625211BF00F5E00D59B65 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66251E1BEF902500D59B65 /* Brain.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2B16E0931BD93A3300E0A2AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B16E0761BD93A3200E0A2AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2B16E07D1BD93A3300E0A2AA;
+			remoteInfo = ConvNetSwift;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2B16E07E1BD93A3300E0A2AA /* ConvNetSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ConvNetSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B16E0811BD93A3300E0A2AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		2B16E0831BD93A3300E0A2AA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		2B16E0861BD93A3300E0A2AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		2B16E0881BD93A3300E0A2AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2B16E08B1BD93A3300E0A2AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		2B16E08D1BD93A3300E0A2AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B16E0921BD93A3300E0A2AA /* ConvNetSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ConvNetSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B16E0961BD93A3300E0A2AA /* ConvNetSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ConvNetSwiftTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2B16E0981BD93A3300E0A2AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B16E0A91BD93A5A00E0A2AA /* Magicnet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Magicnet.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2B16E0AA1BD93A5A00E0A2AA /* Net.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Net.swift; sourceTree = "<group>"; };
+		2B16E0AB1BD93A5A00E0A2AA /* Trainers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Trainers.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2B16E0AD1BD93A5A00E0A2AA /* Options.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
+		2B16E0AE1BD93A5A00E0A2AA /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Util.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2B16E0AF1BD93A5A00E0A2AA /* Vol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vol.swift; sourceTree = "<group>"; };
+		2B16E0B01BD93A5A00E0A2AA /* VolUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = VolUtil.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2B16E0C21BD93BB100E0A2AA /* LayersDotproducts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersDotproducts.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2B16E0C41BD93BB100E0A2AA /* LayersDropout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersDropout.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2B16E0C61BD93BB100E0A2AA /* LayersInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersInput.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2B16E0C81BD93BB100E0A2AA /* LayersLoss.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersLoss.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2B16E0CA1BD93BB100E0A2AA /* LayersNonlinearities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersNonlinearities.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2B16E0CC1BD93BB100E0A2AA /* LayersNormalization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersNormalization.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2B16E0CE1BD93BB100E0A2AA /* LayersPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersPool.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2B16E0D61BD93CA700E0A2AA /* Layer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layer.swift; sourceTree = "<group>"; };
+		2B40642B1BE8CA2000C0B618 /* autoencoder.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = autoencoder.html; sourceTree = "<group>"; };
+		2B40642C1BE8CA2000C0B618 /* automatic.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = automatic.html; sourceTree = "<group>"; };
+		2B40642D1BE8CA2000C0B618 /* cifar10.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = cifar10.html; sourceTree = "<group>"; };
+		2B40642E1BE8CA2000C0B618 /* classify2d.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = classify2d.html; sourceTree = "<group>"; };
+		2B4064301BE8CA2000C0B618 /* automatic.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = automatic.css; sourceTree = "<group>"; };
+		2B4064311BE8CA2000C0B618 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
+		2B4064321BE8CA2000C0B618 /* image_regression.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = image_regression.html; sourceTree = "<group>"; };
+		2B4064341BE8CA2000C0B618 /* autoencoder.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = autoencoder.js; sourceTree = "<group>"; };
+		2B4064351BE8CA2000C0B618 /* automatic.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = automatic.js; sourceTree = "<group>"; };
+		2B4064361BE8CA2000C0B618 /* classify2d.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = classify2d.js; sourceTree = "<group>"; };
+		2B4064371BE8CA2000C0B618 /* image-helpers.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "image-helpers.js"; sourceTree = "<group>"; };
+		2B4064381BE8CA2000C0B618 /* image_regression.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = image_regression.js; sourceTree = "<group>"; };
+		2B4064391BE8CA2000C0B618 /* images-demo.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "images-demo.js"; sourceTree = "<group>"; };
+		2B40643A1BE8CA2000C0B618 /* jquery-1.8.3.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jquery-1.8.3.min.js"; sourceTree = "<group>"; };
+		2B40643B1BE8CA2000C0B618 /* npgmain.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = npgmain.js; sourceTree = "<group>"; };
+		2B40643C1BE8CA2000C0B618 /* pica.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = pica.js; sourceTree = "<group>"; };
+		2B40643D1BE8CA2000C0B618 /* regression.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = regression.js; sourceTree = "<group>"; };
+		2B40643E1BE8CA2000C0B618 /* rldemo.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = rldemo.js; sourceTree = "<group>"; };
+		2B40643F1BE8CA2000C0B618 /* trainers.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = trainers.js; sourceTree = "<group>"; };
+		2B4064401BE8CA2000C0B618 /* mnist.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = mnist.html; sourceTree = "<group>"; };
+		2B4064411BE8CA2000C0B618 /* regression.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = regression.html; sourceTree = "<group>"; };
+		2B4064421BE8CA2000C0B618 /* rldemo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = rldemo.html; sourceTree = "<group>"; };
+		2B4064431BE8CA2000C0B618 /* speedtest.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = speedtest.html; sourceTree = "<group>"; };
+		2B4064441BE8CA2000C0B618 /* trainers.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = trainers.html; sourceTree = "<group>"; };
+		2B4064461BE8CA2000C0B618 /* NeuralNetSpec.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = NeuralNetSpec.js; sourceTree = "<group>"; };
+		2B4064481BE8CA2000C0B618 /* convnet_export.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_export.js; sourceTree = "<group>"; };
+		2B4064491BE8CA2000C0B618 /* convnet_init.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_init.js; sourceTree = "<group>"; };
+		2B40644A1BE8CA2000C0B618 /* convnet_layers_dotproducts.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_layers_dotproducts.js; sourceTree = "<group>"; };
+		2B40644B1BE8CA2000C0B618 /* convnet_layers_dropout.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_layers_dropout.js; sourceTree = "<group>"; };
+		2B40644C1BE8CA2000C0B618 /* convnet_layers_input.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_layers_input.js; sourceTree = "<group>"; };
+		2B40644D1BE8CA2000C0B618 /* convnet_layers_loss.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_layers_loss.js; sourceTree = "<group>"; };
+		2B40644E1BE8CA2000C0B618 /* convnet_layers_nonlinearities.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_layers_nonlinearities.js; sourceTree = "<group>"; };
+		2B40644F1BE8CA2000C0B618 /* convnet_layers_normalization.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_layers_normalization.js; sourceTree = "<group>"; };
+		2B4064501BE8CA2000C0B618 /* convnet_layers_pool.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_layers_pool.js; sourceTree = "<group>"; };
+		2B4064511BE8CA2000C0B618 /* convnet_magicnet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_magicnet.js; sourceTree = "<group>"; };
+		2B4064521BE8CA2000C0B618 /* convnet_net.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_net.js; sourceTree = "<group>"; };
+		2B4064531BE8CA2000C0B618 /* convnet_trainers.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_trainers.js; sourceTree = "<group>"; };
+		2B4064541BE8CA2000C0B618 /* convnet_util.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_util.js; sourceTree = "<group>"; };
+		2B4064551BE8CA2000C0B618 /* convnet_vol.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_vol.js; sourceTree = "<group>"; };
+		2B4064561BE8CA2000C0B618 /* convnet_vol_util.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_vol_util.js; sourceTree = "<group>"; };
+		2B40647F1BE8CABD00C0B618 /* SimpleNetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleNetTests.swift; sourceTree = "<group>"; };
+		2B4064901BE9770900C0B618 /* JSTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSTest.swift; sourceTree = "<group>"; };
+		2B4064931BEA7B9000C0B618 /* deepqlearn.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = deepqlearn.js; sourceTree = "<group>"; };
+		2B4064941BEA7B9000C0B618 /* util.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = util.js; sourceTree = "<group>"; };
+		2B4064951BEA7B9000C0B618 /* vis.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = vis.js; sourceTree = "<group>"; };
+		2B66251E1BEF902500D59B65 /* Brain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2B16E07B1BD93A3300E0A2AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B16E08F1BD93A3300E0A2AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2B16E0751BD93A3200E0A2AA = {
+			isa = PBXGroup;
+			children = (
+				2B4064291BE8CA2000C0B618 /* js */,
+				2B16E0801BD93A3300E0A2AA /* ConvNetSwift */,
+				2B16E0951BD93A3300E0A2AA /* ConvNetSwiftTests */,
+				2B16E07F1BD93A3300E0A2AA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2B16E07F1BD93A3300E0A2AA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2B16E07E1BD93A3300E0A2AA /* ConvNetSwift.app */,
+				2B16E0921BD93A3300E0A2AA /* ConvNetSwiftTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2B16E0801BD93A3300E0A2AA /* ConvNetSwift */ = {
+			isa = PBXGroup;
+			children = (
+				2B66251D1BEF902500D59B65 /* deepqlearn */,
+				2B16E0A11BD93A5A00E0A2AA /* convnet-swift */,
+				2B16E0811BD93A3300E0A2AA /* AppDelegate.swift */,
+				2B16E0831BD93A3300E0A2AA /* ViewController.swift */,
+				2B16E0851BD93A3300E0A2AA /* Main.storyboard */,
+				2B16E0881BD93A3300E0A2AA /* Assets.xcassets */,
+				2B16E08A1BD93A3300E0A2AA /* LaunchScreen.storyboard */,
+				2B16E08D1BD93A3300E0A2AA /* Info.plist */,
+			);
+			path = ConvNetSwift;
+			sourceTree = "<group>";
+		};
+		2B16E0951BD93A3300E0A2AA /* ConvNetSwiftTests */ = {
+			isa = PBXGroup;
+			children = (
+				2B40647F1BE8CABD00C0B618 /* SimpleNetTests.swift */,
+				2B16E0961BD93A3300E0A2AA /* ConvNetSwiftTests.swift */,
+				2B16E0981BD93A3300E0A2AA /* Info.plist */,
+				2B4064901BE9770900C0B618 /* JSTest.swift */,
+			);
+			path = ConvNetSwiftTests;
+			sourceTree = "<group>";
+		};
+		2B16E0A11BD93A5A00E0A2AA /* convnet-swift */ = {
+			isa = PBXGroup;
+			children = (
+				2B16E0C01BD93BB000E0A2AA /* Layers */,
+				2B16E0A91BD93A5A00E0A2AA /* Magicnet.swift */,
+				2B16E0AA1BD93A5A00E0A2AA /* Net.swift */,
+				2B16E0AB1BD93A5A00E0A2AA /* Trainers.swift */,
+				2B16E0AD1BD93A5A00E0A2AA /* Options.swift */,
+				2B16E0AE1BD93A5A00E0A2AA /* Util.swift */,
+				2B16E0AF1BD93A5A00E0A2AA /* Vol.swift */,
+				2B16E0B01BD93A5A00E0A2AA /* VolUtil.swift */,
+			);
+			path = "convnet-swift";
+			sourceTree = "<group>";
+		};
+		2B16E0C01BD93BB000E0A2AA /* Layers */ = {
+			isa = PBXGroup;
+			children = (
+				2B16E0D61BD93CA700E0A2AA /* Layer.swift */,
+				2B16E0C11BD93BB100E0A2AA /* LayersDotproducts */,
+				2B16E0C31BD93BB100E0A2AA /* LayersDropout */,
+				2B16E0C51BD93BB100E0A2AA /* LayersInput */,
+				2B16E0C71BD93BB100E0A2AA /* LayersLoss */,
+				2B16E0C91BD93BB100E0A2AA /* LayersNonlinearities */,
+				2B16E0CB1BD93BB100E0A2AA /* LayersNormalization */,
+				2B16E0CD1BD93BB100E0A2AA /* LayersPool */,
+			);
+			path = Layers;
+			sourceTree = "<group>";
+		};
+		2B16E0C11BD93BB100E0A2AA /* LayersDotproducts */ = {
+			isa = PBXGroup;
+			children = (
+				2B16E0C21BD93BB100E0A2AA /* LayersDotproducts.swift */,
+			);
+			path = LayersDotproducts;
+			sourceTree = "<group>";
+		};
+		2B16E0C31BD93BB100E0A2AA /* LayersDropout */ = {
+			isa = PBXGroup;
+			children = (
+				2B16E0C41BD93BB100E0A2AA /* LayersDropout.swift */,
+			);
+			path = LayersDropout;
+			sourceTree = "<group>";
+		};
+		2B16E0C51BD93BB100E0A2AA /* LayersInput */ = {
+			isa = PBXGroup;
+			children = (
+				2B16E0C61BD93BB100E0A2AA /* LayersInput.swift */,
+			);
+			path = LayersInput;
+			sourceTree = "<group>";
+		};
+		2B16E0C71BD93BB100E0A2AA /* LayersLoss */ = {
+			isa = PBXGroup;
+			children = (
+				2B16E0C81BD93BB100E0A2AA /* LayersLoss.swift */,
+			);
+			path = LayersLoss;
+			sourceTree = "<group>";
+		};
+		2B16E0C91BD93BB100E0A2AA /* LayersNonlinearities */ = {
+			isa = PBXGroup;
+			children = (
+				2B16E0CA1BD93BB100E0A2AA /* LayersNonlinearities.swift */,
+			);
+			path = LayersNonlinearities;
+			sourceTree = "<group>";
+		};
+		2B16E0CB1BD93BB100E0A2AA /* LayersNormalization */ = {
+			isa = PBXGroup;
+			children = (
+				2B16E0CC1BD93BB100E0A2AA /* LayersNormalization.swift */,
+			);
+			path = LayersNormalization;
+			sourceTree = "<group>";
+		};
+		2B16E0CD1BD93BB100E0A2AA /* LayersPool */ = {
+			isa = PBXGroup;
+			children = (
+				2B16E0CE1BD93BB100E0A2AA /* LayersPool.swift */,
+			);
+			path = LayersPool;
+			sourceTree = "<group>";
+		};
+		2B4064291BE8CA2000C0B618 /* js */ = {
+			isa = PBXGroup;
+			children = (
+				2B4064921BEA7B9000C0B618 /* build */,
+				2B40642A1BE8CA2000C0B618 /* demo */,
+				2B4064451BE8CA2000C0B618 /* spec */,
+				2B4064471BE8CA2000C0B618 /* src */,
+			);
+			path = js;
+			sourceTree = "<group>";
+		};
+		2B40642A1BE8CA2000C0B618 /* demo */ = {
+			isa = PBXGroup;
+			children = (
+				2B40642B1BE8CA2000C0B618 /* autoencoder.html */,
+				2B40642C1BE8CA2000C0B618 /* automatic.html */,
+				2B40642D1BE8CA2000C0B618 /* cifar10.html */,
+				2B40642E1BE8CA2000C0B618 /* classify2d.html */,
+				2B40642F1BE8CA2000C0B618 /* css */,
+				2B4064321BE8CA2000C0B618 /* image_regression.html */,
+				2B4064331BE8CA2000C0B618 /* js */,
+				2B4064401BE8CA2000C0B618 /* mnist.html */,
+				2B4064411BE8CA2000C0B618 /* regression.html */,
+				2B4064421BE8CA2000C0B618 /* rldemo.html */,
+				2B4064431BE8CA2000C0B618 /* speedtest.html */,
+				2B4064441BE8CA2000C0B618 /* trainers.html */,
+			);
+			path = demo;
+			sourceTree = "<group>";
+		};
+		2B40642F1BE8CA2000C0B618 /* css */ = {
+			isa = PBXGroup;
+			children = (
+				2B4064301BE8CA2000C0B618 /* automatic.css */,
+				2B4064311BE8CA2000C0B618 /* style.css */,
+			);
+			path = css;
+			sourceTree = "<group>";
+		};
+		2B4064331BE8CA2000C0B618 /* js */ = {
+			isa = PBXGroup;
+			children = (
+				2B4064341BE8CA2000C0B618 /* autoencoder.js */,
+				2B4064351BE8CA2000C0B618 /* automatic.js */,
+				2B4064361BE8CA2000C0B618 /* classify2d.js */,
+				2B4064371BE8CA2000C0B618 /* image-helpers.js */,
+				2B4064381BE8CA2000C0B618 /* image_regression.js */,
+				2B4064391BE8CA2000C0B618 /* images-demo.js */,
+				2B40643A1BE8CA2000C0B618 /* jquery-1.8.3.min.js */,
+				2B40643B1BE8CA2000C0B618 /* npgmain.js */,
+				2B40643C1BE8CA2000C0B618 /* pica.js */,
+				2B40643D1BE8CA2000C0B618 /* regression.js */,
+				2B40643E1BE8CA2000C0B618 /* rldemo.js */,
+				2B40643F1BE8CA2000C0B618 /* trainers.js */,
+			);
+			path = js;
+			sourceTree = "<group>";
+		};
+		2B4064451BE8CA2000C0B618 /* spec */ = {
+			isa = PBXGroup;
+			children = (
+				2B4064461BE8CA2000C0B618 /* NeuralNetSpec.js */,
+			);
+			path = spec;
+			sourceTree = "<group>";
+		};
+		2B4064471BE8CA2000C0B618 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				2B4064481BE8CA2000C0B618 /* convnet_export.js */,
+				2B4064491BE8CA2000C0B618 /* convnet_init.js */,
+				2B40644A1BE8CA2000C0B618 /* convnet_layers_dotproducts.js */,
+				2B40644B1BE8CA2000C0B618 /* convnet_layers_dropout.js */,
+				2B40644C1BE8CA2000C0B618 /* convnet_layers_input.js */,
+				2B40644D1BE8CA2000C0B618 /* convnet_layers_loss.js */,
+				2B40644E1BE8CA2000C0B618 /* convnet_layers_nonlinearities.js */,
+				2B40644F1BE8CA2000C0B618 /* convnet_layers_normalization.js */,
+				2B4064501BE8CA2000C0B618 /* convnet_layers_pool.js */,
+				2B4064511BE8CA2000C0B618 /* convnet_magicnet.js */,
+				2B4064521BE8CA2000C0B618 /* convnet_net.js */,
+				2B4064531BE8CA2000C0B618 /* convnet_trainers.js */,
+				2B4064541BE8CA2000C0B618 /* convnet_util.js */,
+				2B4064551BE8CA2000C0B618 /* convnet_vol.js */,
+				2B4064561BE8CA2000C0B618 /* convnet_vol_util.js */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		2B4064921BEA7B9000C0B618 /* build */ = {
+			isa = PBXGroup;
+			children = (
+				2B4064931BEA7B9000C0B618 /* deepqlearn.js */,
+				2B4064941BEA7B9000C0B618 /* util.js */,
+				2B4064951BEA7B9000C0B618 /* vis.js */,
+			);
+			path = build;
+			sourceTree = "<group>";
+		};
+		2B66251D1BEF902500D59B65 /* deepqlearn */ = {
+			isa = PBXGroup;
+			children = (
+				2B66251E1BEF902500D59B65 /* Brain.swift */,
+			);
+			path = deepqlearn;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2B16E07D1BD93A3300E0A2AA /* ConvNetSwift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B16E09B1BD93A3300E0A2AA /* Build configuration list for PBXNativeTarget "ConvNetSwift" */;
+			buildPhases = (
+				2B16E07A1BD93A3300E0A2AA /* Sources */,
+				2B16E07B1BD93A3300E0A2AA /* Frameworks */,
+				2B16E07C1BD93A3300E0A2AA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ConvNetSwift;
+			productName = ConvNetSwift;
+			productReference = 2B16E07E1BD93A3300E0A2AA /* ConvNetSwift.app */;
+			productType = "com.apple.product-type.application";
+		};
+		2B16E0911BD93A3300E0A2AA /* ConvNetSwiftTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B16E09E1BD93A3300E0A2AA /* Build configuration list for PBXNativeTarget "ConvNetSwiftTests" */;
+			buildPhases = (
+				2B16E08E1BD93A3300E0A2AA /* Sources */,
+				2B16E08F1BD93A3300E0A2AA /* Frameworks */,
+				2B16E0901BD93A3300E0A2AA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2B16E0941BD93A3300E0A2AA /* PBXTargetDependency */,
+			);
+			name = ConvNetSwiftTests;
+			productName = ConvNetSwiftTests;
+			productReference = 2B16E0921BD93A3300E0A2AA /* ConvNetSwiftTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2B16E0761BD93A3200E0A2AA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0710;
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = OWL;
+				TargetAttributes = {
+					2B16E07D1BD93A3300E0A2AA = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					2B16E0911BD93A3300E0A2AA = {
+						CreatedOnToolsVersion = 7.1;
+						TestTargetID = 2B16E07D1BD93A3300E0A2AA;
+					};
+				};
+			};
+			buildConfigurationList = 2B16E0791BD93A3200E0A2AA /* Build configuration list for PBXProject "ConvNetSwift" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2B16E0751BD93A3200E0A2AA;
+			productRefGroup = 2B16E07F1BD93A3300E0A2AA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2B16E07D1BD93A3300E0A2AA /* ConvNetSwift */,
+				2B16E0911BD93A3300E0A2AA /* ConvNetSwiftTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2B16E07C1BD93A3300E0A2AA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B40646F1BE8CA2000C0B618 /* NeuralNetSpec.js in Resources */,
+				2B4064571BE8CA2000C0B618 /* autoencoder.html in Resources */,
+				2B4064631BE8CA2000C0B618 /* images-demo.js in Resources */,
+				2B4064691BE8CA2000C0B618 /* trainers.js in Resources */,
+				2B4064711BE8CA2000C0B618 /* convnet_init.js in Resources */,
+				2B40646A1BE8CA2000C0B618 /* mnist.html in Resources */,
+				2B40647C1BE8CA2000C0B618 /* convnet_util.js in Resources */,
+				2B4064781BE8CA2000C0B618 /* convnet_layers_pool.js in Resources */,
+				2B40646D1BE8CA2000C0B618 /* speedtest.html in Resources */,
+				2B4064641BE8CA2000C0B618 /* jquery-1.8.3.min.js in Resources */,
+				2B40645C1BE8CA2000C0B618 /* style.css in Resources */,
+				2B4064981BEA7B9000C0B618 /* vis.js in Resources */,
+				2B40645F1BE8CA2000C0B618 /* automatic.js in Resources */,
+				2B40646E1BE8CA2000C0B618 /* trainers.html in Resources */,
+				2B4064751BE8CA2000C0B618 /* convnet_layers_loss.js in Resources */,
+				2B4064581BE8CA2000C0B618 /* automatic.html in Resources */,
+				2B4064971BEA7B9000C0B618 /* util.js in Resources */,
+				2B4064621BE8CA2000C0B618 /* image_regression.js in Resources */,
+				2B16E08C1BD93A3300E0A2AA /* LaunchScreen.storyboard in Resources */,
+				2B4064661BE8CA2000C0B618 /* pica.js in Resources */,
+				2B40646B1BE8CA2000C0B618 /* regression.html in Resources */,
+				2B40647B1BE8CA2000C0B618 /* convnet_trainers.js in Resources */,
+				2B40645B1BE8CA2000C0B618 /* automatic.css in Resources */,
+				2B4064651BE8CA2000C0B618 /* npgmain.js in Resources */,
+				2B4064611BE8CA2000C0B618 /* image-helpers.js in Resources */,
+				2B4064771BE8CA2000C0B618 /* convnet_layers_normalization.js in Resources */,
+				2B4064681BE8CA2000C0B618 /* rldemo.js in Resources */,
+				2B4064961BEA7B9000C0B618 /* deepqlearn.js in Resources */,
+				2B4064721BE8CA2000C0B618 /* convnet_layers_dotproducts.js in Resources */,
+				2B40645D1BE8CA2000C0B618 /* image_regression.html in Resources */,
+				2B4064671BE8CA2000C0B618 /* regression.js in Resources */,
+				2B4064791BE8CA2000C0B618 /* convnet_magicnet.js in Resources */,
+				2B4064591BE8CA2000C0B618 /* cifar10.html in Resources */,
+				2B4064761BE8CA2000C0B618 /* convnet_layers_nonlinearities.js in Resources */,
+				2B16E0891BD93A3300E0A2AA /* Assets.xcassets in Resources */,
+				2B16E0871BD93A3300E0A2AA /* Main.storyboard in Resources */,
+				2B40646C1BE8CA2000C0B618 /* rldemo.html in Resources */,
+				2B40645E1BE8CA2000C0B618 /* autoencoder.js in Resources */,
+				2B4064731BE8CA2000C0B618 /* convnet_layers_dropout.js in Resources */,
+				2B40645A1BE8CA2000C0B618 /* classify2d.html in Resources */,
+				2B40647A1BE8CA2000C0B618 /* convnet_net.js in Resources */,
+				2B4064601BE8CA2000C0B618 /* classify2d.js in Resources */,
+				2B4064701BE8CA2000C0B618 /* convnet_export.js in Resources */,
+				2B40647D1BE8CA2000C0B618 /* convnet_vol.js in Resources */,
+				2B40647E1BE8CA2000C0B618 /* convnet_vol_util.js in Resources */,
+				2B4064741BE8CA2000C0B618 /* convnet_layers_input.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B16E0901BD93A3300E0A2AA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2B16E07A1BD93A3300E0A2AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B16E0BF1BD93A5A00E0A2AA /* VolUtil.swift in Sources */,
+				2B16E0BA1BD93A5A00E0A2AA /* Trainers.swift in Sources */,
+				2B16E0B81BD93A5A00E0A2AA /* Magicnet.swift in Sources */,
+				2B16E0BE1BD93A5A00E0A2AA /* Vol.swift in Sources */,
+				2B16E0D71BD93CA700E0A2AA /* Layer.swift in Sources */,
+				2B16E0D41BD93BB100E0A2AA /* LayersNormalization.swift in Sources */,
+				2B16E0D01BD93BB100E0A2AA /* LayersDropout.swift in Sources */,
+				2B16E0CF1BD93BB100E0A2AA /* LayersDotproducts.swift in Sources */,
+				2B16E0BC1BD93A5A00E0A2AA /* Options.swift in Sources */,
+				2B16E0BD1BD93A5A00E0A2AA /* Util.swift in Sources */,
+				2B16E0D51BD93BB100E0A2AA /* LayersPool.swift in Sources */,
+				2B16E0D21BD93BB100E0A2AA /* LayersLoss.swift in Sources */,
+				2B16E0D11BD93BB100E0A2AA /* LayersInput.swift in Sources */,
+				2B16E0841BD93A3300E0A2AA /* ViewController.swift in Sources */,
+				2B16E0B91BD93A5A00E0A2AA /* Net.swift in Sources */,
+				2B16E0D31BD93BB100E0A2AA /* LayersNonlinearities.swift in Sources */,
+				2B6625201BEFE93F00D59B65 /* Brain.swift in Sources */,
+				2B16E0821BD93A3300E0A2AA /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B16E08E1BD93A3300E0A2AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B4064811BE92EAC00C0B618 /* Layer.swift in Sources */,
+				2B40648F1BE92F1900C0B618 /* VolUtil.swift in Sources */,
+				2B40648A1BE92ED000C0B618 /* Magicnet.swift in Sources */,
+				2B6625211BF00F5E00D59B65 /* Brain.swift in Sources */,
+				2B4064831BE92EB600C0B618 /* Net.swift in Sources */,
+				2B4064821BE92EB000C0B618 /* LayersDotproducts.swift in Sources */,
+				2B4064871BE92EC700C0B618 /* LayersNonlinearities.swift in Sources */,
+				2B40648E1BE92F1500C0B618 /* Vol.swift in Sources */,
+				2B16E0971BD93A3300E0A2AA /* ConvNetSwiftTests.swift in Sources */,
+				2B40648C1BE92F0F00C0B618 /* Options.swift in Sources */,
+				2B40648D1BE92F1200C0B618 /* Util.swift in Sources */,
+				2B4064861BE92EC400C0B618 /* LayersLoss.swift in Sources */,
+				2B4064801BE8CABD00C0B618 /* SimpleNetTests.swift in Sources */,
+				2B4064881BE92ECA00C0B618 /* LayersNormalization.swift in Sources */,
+				2B4064841BE92EBF00C0B618 /* LayersDropout.swift in Sources */,
+				2B4064911BE9770900C0B618 /* JSTest.swift in Sources */,
+				2B40648B1BE92ED600C0B618 /* Trainers.swift in Sources */,
+				2B4064891BE92ECD00C0B618 /* LayersPool.swift in Sources */,
+				2B4064851BE92EC100C0B618 /* LayersInput.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2B16E0941BD93A3300E0A2AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2B16E07D1BD93A3300E0A2AA /* ConvNetSwift */;
+			targetProxy = 2B16E0931BD93A3300E0A2AA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		2B16E0851BD93A3300E0A2AA /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2B16E0861BD93A3300E0A2AA /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		2B16E08A1BD93A3300E0A2AA /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2B16E08B1BD93A3300E0A2AA /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2B16E0991BD93A3300E0A2AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		2B16E09A1BD93A3300E0A2AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2B16E09C1BD93A3300E0A2AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = ConvNetSwift/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = OWL.ConvNetSwift;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2B16E09D1BD93A3300E0A2AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = ConvNetSwift/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = OWL.ConvNetSwift;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		2B16E09F1BD93A3300E0A2AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = ConvNetSwiftTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = OWL.ConvNetSwiftTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ConvNetSwift.app/ConvNetSwift";
+			};
+			name = Debug;
+		};
+		2B16E0A01BD93A3300E0A2AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = ConvNetSwiftTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = OWL.ConvNetSwiftTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ConvNetSwift.app/ConvNetSwift";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2B16E0791BD93A3200E0A2AA /* Build configuration list for PBXProject "ConvNetSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B16E0991BD93A3300E0A2AA /* Debug */,
+				2B16E09A1BD93A3300E0A2AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2B16E09B1BD93A3300E0A2AA /* Build configuration list for PBXNativeTarget "ConvNetSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B16E09C1BD93A3300E0A2AA /* Debug */,
+				2B16E09D1BD93A3300E0A2AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2B16E09E1BD93A3300E0A2AA /* Build configuration list for PBXNativeTarget "ConvNetSwiftTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B16E09F1BD93A3300E0A2AA /* Debug */,
+				2B16E0A01BD93A3300E0A2AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2B16E0761BD93A3200E0A2AA /* Project object */;
+}
