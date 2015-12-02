@@ -198,10 +198,10 @@ class Brain {
         // do more sophisticated things. For example some actions could be more
         // or less likely at "rest"/default state.
         if(self.random_action_distribution.count == 0) {
-            return randi(0, self.num_actions)
+            return RandUtils.randi(0, self.num_actions)
         } else {
             // okay, lets do some fancier sampling:
-            let p = randf(0, 1.0)
+            let p = RandUtils.randf(0, 1.0)
             var cumprob = 0.0
             for k: Int in 0 ..< self.num_actions {
                 cumprob += self.random_action_distribution[k]
@@ -270,7 +270,7 @@ class Brain {
             } else {
                 self.epsilon = self.epsilon_test_time // use test-time value
             }
-            let rf = randf(0,1)
+            let rf = RandUtils.randf(0,1)
             if(rf < self.epsilon) {
                 // choose a random action with epsilon probability
                 action = self.random_action()!
@@ -321,7 +321,7 @@ class Brain {
                 self.experience.append(e)
             } else {
                 // replace. finite memory!
-                let ri = randi(0, self.experience_size)
+                let ri = RandUtils.randi(0, self.experience_size)
                 self.experience[ri] = e
             }
         }
@@ -331,7 +331,7 @@ class Brain {
         if(self.experience.count > self.start_learn_threshold) {
             var avcost = 0.0
             for _: Int in 0 ..< self.tdtrainer.batch_size {
-                let re = randi(0, self.experience.count)
+                let re = RandUtils.randi(0, self.experience.count)
                 let e = self.experience[re]
                 var x = Vol(1, 1, self.net_inputs)
                 x.w = [e.state0]

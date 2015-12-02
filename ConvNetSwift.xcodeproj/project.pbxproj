@@ -88,6 +88,10 @@
 		2B4064961BEA7B9000C0B618 /* deepqlearn.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064931BEA7B9000C0B618 /* deepqlearn.js */; };
 		2B4064971BEA7B9000C0B618 /* util.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064941BEA7B9000C0B618 /* util.js */; };
 		2B4064981BEA7B9000C0B618 /* vis.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064951BEA7B9000C0B618 /* vis.js */; };
+		2B480E5E1C048BA30056865A /* UtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B480E5D1C048BA30056865A /* UtilTests.swift */; };
+		2B480E631C048FAD0056865A /* convnet.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B480E621C048FAD0056865A /* convnet.js */; };
+		2B480E641C048FD90056865A /* convnet.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B480E621C048FAD0056865A /* convnet.js */; };
+		2B480E661C0502DC0056865A /* VolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B480E651C0502DC0056865A /* VolTests.swift */; };
 		2B6625201BEFE93F00D59B65 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66251E1BEF902500D59B65 /* Brain.swift */; };
 		2B6625211BF00F5E00D59B65 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66251E1BEF902500D59B65 /* Brain.swift */; };
 /* End PBXBuildFile section */
@@ -173,6 +177,9 @@
 		2B4064931BEA7B9000C0B618 /* deepqlearn.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = deepqlearn.js; sourceTree = "<group>"; };
 		2B4064941BEA7B9000C0B618 /* util.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = util.js; sourceTree = "<group>"; };
 		2B4064951BEA7B9000C0B618 /* vis.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = vis.js; sourceTree = "<group>"; };
+		2B480E5D1C048BA30056865A /* UtilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilTests.swift; sourceTree = "<group>"; };
+		2B480E621C048FAD0056865A /* convnet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet.js; sourceTree = "<group>"; };
+		2B480E651C0502DC0056865A /* VolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VolTests.swift; sourceTree = "<group>"; };
 		2B66251E1BEF902500D59B65 /* Brain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -231,10 +238,13 @@
 		2B16E0951BD93A3300E0A2AA /* ConvNetSwiftTests */ = {
 			isa = PBXGroup;
 			children = (
+				2B480E611C048FAD0056865A /* js_lib */,
 				2B40647F1BE8CABD00C0B618 /* SimpleNetTests.swift */,
 				2B16E0961BD93A3300E0A2AA /* ConvNetSwiftTests.swift */,
-				2B16E0981BD93A3300E0A2AA /* Info.plist */,
+				2B480E5D1C048BA30056865A /* UtilTests.swift */,
 				2B4064901BE9770900C0B618 /* JSTest.swift */,
+				2B16E0981BD93A3300E0A2AA /* Info.plist */,
+				2B480E651C0502DC0056865A /* VolTests.swift */,
 			);
 			path = ConvNetSwiftTests;
 			sourceTree = "<group>";
@@ -423,6 +433,14 @@
 			path = build;
 			sourceTree = "<group>";
 		};
+		2B480E611C048FAD0056865A /* js_lib */ = {
+			isa = PBXGroup;
+			children = (
+				2B480E621C048FAD0056865A /* convnet.js */,
+			);
+			path = js_lib;
+			sourceTree = "<group>";
+		};
 		2B66251D1BEF902500D59B65 /* deepqlearn */ = {
 			isa = PBXGroup;
 			children = (
@@ -529,6 +547,7 @@
 				2B4064751BE8CA2000C0B618 /* convnet_layers_loss.js in Resources */,
 				2B4064581BE8CA2000C0B618 /* automatic.html in Resources */,
 				2B4064971BEA7B9000C0B618 /* util.js in Resources */,
+				2B480E641C048FD90056865A /* convnet.js in Resources */,
 				2B4064621BE8CA2000C0B618 /* image_regression.js in Resources */,
 				2B16E08C1BD93A3300E0A2AA /* LaunchScreen.storyboard in Resources */,
 				2B4064661BE8CA2000C0B618 /* pica.js in Resources */,
@@ -565,6 +584,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B480E631C048FAD0056865A /* convnet.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -603,6 +623,7 @@
 				2B4064811BE92EAC00C0B618 /* Layer.swift in Sources */,
 				2B40648F1BE92F1900C0B618 /* VolUtil.swift in Sources */,
 				2B40648A1BE92ED000C0B618 /* Magicnet.swift in Sources */,
+				2B480E5E1C048BA30056865A /* UtilTests.swift in Sources */,
 				2B6625211BF00F5E00D59B65 /* Brain.swift in Sources */,
 				2B4064831BE92EB600C0B618 /* Net.swift in Sources */,
 				2B4064821BE92EB000C0B618 /* LayersDotproducts.swift in Sources */,
@@ -610,6 +631,7 @@
 				2B40648E1BE92F1500C0B618 /* Vol.swift in Sources */,
 				2B16E0971BD93A3300E0A2AA /* ConvNetSwiftTests.swift in Sources */,
 				2B40648C1BE92F0F00C0B618 /* Options.swift in Sources */,
+				2B480E661C0502DC0056865A /* VolTests.swift in Sources */,
 				2B40648D1BE92F1200C0B618 /* Util.swift in Sources */,
 				2B4064861BE92EC400C0B618 /* LayersLoss.swift in Sources */,
 				2B4064801BE8CABD00C0B618 /* SimpleNetTests.swift in Sources */,

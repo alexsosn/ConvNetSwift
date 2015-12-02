@@ -59,7 +59,6 @@ class ReluLayer: InnerLayer {
                 V.dw[i] = V2.dw[i]
             }
         }
-//        self.in_act = V
     }
     
     func getParamsAndGrads() -> [ParamsAndGrads] {
@@ -144,7 +143,6 @@ class SigmoidLayer: InnerLayer {
             let v2wi = V2.w[i]
             V.dw[i] =  v2wi * (1.0 - v2wi) * V2.dw[i]
         }
-//        self.in_act = V
     }
     
     func getParamsAndGrads() -> [ParamsAndGrads] {
@@ -302,7 +300,6 @@ class MaxoutLayer: InnerLayer {
                 }
             }
         }
-//        self.in_act = V
     }
     
     func getParamsAndGrads() -> [ParamsAndGrads] {
@@ -322,21 +319,17 @@ class MaxoutLayer: InnerLayer {
         json["group_size"] = self.group_size
         return json
     }
-//
-//    func fromJSON(json: [String: AnyObject]) -> () {
-//        self.out_depth = json["out_depth"]
-//        self.out_sx = json["out_sx"]
-//        self.out_sy = json["out_sy"]
-//        self.layer_type = json["layer_type"]
-//        self.group_size = json["group_size"]
-//        self.switches = zeros(self.group_size)
-//    }
-}
 
-// a helper function, since tanh is not yet part of ECMAScript. Will be in v6.
-func tanh(x: Double) -> Double{
-    let y = exp(2 * x)
-    return (y - 1) / (y + 1)
+    func fromJSON(json: [String: AnyObject]) -> () {
+        self.out_depth = json["out_depth"] as! Int
+        self.out_sx = json["out_sx"] as! Int
+        self.out_sy = json["out_sy"] as! Int
+        self.layer_type = LayerType(rawValue: json["layer_type"] as! String)!
+        if let group_size = json["group_size"] {
+            self.group_size = group_size as! Int
+        }
+        self.switches = zeros(self.group_size)
+    }
 }
 
 // Implements Tanh nnonlinearity elementwise
@@ -394,7 +387,6 @@ class TanhLayer: InnerLayer {
             let v2wi = V2.w[i]
             V.dw[i] = (1.0 - v2wi * v2wi) * V2.dw[i]
         }
-//        self.in_act = V
     }
     
     func getParamsAndGrads() -> [ParamsAndGrads] {
@@ -413,12 +405,12 @@ class TanhLayer: InnerLayer {
         json["layer_type"] = self.layer_type.rawValue
         return json
     }
-//
-//    func fromJSON(json: [String: AnyObject]) -> () {
-//        self.out_depth = json["out_depth"]
-//        self.out_sx = json["out_sx"]
-//        self.out_sy = json["out_sy"]
-//        self.layer_type = json["layer_type"]
-//    }
+
+    func fromJSON(json: [String: AnyObject]) -> () {
+        self.out_depth = json["out_depth"] as! Int
+        self.out_sx = json["out_sx"] as! Int
+        self.out_sy = json["out_sy"] as! Int
+        self.layer_type = LayerType(rawValue: json["layer_type"] as! String)!
+    }
 }
 

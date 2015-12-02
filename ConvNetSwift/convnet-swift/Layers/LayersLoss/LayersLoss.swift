@@ -55,7 +55,7 @@ class SoftmaxLayer: LossLayer {
         
         // compute max activation
         var a_s = V.w
-        var amax = V.w[0]
+        var amax = V.w[0] // TODO: replace with max()
         for(var i:Int = 1; i < self.out_depth; i++) {
             
             if(a_s[i] > amax) { amax = a_s[i] }

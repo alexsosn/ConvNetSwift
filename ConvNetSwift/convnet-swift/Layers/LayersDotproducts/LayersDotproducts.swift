@@ -141,7 +141,7 @@ class ConvLayer: InnerLayer {
             else {
                 return
         }
-        V.dw = [Double](count: V.w.count, repeatedValue: 0.0) // zero out gradient wrt bottom data, we're about to fill it
+        V.dw = zerosd(V.w.count) // zero out gradient wrt bottom data, we're about to fill it
         
         let V_sx = V.sx|0
         let V_sy = V.sy|0

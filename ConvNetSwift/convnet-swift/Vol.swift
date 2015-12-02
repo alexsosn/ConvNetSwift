@@ -50,19 +50,19 @@ class Vol {
         let n = sx*sy*depth
         self.w = zerosd(n)
         self.dw = zerosd(n)
-        if(c != nil) {
+        if(c == nil) {
             // weight normalization is done to equalize the output
             // variance of every neuron, otherwise neurons with a lot
             // of incoming connections have outputs of larger variance
             let scale = sqrt(1.0/Double(sx*sy*depth))
             for i in 0 ..< n {
 
-                self.w[i] = randn(0.0, scale)
+                self.w[i] = RandUtils.randn(0.0, scale)
             }
         } else {
             for i in 0 ..< n {
 
-                self.w[i] = 0 // = c WARNING : I have no idea what he expected here
+                self.w[i] = c!
             }
         }
         

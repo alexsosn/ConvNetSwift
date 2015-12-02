@@ -128,11 +128,11 @@ class MagicNet {
         let nl = Int(weightedSample([0,1,2,3], [0.2, 0.3, 0.3, 0.2])!) // prefer nets with 1,2 hidden layers
         for _ in 0 ..< nl { // WARNING: iterator was q
 
-            let ni = randi(self.neurons_min, self.neurons_max)
+            let ni = RandUtils.randi(self.neurons_min, self.neurons_max)
             let actarr: [ActivationType] = [.tanh, .maxout, .relu]
-            let act = actarr[randi(0,3)]
-            if(randf(0,1) < 0.5) {
-                let dp = random_js()
+            let act = actarr[RandUtils.randi(0,3)]
+            if(RandUtils.randf(0,1) < 0.5) {
+                let dp = RandUtils.random_js()
                 let layer_fc = FullyConnLayerOpt(
                     num_neurons: ni,
                     activation: act,
@@ -154,11 +154,11 @@ class MagicNet {
         net.makeLayers(layer_defs)
         
         // sample training hyperparameters
-        let bs = randi(self.batch_size_min, self.batch_size_max) // batch size
-        let l2 = pow(10, randf(Double(self.l2_decay_min), Double(self.l2_decay_max))) // l2 weight decay
-        let lr = pow(10, randf(Double(self.learning_rate_min), Double(self.learning_rate_max))) // learning rate
-        let mom = randf(self.momentum_min, self.momentum_max) // momentum. Lets just use 0.9, works okay usually ;p
-        let tp = randf(0,1) // trainer type
+        let bs = RandUtils.randi(self.batch_size_min, self.batch_size_max) // batch size
+        let l2 = pow(10, RandUtils.randf(Double(self.l2_decay_min), Double(self.l2_decay_max))) // l2 weight decay
+        let lr = pow(10, RandUtils.randf(Double(self.learning_rate_min), Double(self.learning_rate_max))) // learning rate
+        let mom = RandUtils.randf(self.momentum_min, self.momentum_max) // momentum. Lets just use 0.9, works okay usually ;p
+        let tp = RandUtils.randf(0,1) // trainer type
         var trainer_def = TrainerOpt()
         if(tp < 0.33) {
             trainer_def.method = .adadelta
@@ -206,7 +206,7 @@ class MagicNet {
         
         // step all candidates on a random data point
         let fold = self.folds[self.foldix] // active fold
-        let dataix = fold.train_ix[randi(0, fold.train_ix.count)]
+        let dataix = fold.train_ix[RandUtils.randi(0, fold.train_ix.count)]
         for k in 0 ..< self.candidates.count {
 
             var x = self.data[dataix]

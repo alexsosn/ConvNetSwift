@@ -16,41 +16,45 @@ func | (x: Int, y: Int) -> Int {
 
 
 // Random number utilities
-var return_v = false;
-var v_val = 0.0;
 
-func gaussRandom() -> Double {
-    if(return_v) {
-        return_v = false;
-        return v_val;
+class RandUtils {
+    
+    static var return_v = false;
+    static var v_val = 0.0;
+    
+    static func gaussRandom() -> Double {
+        if(return_v) {
+            return_v = false;
+            return v_val;
+        }
+        
+        let u = 2*random_js()-1;
+        let v = 2*random_js()-1;
+        let r = u*u + v*v;
+        if(r == 0 || r > 1) { return gaussRandom(); }
+        let c = sqrt(-2*log(r)/r);
+        v_val = v*c // cache this
+        return_v = true;
+        return u*c;
     }
     
-    let u = 2*random_js()-1;
-    let v = 2*random_js()-1;
-    let r = u*u + v*v;
-    if(r == 0 || r > 1) { return gaussRandom(); }
-    let c = sqrt(-2*log(r)/r);
-    v_val = v*c // cache this
-    return_v = true;
-    return u*c;
+    static func random_js() -> Double {
+        return drand48()
+        // should be [0 .. 1)
+    }
+    
+    static func randf(a: Double, _ b: Double) -> Double {
+        return random_js()*(b-a)+a;
+    }
+    static func randi(a: Int, _ b: Int) -> Int {
+        return Int(floor(random_js()))*(b-a)+a
+    }
+    
+    static func randn(mu: Double, _ std: Double) -> Double {
+        return mu+gaussRandom()*std;
+    }
+    
 }
-
-func random_js() -> Double {
-    return drand48()
-    // should be [0 .. 1)
-}
-
-func randf(a: Double, _ b: Double) -> Double {
-    return random_js()*(b-a)+a;
-}
-func randi(a: Int, _ b: Int) -> Int {
-    return Int(floor(random_js()))*(b-a)+a
-}
-
-func randn(mu: Double, _ std: Double) -> Double {
-    return mu+gaussRandom()*std;
-}
-
 // Array utilities
 func zeros(n: Int) -> [Int] {
     //    if(typeof(n)==="undefined" || isNaN(n)) { return []; }
@@ -58,7 +62,7 @@ func zeros(n: Int) -> [Int] {
     //      // lacking browser support
     //      var arr = Array(n);
     //      for i in 0 ..< n {
-// arr[i]= 0;}
+    // arr[i]= 0;}
     //      return arr;
     //    } else {
     //      return Float64Array(n);
@@ -69,13 +73,6 @@ func zeros(n: Int) -> [Int] {
 func zerosd(n: Int) -> [Double] {
     return [Double](count: n, repeatedValue: 0.0);
 }
-
-//func arrContains(arr, elt) {
-//    for(var i=0,n=arr.count;i<n;i++) {
-//        if(arr[i]===elt) return true;
-//    }
-//    return false;
-//}
 
 func arrUnique(arr: [Int]) -> [Int] {
     return Array(Set(arr));
@@ -111,7 +108,7 @@ func randperm(n: Int) -> [Int]{
         array[q]=q;
     }
     for (var i = n; i != 0; i--) {
-        j = Int(floor(random_js())) * (i+1)
+        j = Int(floor(RandUtils.random_js())) * (i+1)
         temp = array[i];
         array[i] = array[j];
         array[j] = temp;
@@ -122,7 +119,7 @@ func randperm(n: Int) -> [Int]{
 // sample from list lst according to probabilities in list probs
 // the two lists are of same size, and probs adds up to 1
 func weightedSample(lst: [Double], _ probs: [Double]) -> Double? {
-    let p = randf(0, 1.0);
+    let p = RandUtils.randf(0, 1.0);
     var cumprob = 0.0;
     let n=lst.count
     for k in 0 ..< n {
@@ -134,15 +131,15 @@ func weightedSample(lst: [Double], _ probs: [Double]) -> Double? {
 
 // syntactic sugar function for getting default parameter values
 func getopt(opt: [String: AnyObject], _ field_name: String, _ default_value: AnyObject) -> AnyObject {
-        // case of single string
-        return opt[field_name] ?? default_value
+    // case of single string
+    return opt[field_name] ?? default_value
 }
 
 func getopt(opt: [String: AnyObject], _ field_names: [String], _ default_value: AnyObject) -> AnyObject {
     // assume we are given a list of string instead
     var ret = default_value;
     for i in 0 ..< field_names.count {
-
+        
         let f = field_names[i];
         ret = opt[f] ?? ret // overwrite return value
     }

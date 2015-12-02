@@ -91,7 +91,7 @@ class LocalResponseNormalizationLayer: InnerLayer {
                 fatalError("self.in_act or self.out_act or S_cache_ is nil")
         }
         
-        V.dw = [Double](count: V.w.count, repeatedValue: 0.0) // zero out gradient wrt data
+        V.dw = zerosd(V.w.count) // zero out gradient wrt data
 //        let A = self.out_act // computed in forward pass
         
         let n2 = Int(floor(self.n/2))
@@ -120,7 +120,6 @@ class LocalResponseNormalizationLayer: InnerLayer {
                 }
             }
         }
-//        self.in_act = V
     }
     
     func getParamsAndGrads() -> [ParamsAndGrads] { return [] }

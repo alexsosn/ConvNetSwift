@@ -54,7 +54,7 @@ class DropoutLayer: InnerLayer {
             // do dropout
             for i in 0 ..< N {
                 
-                if(random_js()<self.drop_prob) {
+                if(RandUtils.random_js()<self.drop_prob) {
                     V2.w[i]=0
                     self.dropped[i] = true
                 } // drop!
@@ -78,14 +78,13 @@ class DropoutLayer: InnerLayer {
             let chain_grad = self.out_act
             else { return }
         let N = V.w.count
-        V.dw = [Double](count: N, repeatedValue: 0.0) // zero out gradient wrt data
+        V.dw = zerosd(N) // zero out gradient wrt data
         for i in 0 ..< N {
             
             if(!(self.dropped[i])) {
                 V.dw[i] = chain_grad.dw[i] // copy over the gradient
             }
         }
-//        self.in_act = V
     }
     
     func getParamsAndGrads() -> [ParamsAndGrads] {

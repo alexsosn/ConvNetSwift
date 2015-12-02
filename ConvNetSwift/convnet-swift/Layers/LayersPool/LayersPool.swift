@@ -111,7 +111,7 @@ class PoolLayer: InnerLayer {
             fatalError("self.out_act is nil")
         }
         
-        V.dw = [Double](count: V.w.count, repeatedValue:0.0) // zero out gradient wrt data
+        V.dw = zerosd(V.w.count) // zero out gradient wrt data
 //        var A = self.out_act // computed in forward pass
         
         var n = 0
@@ -130,7 +130,6 @@ class PoolLayer: InnerLayer {
                 }
             }
         }
-//        self.in_act = V
     }
     
     func getParamsAndGrads() -> [ParamsAndGrads] {
