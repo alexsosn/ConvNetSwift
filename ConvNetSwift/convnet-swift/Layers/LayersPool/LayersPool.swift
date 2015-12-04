@@ -60,7 +60,7 @@ class PoolLayer: InnerLayer {
     func forward(inout V: Vol, is_training: Bool) -> Vol {
         self.in_act = V
         
-        let A = Vol(self.out_sx, self.out_sy, self.out_depth, 0.0)
+        let A = Vol(sx: self.out_sx, sy: self.out_sy, depth: self.out_depth, c: 0.0)
         
         var n=0 // a counter for switches
         for d in 0 ..< self.out_depth {
@@ -81,7 +81,7 @@ class PoolLayer: InnerLayer {
                             let oy = y+fy
                             let ox = x+fx
                             if(oy>=0 && oy<V.sy && ox>=0 && ox<V.sx) {
-                                let v = V.get(ox, oy, d)
+                                let v = V.get(x: ox, y: oy, d: d)
                                 // perform max pooling and store pointers to where
                                 // the max came from. This will speed up backprop
                                 // and can help make nice visualizations in future
@@ -92,7 +92,7 @@ class PoolLayer: InnerLayer {
                     self.switchx[n] = winx
                     self.switchy[n] = winy
                     n++
-                    A.set(ax, ay, d, a)
+                    A.set(x: ax, y: ay, d: d, v: a)
                 }
             }
         }
@@ -123,8 +123,8 @@ class PoolLayer: InnerLayer {
                 y = -self.pad
                 for(var ay=0; ay<self.out_sy; y+=self.stride,ay++) {
                     
-                    let chain_grad = out_act.get_grad(ax,ay,d)
-                    V.add_grad(self.switchx[n], self.switchy[n], d, chain_grad)
+                    let chain_grad = out_act.get_grad(x: ax, y: ay, d: d)
+                    V.add_grad(x: self.switchx[n], y: self.switchy[n], d: d, v: chain_grad)
                     n++
                     
                 }

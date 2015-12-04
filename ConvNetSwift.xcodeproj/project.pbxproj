@@ -94,6 +94,12 @@
 		2B480E661C0502DC0056865A /* VolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B480E651C0502DC0056865A /* VolTests.swift */; };
 		2B6625201BEFE93F00D59B65 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66251E1BEF902500D59B65 /* Brain.swift */; };
 		2B6625211BF00F5E00D59B65 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66251E1BEF902500D59B65 /* Brain.swift */; };
+		2B7E51851C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2B7E51841C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg */; };
+		2B7E51861C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2B7E51841C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg */; };
+		2B7E51891C119D59006BE7F2 /* Nyura.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2B7E51871C119D59006BE7F2 /* Nyura.jpg */; };
+		2B7E518A1C119D59006BE7F2 /* Nyura.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2B7E51871C119D59006BE7F2 /* Nyura.jpg */; };
+		2B7E518B1C119D59006BE7F2 /* Nyura.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7E51881C119D59006BE7F2 /* Nyura.png */; };
+		2B7E518C1C119D59006BE7F2 /* Nyura.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7E51881C119D59006BE7F2 /* Nyura.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -181,6 +187,9 @@
 		2B480E621C048FAD0056865A /* convnet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet.js; sourceTree = "<group>"; };
 		2B480E651C0502DC0056865A /* VolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VolTests.swift; sourceTree = "<group>"; };
 		2B66251E1BEF902500D59B65 /* Brain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
+		2B7E51841C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg"; sourceTree = "<group>"; };
+		2B7E51871C119D59006BE7F2 /* Nyura.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Nyura.jpg; sourceTree = "<group>"; };
+		2B7E51881C119D59006BE7F2 /* Nyura.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Nyura.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +214,7 @@
 			isa = PBXGroup;
 			children = (
 				2B4064291BE8CA2000C0B618 /* js */,
+				2B7E51831C119BE7006BE7F2 /* img */,
 				2B16E0801BD93A3300E0A2AA /* ConvNetSwift */,
 				2B16E0951BD93A3300E0A2AA /* ConvNetSwiftTests */,
 				2B16E07F1BD93A3300E0A2AA /* Products */,
@@ -449,6 +459,17 @@
 			path = deepqlearn;
 			sourceTree = "<group>";
 		};
+		2B7E51831C119BE7006BE7F2 /* img */ = {
+			isa = PBXGroup;
+			children = (
+				2B7E51871C119D59006BE7F2 /* Nyura.jpg */,
+				2B7E51881C119D59006BE7F2 /* Nyura.png */,
+				2B7E51841C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg */,
+			);
+			name = img;
+			path = ConvNetSwift/img;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -530,6 +551,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B7E51891C119D59006BE7F2 /* Nyura.jpg in Resources */,
 				2B40646F1BE8CA2000C0B618 /* NeuralNetSpec.js in Resources */,
 				2B4064571BE8CA2000C0B618 /* autoencoder.html in Resources */,
 				2B4064631BE8CA2000C0B618 /* images-demo.js in Resources */,
@@ -542,6 +564,7 @@
 				2B4064641BE8CA2000C0B618 /* jquery-1.8.3.min.js in Resources */,
 				2B40645C1BE8CA2000C0B618 /* style.css in Resources */,
 				2B4064981BEA7B9000C0B618 /* vis.js in Resources */,
+				2B7E518B1C119D59006BE7F2 /* Nyura.png in Resources */,
 				2B40645F1BE8CA2000C0B618 /* automatic.js in Resources */,
 				2B40646E1BE8CA2000C0B618 /* trainers.html in Resources */,
 				2B4064751BE8CA2000C0B618 /* convnet_layers_loss.js in Resources */,
@@ -560,6 +583,7 @@
 				2B4064681BE8CA2000C0B618 /* rldemo.js in Resources */,
 				2B4064961BEA7B9000C0B618 /* deepqlearn.js in Resources */,
 				2B4064721BE8CA2000C0B618 /* convnet_layers_dotproducts.js in Resources */,
+				2B7E51851C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg in Resources */,
 				2B40645D1BE8CA2000C0B618 /* image_regression.html in Resources */,
 				2B4064671BE8CA2000C0B618 /* regression.js in Resources */,
 				2B4064791BE8CA2000C0B618 /* convnet_magicnet.js in Resources */,
@@ -584,7 +608,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B7E51861C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg in Resources */,
+				2B7E518A1C119D59006BE7F2 /* Nyura.jpg in Resources */,
 				2B480E631C048FAD0056865A /* convnet.js in Resources */,
+				2B7E518C1C119D59006BE7F2 /* Nyura.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

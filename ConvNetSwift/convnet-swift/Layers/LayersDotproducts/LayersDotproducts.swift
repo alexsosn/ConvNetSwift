@@ -81,16 +81,16 @@ class ConvLayer: InnerLayer {
         let bias = opt.bias_pref
         filters = []
         for _ in 0..<out_depth {
-            filters.append(Vol(sx, sy, in_depth))
+            filters.append(Vol(sx: sx, sy: sy, depth: in_depth))
         }
-        biases = Vol(1, 1, out_depth, bias)
+        biases = Vol(sx: 1, sy: 1, depth: out_depth, c: bias)
     }
     
     func forward(inout V: Vol, is_training: Bool) -> Vol {
         // optimized code by @mdda that achieves 2x speedup over previous version
         
         in_act = V
-        let A = Vol(out_sx|0, out_sy|0, out_depth|0, 0.0)
+        let A = Vol(sx: out_sx|0, sy: out_sy|0, depth: out_depth|0, c: 0.0)
         
         let V_sx = V.sx|0
         let V_sy = V.sy|0
@@ -125,7 +125,7 @@ class ConvLayer: InnerLayer {
                         }
                     }
                     a += biases.w[d]
-                    A.set(ax, ay, d, a)
+                    A.set(x: ax, y: ay, d: d, v: a)
                 }
             }
         }
@@ -157,7 +157,7 @@ class ConvLayer: InnerLayer {
                 for(var ax=0; ax<out_sx; x+=xy_stride,ax++) {  // xy_stride
                     
                     // convolve centered at this particular location
-                    let chain_grad = out_act.get_grad(ax,ay,d) // gradient from above, from chain rule
+                    let chain_grad = out_act.get_grad(x: ax, y: ay, d: d) // gradient from above, from chain rule
                     for fy in 0 ..< f.sy {
 
                         let oy = y+fy // coordinates in the original input array coordinates
@@ -327,13 +327,13 @@ class FullyConnLayer: InnerLayer {
         
         // initializations
         let bias = opt.bias_pref
-        self.filters = [Vol](count: out_depth, repeatedValue: Vol(1, 1, num_inputs))
-        biases = Vol(1, 1, out_depth, bias)
+        self.filters = [Vol](count: out_depth, repeatedValue: Vol(sx: 1, sy: 1, depth: num_inputs))
+        biases = Vol(sx: 1, sy: 1, depth: out_depth, c: bias)
     }
     
     func forward(inout V: Vol, is_training: Bool) -> Vol {
         in_act = V
-        let A = Vol(1, 1, out_depth, 0.0)
+        let A = Vol(sx: 1, sy: 1, depth: out_depth, c: 0.0)
         var Vw = V.w
         for i in 0 ..< out_depth {
 

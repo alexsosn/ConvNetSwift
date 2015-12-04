@@ -14,6 +14,8 @@ class SimpleNetTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        srand48(time(nil))
+
         net = Net()
         
         let input = InputLayerOpt(out_sx:1, out_sy:1, out_depth:2)
@@ -21,7 +23,7 @@ class SimpleNetTests: XCTestCase {
         let fc2 = FullyConnLayerOpt(num_neurons:5, activation:.tanh)
         let softmax = SoftmaxLayerOpt(num_classes: 3)
         let layer_defs: [LayerOptTypeProtocol] = [input, fc1, fc2, softmax]
-
+        
         net!.makeLayers(layer_defs)
         
         var trainerOpts = TrainerOpt()
@@ -68,12 +70,12 @@ class SimpleNetTests: XCTestCase {
         // note that this should work since l2 and l1 regularization are off
         // an issue is that if step size is too high, this could technically fail...
         for(var k=0; k<100; k++) {
-            var x = Vol(array: [random_js() * 2 - 1, random_js() * 2 - 1]);
+            var x = Vol(array: [RandUtils.random_js() * 2 - 1, RandUtils.random_js() * 2 - 1]);
             let pv = net!.forward(&x);
-            let gti = Int(random_js() * 3);
+            let gti = Int(RandUtils.random_js() * 3);
             let train_res = trainer!.train(x: &x, y: gti);
             print(train_res)
-
+            
             let pv2 = net!.forward(&x);
             XCTAssertGreaterThan(pv2.w[gti], pv.w[gti])
         }
@@ -86,15 +88,39 @@ class SimpleNetTests: XCTestCase {
         // right then that's comforting, because it is a function
         // of all gradients above, for all layers.
         
-        var x = Vol(array: [random_js() * 2 - 1, random_js() * 2 - 1]);
-        let gti = Int(random_js() * 3); // ground truth index
-        trainer!.train(x: &x, y: gti); // computes gradients at all layers, and at x
+        var x = Vol(array: [RandUtils.random_js() * 2.0 - 1.0, RandUtils.random_js() * 2.0 - 1.0]);
+        let gti = Int(RandUtils.random_js() * 3); // ground truth index
+        let res = trainer!.train(x: &x, y: gti); // computes gradients at all layers, and at x
+        
+        print(res)
+        
+        /*
+        TrainResult(
+        fwd_time: 9223372036854775807, 
+        bwd_time: 9223372036854775807, 
+        l2_decay_loss: 0.0, 
+        l1_decay_loss: 0.0, 
+        cost_loss: 0.784027673681949, 
+        softmax_loss: 0.784027673681949, 
+        loss: 0.784027673681949)
+        */
+        
+        /* js:
+        bwd_time: 1
+        cost_loss: 0.8871066776430543
+        fwd_time: 0
+        l1_decay_loss: 0
+        l2_decay_loss: 0
+        loss: 0.8871066776430543
+        softmax_loss: 0.8871066776430543
+        */
+        
         let delta = 0.000001;
         
-        for(var i=0;i<x.w.count;i++) {
-//            let grad_analytic1 = (net?.layers.first! as! InputLayer).in_act!.dw[i]
-//            let grad_analytic2 = (net?.layers.last! as! SoftmaxLayer).in_act!.dw[i]
-
+        for i: Int in 0 ..< x.w.count {
+            //            let grad_analytic1 = (net?.layers.first! as! InputLayer).in_act!.dw[i]
+            //            let grad_analytic2 = (net?.layers.last! as! SoftmaxLayer).in_act!.dw[i]
+            
             let grad_analytic = x.dw[i];
             
             let xold = x.w[i];
@@ -107,6 +133,12 @@ class SimpleNetTests: XCTestCase {
             let grad_numeric = (c0 - c1)/(2.0 * delta);
             let rel_error = abs(grad_analytic - grad_numeric)/abs(grad_analytic + grad_numeric);
             print("\(i): numeric: \(grad_numeric), analytic: \(grad_analytic) => rel error \(rel_error)");
+            
+            /* js:
+            0: numeric: -0.18889002029176538, analytic: -0.18886165813376557 => rel error 0.00007508148770648791
+            1: numeric: 0.05234599215198088, analytic: 0.05234719879335431 => rel error 0.000011525500011363902
+            */
+            
             XCTAssertLessThan(rel_error, 1e-2)
             
         }

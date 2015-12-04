@@ -28,16 +28,24 @@ class Vol {
         self.w = zerosd(self.depth)
         self.dw = zerosd(self.depth)
         for i in 0 ..< self.depth {
-
             self.w[i] = array[i]
         }
     }
     
-    convenience init(_ sx: Int, _ sy: Int, _ depth: Int) {
+    convenience init(width sx: Int, height sy: Int, depth: Int, array: [Double]) {
+        self.init()
+        assert(array.count==sx*sy*depth)
+        self.sx = sx
+        self.sy = sy
+        self.depth = depth
+        self.w = array
+    }
+    
+    convenience init(sx: Int, sy: Int, depth: Int) {
         self.init(width:sx, height:sy, depth:depth, c: nil)
     }
     
-    convenience init(_ sx: Int, _ sy: Int, _ depth: Int, _ c: Double) {
+    convenience init(sx: Int, sy: Int, depth: Int, c: Double) {
         self.init(width:sx, height:sy, depth:depth, c: c)
     }
     
@@ -57,7 +65,7 @@ class Vol {
             let scale = sqrt(1.0/Double(sx*sy*depth))
             for i in 0 ..< n {
 
-                self.w[i] = RandUtils.randn(0.0, scale)
+                self.w[i] = RandUtils.randn(0.0, std: scale)
             }
         } else {
             for i in 0 ..< n {
@@ -68,59 +76,57 @@ class Vol {
         
     }
     
-    func get(x:Int, _ y:Int, _ d:Int) -> Double {
+    func get(x x:Int, y:Int, d:Int) -> Double {
         let ix=((self.sx * y)+x)*self.depth+d
         return self.w[ix]
     }
     
-    func set(x:Int, _ y:Int, _ d:Int, _ v:Double) -> () {
+    func set(x x:Int, y:Int, d:Int, v:Double) -> () {
         let ix=((self.sx * y)+x)*self.depth+d
         self.w[ix] = v
     }
     
-    func add(x: Int, _ y: Int, _ d :Int, _ v:Double) -> () {
+    func add(x x: Int, y: Int, d :Int, v:Double) -> () {
         let ix=((self.sx * y)+x)*self.depth+d
         self.w[ix] += v
     }
     
-    func get_grad(x:Int, _ y:Int, _ d:Int) -> Double {
+    func get_grad(x x:Int, y:Int, d:Int) -> Double {
         let ix = ((self.sx * y)+x)*self.depth+d
         return self.dw[ix]
     }
     
-    func set_grad(x:Int, _ y:Int, _ d:Int, _ v: Double) -> () {
+    func set_grad(x x:Int, y:Int, d:Int, v: Double) -> () {
         let ix = ((self.sx * y)+x)*self.depth+d
         self.dw[ix] = v
     }
     
-    func add_grad(x:Int, _ y:Int, _ d:Int, _ v: Double) -> () {
+    func add_grad(x x:Int, y:Int, d:Int, v: Double) -> () {
         let ix = ((self.sx * y)+x)*self.depth+d
         self.dw[ix] += v
     }
     
     func cloneAndZero() -> Vol {
-        return Vol(self.sx, self.sy, self.depth, 0.0)
+        return Vol(sx: self.sx, sy: self.sy, depth: self.depth, c: 0.0)
     }
     
     func clone() -> Vol {
-        let V = Vol(self.sx, self.sy, self.depth, 0.0)
+        let V = Vol(sx: self.sx, sy: self.sy, depth: self.depth, c: 0.0)
         let n = self.w.count
         for i in 0 ..< n {
- V.w[i] = self.w[i] }
+            V.w[i] = self.w[i]
+        }
         return V
     }
     
     func addFrom(V: Vol) {
         for k in 0 ..< self.w.count {
-//  -> ()
             self.w[k] += V.w[k]
         }
     }
     
-    func addFromScaled(V: Vol, _ a: Double) {
+    func addFromScaled(V: Vol, a: Double) {
         for k in 0 ..< self.w.count {
-
-            //  -> ()
             self.w[k] += a*V.w[k]
         }
     }

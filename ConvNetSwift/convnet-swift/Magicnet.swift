@@ -125,7 +125,7 @@ class MagicNet {
             out_sy: 1,
             out_depth: input_depth)
         layer_defs.append(layer_input)
-        let nl = Int(weightedSample([0,1,2,3], [0.2, 0.3, 0.3, 0.2])!) // prefer nets with 1,2 hidden layers
+        let nl = Int(weightedSample([0,1,2,3], probs: [0.2, 0.3, 0.3, 0.2])!) // prefer nets with 1,2 hidden layers
         for _ in 0 ..< nl { // WARNING: iterator was q
 
             let ni = RandUtils.randi(self.neurons_min, self.neurons_max)

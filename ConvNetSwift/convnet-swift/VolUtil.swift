@@ -14,7 +14,7 @@ func augment(V: Vol, crop:Int, dx: Int?, dy: Int?, fliplr: Bool = false) -> Vol 
     // randomly sample a crop in the input volume
     var W: Vol
     if(crop != V.sx || dx != 0 || dy != 0) {
-        W = Vol(crop, crop, V.depth, 0.0)
+        W = Vol(sx: crop, sy: crop, depth: V.depth, c: 0.0)
         for x in 0 ..< crop {
 
             for y in 0 ..< crop {
@@ -24,11 +24,11 @@ func augment(V: Vol, crop:Int, dx: Int?, dy: Int?, fliplr: Bool = false) -> Vol 
                 }
                 for d in 0 ..< V.depth {
 
-                    W.set(x,y,d,V.get(x+dx,y+dy,d)) // copy data over
+                    W.set(x: x, y: y, d: d, v: V.get(x: x+dx, y: y+dy, d: d)) // copy data over
                 }
             }
         }
-    } else {
+    } else {  
         W = V
     }
     
@@ -41,7 +41,7 @@ func augment(V: Vol, crop:Int, dx: Int?, dy: Int?, fliplr: Bool = false) -> Vol 
 
                 for d in 0 ..< W.depth {
 
-                    W2.set(x,y,d,W.get(W.sx - x - 1,y,d)) // copy data over
+                    W2.set(x: x, y: y, d: d, v: W.get(x: W.sx - x - 1, y: y, d: d)) // copy data over
                 }
             }
         }
@@ -121,60 +121,48 @@ import CoreGraphics
 //    return x
 //}
 
-public struct PixelData {
-    var r:UInt8 = 255
-    var g:UInt8
-    var b:UInt8
-    var a:UInt8
-}
-
-//private let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
-//private let bitmapInfo:CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedFirst.rawValue)
-
-public func imageFromARGB32Bitmap(pixels:[PixelData], width:UInt, height:UInt) -> UIImage {
-    let bitsPerComponent:UInt = 8
-    let bitsPerPixel:UInt = bitsPerComponent * 4
-    
-    assert(pixels.count == Int(width * height))
-    
-    var data = pixels // Copy to mutable []
-    let providerRef = CGDataProviderCreateWithCFData(
-        NSData(bytes: &data, length: data.count * sizeof(PixelData))
-    )
-    let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
-    let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedFirst.rawValue)
-
-    let cgim = CGImageCreate(
-        Int(width),
-        Int(height),
-        Int(bitsPerComponent),
-        Int(bitsPerPixel),
-        Int(width * UInt(sizeof(PixelData))),
-        rgbColorSpace,
-        bitmapInfo,
-        providerRef,
-        nil,
-        true,
-        .RenderingIntentDefault
-    )
-    return UIImage(CGImage: cgim!)
-}
 
 extension Vol {
-    func toImage() -> UIImage {
-        var pixel_data: [PixelData] = []
-        for i in 0 ..< self.sx {
-            for j in 0 ..< self.sy {
-                let r = UInt8(Int((get(i, j, 1))*255))
-                let g = UInt8(Int((get(i, j, 2))*255))
-                let b = UInt8(Int((get(i, j, 3))*255))
-                let a = UInt8(Int((get(i, j, 0))*255))
-                
-                pixel_data.append(PixelData(r: r, g: g, b: b, a: a))
-            }
+    func denormalize(pixelChannel: Double) -> UInt8{
+        return UInt8(pixelChannel * 255.0)
+    }
+    
+    func toImage() -> UIImage? {
+        
+        let intDenormArray: [UInt8] = self.w.map { (elem: Double) -> UInt8 in
+            return denormalize(elem)
         }
         
-        return imageFromARGB32Bitmap(pixel_data, width: UInt(self.sx), height: UInt(self.sy))
+        let width = self.sx
+        let height = self.sy
+        let components = self.depth
+        let bitsPerComponent: Int = 8
+        let bitsPerPixel = bitsPerComponent * components
+        let bytesPerRow = (components * width)
+        let bitmapInfo:CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue | CGBitmapInfo.ByteOrder32Big.rawValue)
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let providerRef = CGDataProviderCreateWithCFData(
+            NSData(bytes: intDenormArray, length: intDenormArray.count * components)
+        )
+        
+        guard let cgim = CGImageCreate(
+            width,
+            height,
+            bitsPerComponent,
+            bitsPerPixel,
+            bytesPerRow,
+            colorSpace,
+            bitmapInfo,
+            providerRef,
+            nil,
+            false,
+            .RenderingIntentDefault
+            )  else {
+                return nil
+        }
+        
+        let newImage = UIImage(CGImage: cgim)
+        return newImage
     }
 }
 
@@ -182,22 +170,19 @@ extension UIImage {
     func toVol(convert_grayscale convert_grayscale: Bool = false) -> Vol {
         
         if convert_grayscale {
-            
+            // TODO: implement
         }
         
         let image = self.CGImage
         let width = CGImageGetWidth(image)
         let height = CGImageGetHeight(image)
-        let bytesPerRow = (4 * width)
+        let components = 4
+        let bytesPerRow = (components * width)
         let bitsPerComponent: Int = 8
-//        let bitmapByteCount = bytesPerRow * height
-        let pixels = calloc(height * width, sizeof(UInt32))//malloc(bitmapByteCount)
+        let pixels = calloc(height * width, sizeof(UInt32))
         
-//        var bitmapInfo: CGBitmapInfo = [.ByteOrder32Big]
-//        bitmapInfo |= CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue)
-        let bitmapInfo:CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedFirst.rawValue | CGBitmapInfo.ByteOrder32Big.rawValue)
-        //  ~CGBitmapInfo.AlphaInfoMask.rawValue |
-        let colorSpace = CGColorSpaceCreateDeviceRGB()//CGImageGetColorSpace(image)
+        let bitmapInfo:CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue | CGBitmapInfo.ByteOrder32Big.rawValue)
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
         
         let context = CGBitmapContextCreate(
             pixels,
@@ -209,39 +194,23 @@ extension UIImage {
             bitmapInfo.rawValue)
         
         CGContextDrawImage(context, CGRectMake(0, 0, CGFloat(width), CGFloat(height)), image)
-
+        
         let dataCtxt = CGBitmapContextGetData(context)
-//         let data = UnsafePointer<UInt8>(dataCtxt)
-        let data = NSData(bytesNoCopy: dataCtxt, length: width*height*4, freeWhenDone: true)
+        let data = NSData(bytesNoCopy: dataCtxt, length: width*height*components, freeWhenDone: true)
         
         var pixelMem = [UInt8](count:data.length, repeatedValue:0)
         data.getBytes(&pixelMem, length:data.length)
         
-        let vol = Vol(width, height, 4)
-
-        for x in 0 ..< width {
-            for y in 0 ..< height {
-                //Here is your raw pixels
-                let offset = 4*((Int(width) * Int(y)) + Int(x))
-                
-                let alpha = normalize(pixelMem[offset])
-
-                let red = normalize(pixelMem[(offset+1)])
-                let green = normalize(pixelMem[(offset+2)])
-                let blue = normalize(pixelMem[(offset+3)])
-
-                vol.set(x, y, 0, red)
-                vol.set(x, y, 1, green)
-                vol.set(x, y, 2, blue)
-                vol.set(x, y, 3, alpha)
-            }
+        let doubleNormArray = pixelMem.map { (elem: UInt8) -> Double in
+            return normalize(elem)
         }
-
+        
+        let vol = Vol(width: width, height: height, depth: components, array: doubleNormArray)
+        
         return vol
     }
     
     private func normalize(pixelChannel: UInt8) -> Double{
-//        let unsafeUINT8 = UnsafePointer<UInt8>(nilLiteral: pixelChannel)
         return Double(pixelChannel)/255.0
     }
 }

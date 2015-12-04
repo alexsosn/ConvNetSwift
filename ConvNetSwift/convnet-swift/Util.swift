@@ -19,23 +19,23 @@ func | (x: Int, y: Int) -> Int {
 
 class RandUtils {
     
-    static var return_v = false;
-    static var v_val = 0.0;
+    static var return_v = false
+    static var v_val = 0.0
     
     static func gaussRandom() -> Double {
         if(return_v) {
-            return_v = false;
-            return v_val;
+            return_v = false
+            return v_val
         }
         
-        let u = 2*random_js()-1;
-        let v = 2*random_js()-1;
-        let r = u*u + v*v;
-        if(r == 0 || r > 1) { return gaussRandom(); }
-        let c = sqrt(-2*log(r)/r);
+        let u = 2*random_js()-1
+        let v = 2*random_js()-1
+        let r = u*u + v*v
+        if(r == 0 || r > 1) { return gaussRandom() }
+        let c = sqrt(-2*log(r)/r)
         v_val = v*c // cache this
-        return_v = true;
-        return u*c;
+        return_v = true
+        return u*c
     }
     
     static func random_js() -> Double {
@@ -44,14 +44,14 @@ class RandUtils {
     }
     
     static func randf(a: Double, _ b: Double) -> Double {
-        return random_js()*(b-a)+a;
+        return random_js()*(b-a)+a
     }
     static func randi(a: Int, _ b: Int) -> Int {
         return Int(floor(random_js()))*(b-a)+a
     }
     
-    static func randn(mu: Double, _ std: Double) -> Double {
-        return mu+gaussRandom()*std;
+    static func randn(mu: Double, std: Double) -> Double {
+        return mu+gaussRandom()*std
     }
     
 }
@@ -67,15 +67,15 @@ func zeros(n: Int) -> [Int] {
     //    } else {
     //      return Float64Array(n);
     //    }
-    return [Int](count: n, repeatedValue: 0);
+    return [Int](count: n, repeatedValue: 0)
 }
 
 func zerosd(n: Int) -> [Double] {
-    return [Double](count: n, repeatedValue: 0.0);
+    return [Double](count: n, repeatedValue: 0.0)
 }
 
 func arrUnique(arr: [Int]) -> [Int] {
-    return Array(Set(arr));
+    return Array(Set(arr))
 }
 
 // return max and min of a given non-empty array.
@@ -103,28 +103,28 @@ func maxmin(w: [Double]) -> Maxmin? {
 func randperm(n: Int) -> [Int]{
     var j = 0
     var temp: Int = 0
-    var array: [Int] = [];
+    var array: [Int] = []
     for q in 0 ..< n {
-        array[q]=q;
+        array[q]=q
     }
     for (var i = n; i != 0; i--) {
         j = Int(floor(RandUtils.random_js())) * (i+1)
-        temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
+        temp = array[i]
+        array[i] = array[j]
+        array[j] = temp
     }
-    return array;
+    return array
 }
 
 // sample from list lst according to probabilities in list probs
 // the two lists are of same size, and probs adds up to 1
-func weightedSample(lst: [Double], _ probs: [Double]) -> Double? {
-    let p = RandUtils.randf(0, 1.0);
-    var cumprob = 0.0;
+func weightedSample(lst: [Double], probs: [Double]) -> Double? {
+    let p = RandUtils.randf(0, 1.0)
+    var cumprob = 0.0
     let n=lst.count
     for k in 0 ..< n {
-        cumprob += probs[k];
-        if(p < cumprob) { return lst[k]; }
+        cumprob += probs[k]
+        if(p < cumprob) { return lst[k] }
     }
     return nil
 }
@@ -137,12 +137,12 @@ func getopt(opt: [String: AnyObject], _ field_name: String, _ default_value: Any
 
 func getopt(opt: [String: AnyObject], _ field_names: [String], _ default_value: AnyObject) -> AnyObject {
     // assume we are given a list of string instead
-    var ret = default_value;
+    var ret = default_value
     for i in 0 ..< field_names.count {
         
-        let f = field_names[i];
+        let f = field_names[i]
         ret = opt[f] ?? ret // overwrite return value
     }
-    return ret;
+    return ret
 }
 

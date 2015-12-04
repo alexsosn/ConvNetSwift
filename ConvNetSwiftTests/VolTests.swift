@@ -22,7 +22,7 @@ class VolTests: XCTestCase {
 
     func testRandomVol() {
         
-        let vol = Vol(1,1,100)
+        let vol = Vol(sx: 1,sy: 1,depth: 100)
         XCTAssertGreaterThan(vol.w.reduce(0, combine: { (acc: Double, new: Double) -> Double in
             return acc+new
         }), 0)
@@ -33,7 +33,7 @@ class VolTests: XCTestCase {
     }
     
     func testPredefinedVol() {
-        let vol = Vol(1,1,100,5)
+        let vol = Vol(sx: 1,sy: 1,depth: 100,c: 5)
         XCTAssertEqual(vol.w.reduce(0, combine: { (acc: Double, new: Double) -> Double in
             return acc+new
         }), 500)

@@ -215,7 +215,7 @@ class MaxoutLayer: InnerLayer {
     func forward(inout V: Vol, is_training: Bool) -> Vol {
         self.in_act = V
         let N = self.out_depth
-        let V2 = Vol(self.out_sx, self.out_sy, self.out_depth, 0.0)
+        let V2 = Vol(sx: self.out_sx, sy: self.out_sy, depth: self.out_depth, c: 0.0)
         
         // optimization branch. If we're operating on 1D arrays we dont have
         // to worry about keeping track of x,y,d coordinates inside
@@ -246,17 +246,17 @@ class MaxoutLayer: InnerLayer {
                     for i in 0 ..< N {
 
                         let ix = i * self.group_size
-                        var a = V.get(x, y, ix)
+                        var a = V.get(x: x, y: y, d: ix)
                         var ai = 0
                         for j in 1 ..< self.group_size {
 
-                            let a2 = V.get(x, y, ix+j)
+                            let a2 = V.get(x: x, y: y, d: ix+j)
                             if(a2 > a) {
                                 a = a2
                                 ai = j
                             }
                         }
-                        V2.set(x,y,i,a)
+                        V2.set(x: x, y: y, d: i, v: a)
                         self.switches[n] = ix + ai
                         n++
                     }
@@ -293,8 +293,8 @@ class MaxoutLayer: InnerLayer {
 
                     for i in 0 ..< N {
 
-                        let chain_grad = V2.get_grad(x,y,i)
-                        V.set_grad(x,y,self.switches[n],chain_grad)
+                        let chain_grad = V2.get_grad(x: x, y: y, d: i)
+                        V.set_grad(x: x, y: y, d: self.switches[n], v: chain_grad)
                         n++
                     }
                 }

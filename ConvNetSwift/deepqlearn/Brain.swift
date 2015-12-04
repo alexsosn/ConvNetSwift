@@ -221,7 +221,7 @@ class Brain {
     func policy(s: [Double]) -> Policy {
         // compute the value of doing any action in this state
         // and return the argmax action and its value
-        var svol = Vol(1, 1, self.net_inputs)
+        var svol = Vol(sx: 1, sy: 1, depth: self.net_inputs)
         svol.w = s
         let action_values = self.value_net.forward(&svol)
         var maxk = 0
@@ -333,7 +333,7 @@ class Brain {
             for _: Int in 0 ..< self.tdtrainer.batch_size {
                 let re = RandUtils.randi(0, self.experience.count)
                 let e = self.experience[re]
-                var x = Vol(1, 1, self.net_inputs)
+                var x = Vol(sx: 1, sy: 1, depth: self.net_inputs)
                 x.w = [e.state0]
                 let maxact = self.policy([e.state1])
                 let r = e.reward0 + self.gamma * maxact.value

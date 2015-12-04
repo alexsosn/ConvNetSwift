@@ -61,19 +61,19 @@ class LocalResponseNormalizationLayer: InnerLayer {
                 for i in 0 ..< V.depth {
 
                     
-                    let ai = V.get(x,y,i)
+                    let ai = V.get(x: x, y: y, d: i)
                     
                     // normalize in a window of size n
                     var den = 0.0
                     for(var j=max(0, i-n2);j<=min(i+n2,V.depth-1);j++) {
-                        let aa = V.get(x,y,j)
+                        let aa = V.get(x: x, y: y, d: j)
                         den += aa*aa
                     }
                     den *= self.alpha / self.n
                     den += self.k
-                    self.S_cache_!.set(x,y,i,den) // will be useful for backprop
+                    self.S_cache_!.set(x: x, y: y, d: i, v: den) // will be useful for backprop
                     den = pow(den, self.beta)
-                    A.set(x,y,i,ai/den)
+                    A.set(x: x, y: y, d: i, v: ai/den)
                 }
             }
         }
@@ -102,19 +102,19 @@ class LocalResponseNormalizationLayer: InnerLayer {
                 for i in 0 ..< V.depth {
 
                     
-                    let chain_grad = out_act.get_grad(x,y,i)
-                    let S = S_cache_.get(x,y,i)
+                    let chain_grad = out_act.get_grad(x: x, y: y, d: i)
+                    let S = S_cache_.get(x: x, y: y, d: i)
                     let SB = pow(S, self.beta)
                     let SB2 = SB*SB
                     
                     // normalize in a window of size n
                     for(var j=max(0,i-n2);j<=min(i+n2,V.depth-1);j++) {
-                        let aj = V.get(x,y,j)
+                        let aj = V.get(x: x, y: y, d: j)
                         var g = -aj*self.beta*pow(S,self.beta-1)*self.alpha/self.n*2*aj
                         if(j==i) { g += SB; }
                         g /= SB2
                         g *= chain_grad
-                        V.add_grad(x,y,j,g)
+                        V.add_grad(x: x, y: y, d: j, v: g)
                     }
                     
                 }

@@ -51,18 +51,14 @@ class SoftmaxLayer: LossLayer {
     func forward(inout V: Vol, is_training: Bool) -> Vol {
         self.in_act = V
         
-        let A = Vol(1, 1, self.out_depth, 0.0)
+        let A = Vol(sx: 1, sy: 1, depth: self.out_depth, c: 0.0)
         
         // compute max activation
         var a_s = V.w
-        var amax = V.w[0] // TODO: replace with max()
-        for(var i:Int = 1; i < self.out_depth; i++) {
-            
-            if(a_s[i] > amax) { amax = a_s[i] }
-        }
+        let amax = V.w.maxElement()!
         
         // compute exponentials (carefully to not blow up)
-        var es = [Double](count: self.out_depth, repeatedValue: 0.0)
+        var es = zerosd(self.out_depth)
         var esum = 0.0
         for i in 0 ..< self.out_depth {
             
@@ -97,7 +93,6 @@ class SoftmaxLayer: LossLayer {
             let mul = -(indicator - self.es[i])
             x.dw[i] = mul
         }
-//        self.in_act = x
         // loss is the class negative log likelihood
         return -log(self.es[y])
     }

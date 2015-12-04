@@ -21,16 +21,24 @@ class JSTest: XCTestCase {
         super.tearDown()
     }
 
-//    func testExample() {
-//        // This is an example of a functional test case.
-//        // Use XCTAssert and related functions to verify your tests produce the correct results.
-//    }
-//
-//    func testPerformanceExample() {
-//        // This is an example of a performance test case.
-//        self.measureBlock {
-//            // Put the code you want to measure the time of here.
-//        }
-//    }
-
+    func testExample() {
+        let context = JSContext()
+        context.exceptionHandler = { context, exception in
+            print("JS Error: \(exception)")
+        }
+        
+        let path = NSBundle.mainBundle().pathForResource("convnet", ofType: "js")!
+        context.evaluateScript(path)
+//        context.evaluateScript("12.34a")
+        context.evaluateScript("var num = 5 + 5")
+        context.evaluateScript("var names = ['Grace', 'Ada', 'Margaret']")
+        context.evaluateScript("var triple = function(value) { return value * 3 }")
+        let tripleNum: JSValue = context.evaluateScript("triple(num)")
+        XCTAssertEqual(tripleNum.toInt32(), 30)
+        
+        let tripleFunction = context.objectForKeyedSubscript("triple")
+        let result = tripleFunction.callWithArguments([5])
+        print("Five tripled: \(result.toInt32())")
+    
+    }
 }
