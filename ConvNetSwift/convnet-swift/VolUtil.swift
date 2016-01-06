@@ -6,7 +6,7 @@ import Foundation
 // crop is the size of output
 // dx,dy are offset wrt incoming volume, of the shift
 // fliplr is boolean on whether we also want to flip left<->right
-func augment(V: Vol, crop:Int, dx: Int?, dy: Int?, fliplr: Bool = false) -> Vol {
+func augment(V: Vol, crop: Int, dx: Int?, dy: Int?, fliplr: Bool = false) -> Vol {
     // note assumes square outputs of size crop x crop
     let dx = dx ?? RandUtils.randi(0, V.sx - crop)
     let dy = dy ?? RandUtils.randi(0, V.sy - crop)
@@ -139,7 +139,7 @@ extension Vol {
         let bitsPerComponent: Int = 8
         let bitsPerPixel = bitsPerComponent * components
         let bytesPerRow = (components * width)
-        let bitmapInfo:CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue | CGBitmapInfo.ByteOrder32Big.rawValue)
+        let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue | CGBitmapInfo.ByteOrder32Big.rawValue)
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let providerRef = CGDataProviderCreateWithCFData(
             NSData(bytes: intDenormArray, length: intDenormArray.count * components)
@@ -181,7 +181,7 @@ extension UIImage {
         let bitsPerComponent: Int = 8
         let pixels = calloc(height * width, sizeof(UInt32))
         
-        let bitmapInfo:CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue | CGBitmapInfo.ByteOrder32Big.rawValue)
+        let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue | CGBitmapInfo.ByteOrder32Big.rawValue)
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         
         let context = CGBitmapContextCreate(
@@ -198,8 +198,8 @@ extension UIImage {
         let dataCtxt = CGBitmapContextGetData(context)
         let data = NSData(bytesNoCopy: dataCtxt, length: width*height*components, freeWhenDone: true)
         
-        var pixelMem = [UInt8](count:data.length, repeatedValue:0)
-        data.getBytes(&pixelMem, length:data.length)
+        var pixelMem = [UInt8](count: data.length, repeatedValue: 0)
+        data.getBytes(&pixelMem, length: data.length)
         
         let doubleNormArray = pixelMem.map { (elem: UInt8) -> Double in
             return normalize(elem)

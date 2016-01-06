@@ -3,50 +3,51 @@
 // x -> max(0, x)
 // the output is in [0, inf)
 import Foundation
+import Accelerate
 
 struct ReluLayerOpt: LayerInOptProtocol {
-    var layer_type: LayerType = .relu
+    var layerType: LayerType = .ReLU
 
-    var in_sx: Int = 0
-    var in_sy: Int = 0
-    var in_depth: Int = 0
+    var inSx: Int = 0
+    var inSy: Int = 0
+    var inDepth: Int = 0
 }
 
 class ReluLayer: InnerLayer {
-    var layer_type: LayerType
-    var out_sx: Int
-    var out_sy: Int
-    var out_depth: Int
-    var in_act: Vol?
-    var out_act: Vol?
+    var layerType: LayerType
+    var outSx: Int
+    var outSy: Int
+    var outDepth: Int
+    var inAct: Vol?
+    var outAct: Vol?
     
     init(opt: ReluLayerOpt) {
         
         // computed
-        self.out_sx = opt.in_sx
-        self.out_sy = opt.in_sy
-        self.out_depth = opt.in_depth
-        self.layer_type = .relu
+        self.outSx = opt.inSx
+        self.outSy = opt.inSy
+        self.outDepth = opt.inDepth
+        self.layerType = .ReLU
     }
     
-    func forward(inout V: Vol, is_training: Bool) -> Vol {
-        self.in_act = V
+    func forward(inout V: Vol, isTraining: Bool) -> Vol {
+        self.inAct = V
         let V2 = V.clone()
         let N = V.w.count
         var V2w = V2.w
         for i in 0 ..< N {
 
-            if(V2w[i] < 0) { V2w[i] = 0 } // threshold at 0
+            if V2w[i] < 0 { V2w[i] = 0 } // threshold at 0
         }
-        self.out_act = V2
-        return self.out_act!
+        self.outAct = V2
+        return self.outAct!
     }
     
     func backward() -> () {
-        guard let V = self.in_act,
-        let V2 = self.out_act
+        guard let V = self.inAct,
+        let V2 = self.outAct
         else { // we need to set dw of this
-            fatalError("self.in_act or self.out_act is nil")
+            fatalError("self.inAct or self.outAct is nil")
         }
 
         let N = V.w.count
@@ -71,18 +72,18 @@ class ReluLayer: InnerLayer {
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["out_depth"] = self.out_depth
-        json["out_sx"] = self.out_sx
-        json["out_sy"] = self.out_sy
-        json["layer_type"] = self.layer_type.rawValue
+        json["outDepth"] = self.outDepth
+        json["outSx"] = self.outSx
+        json["outSy"] = self.outSy
+        json["layerType"] = self.layerType.rawValue
         return json
     }
 //
 //    func fromJSON(json: [String: AnyObject]) -> () {
-//        self.out_depth = json["out_depth"]
-//        self.out_sx = json["out_sx"]
-//        self.out_sy = json["out_sy"]
-//        self.layer_type = json["layer_type"]
+//        self.outDepth = json["outDepth"]
+//        self.outSx = json["outSx"]
+//        self.outSy = json["outSy"]
+//        self.layerType = json["layerType"]
 //    }
 }
 
@@ -91,33 +92,33 @@ class ReluLayer: InnerLayer {
 // so the output is between 0 and 1.
 
 struct SigmoidLayerOpt: LayerInOptProtocol {
-    var layer_type: LayerType = .sigmoid
+    var layerType: LayerType = .Sigmoid
 
-    var in_sx: Int = 0
-    var in_sy: Int = 0
-    var in_depth: Int = 0
+    var inSx: Int = 0
+    var inSy: Int = 0
+    var inDepth: Int = 0
 }
 
 class SigmoidLayer: InnerLayer {
     
-    var layer_type: LayerType
-    var out_sx: Int
-    var out_sy: Int
-    var out_depth: Int
-    var in_act: Vol?
-    var out_act: Vol?
+    var layerType: LayerType
+    var outSx: Int
+    var outSy: Int
+    var outDepth: Int
+    var inAct: Vol?
+    var outAct: Vol?
     
     init(opt: SigmoidLayerOpt){
         
         // computed
-        self.out_sx = opt.in_sx
-        self.out_sy = opt.in_sy
-        self.out_depth = opt.in_depth
-        self.layer_type = .sigmoid
+        self.outSx = opt.inSx
+        self.outSy = opt.inSy
+        self.outDepth = opt.inDepth
+        self.layerType = .Sigmoid
     }
     // http://memkite.com/blog/2014/12/15/data-parallel-programming-with-metal-and-swift-for-iphoneipad-gpu/
-    func forward(inout V: Vol, is_training: Bool) -> Vol {
-        self.in_act = V
+    func forward(inout V: Vol, isTraining: Bool) -> Vol {
+        self.inAct = V
         let V2 = V.cloneAndZero()
         let N = V.w.count
         var V2w = V2.w
@@ -126,15 +127,15 @@ class SigmoidLayer: InnerLayer {
 
             V2w[i] = 1.0/(1.0+exp(-Vw[i]))
         }
-        self.out_act = V2
-        return self.out_act!
+        self.outAct = V2
+        return self.outAct!
     }
     
     func backward() -> () {
-        guard let V = self.in_act,
-            let V2 = self.out_act
+        guard let V = self.inAct,
+            let V2 = self.outAct
             else { // we need to set dw of this
-                fatalError("self.in_act or self.out_act is nil")
+                fatalError("self.inAct or self.outAct is nil")
         }
         let N = V.w.count
         V.dw = zerosd(N) // zero out gradient wrt data
@@ -155,18 +156,18 @@ class SigmoidLayer: InnerLayer {
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["out_depth"] = self.out_depth
-        json["out_sx"] = self.out_sx
-        json["out_sy"] = self.out_sy
-        json["layer_type"] = self.layer_type.rawValue
+        json["outDepth"] = self.outDepth
+        json["outSx"] = self.outSx
+        json["outSy"] = self.outSy
+        json["layerType"] = self.layerType.rawValue
         return json
     }
 //
 //    func fromJSON(json: [String: AnyObject]) -> () {
-//        self.out_depth = json["out_depth"]
-//        self.out_sx = json["out_sx"]
-//        self.out_sy = json["out_sy"]
-//        self.layer_type = json["layer_type"]
+//        self.outDepth = json["outDepth"]
+//        self.outSx = json["outSx"]
+//        self.outSy = json["outSy"]
+//        self.layerType = json["layerType"]
 //    }
 }
 
@@ -176,11 +177,11 @@ class SigmoidLayer: InnerLayer {
 // the input size should be exactly divisible by group_size
 
 struct MaxoutLayerOpt: LayerInOptProtocol {
-    var layer_type: LayerType = .maxout
+    var layerType: LayerType = .Maxout
 
-    var in_sx: Int = 1
-    var in_sy: Int = 1
-    var in_depth: Int = 1
+    var inSx: Int = 1
+    var inSy: Int = 1
+    var inDepth: Int = 1
     var group_size: Int?
     
     init (group_size: Int) {
@@ -190,12 +191,12 @@ struct MaxoutLayerOpt: LayerInOptProtocol {
 
 class MaxoutLayer: InnerLayer {
     var group_size: Int
-    var layer_type: LayerType
-    var out_sx: Int
-    var out_sy: Int
-    var out_depth: Int
-    var in_act: Vol?
-    var out_act: Vol?
+    var layerType: LayerType
+    var outSx: Int
+    var outSy: Int
+    var outDepth: Int
+    var inAct: Vol?
+    var outAct: Vol?
     var switches: [Int]
     
     init(opt: MaxoutLayerOpt){
@@ -204,23 +205,23 @@ class MaxoutLayer: InnerLayer {
         self.group_size = opt.group_size ?? 2
         
         // computed
-        self.out_sx = opt.in_sx
-        self.out_sy = opt.in_sy
-        self.out_depth = opt.in_depth / self.group_size // WARNING: floor was here
-        self.layer_type = .maxout
+        self.outSx = opt.inSx
+        self.outSy = opt.inSy
+        self.outDepth = opt.inDepth / self.group_size // WARNING: floor was here
+        self.layerType = .Maxout
         
-        self.switches = zeros(self.out_sx*self.out_sy*self.out_depth) // useful for backprop
+        self.switches = zeros(self.outSx*self.outSy*self.outDepth) // useful for backprop
     }
     
-    func forward(inout V: Vol, is_training: Bool) -> Vol {
-        self.in_act = V
-        let N = self.out_depth
-        let V2 = Vol(sx: self.out_sx, sy: self.out_sy, depth: self.out_depth, c: 0.0)
+    func forward(inout V: Vol, isTraining: Bool) -> Vol {
+        self.inAct = V
+        let N = self.outDepth
+        let V2 = Vol(sx: self.outSx, sy: self.outSy, depth: self.outDepth, c: 0.0)
         
         // optimization branch. If we're operating on 1D arrays we dont have
         // to worry about keeping track of x,y,d coordinates inside
         // input volumes. In convnets we do :(
-        if(self.out_sx == 1 && self.out_sy == 1) {
+        if(self.outSx == 1 && self.outSy == 1) {
             for i in 0 ..< N {
 
                 let ix = i * self.group_size // base index offset
@@ -264,21 +265,21 @@ class MaxoutLayer: InnerLayer {
             }
             
         }
-        self.out_act = V2
-        return self.out_act!
+        self.outAct = V2
+        return self.outAct!
     }
     
     func backward() -> () {
-        guard let V = self.in_act,
-            let V2 = self.out_act
+        guard let V = self.inAct,
+            let V2 = self.outAct
             else { // we need to set dw of this
-                fatalError("self.in_act or self.out_act is nil")
+                fatalError("self.inAct or self.outAct is nil")
         }
-        let N = self.out_depth
+        let N = self.outDepth
         V.dw = zerosd(V.w.count) // zero out gradient wrt data
         
         // pass the gradient through the appropriate switch
-        if(self.out_sx == 1 && self.out_sy == 1) {
+        if(self.outSx == 1 && self.outSy == 1) {
             for i in 0 ..< N {
 
                 let chain_grad = V2.dw[i]
@@ -293,8 +294,8 @@ class MaxoutLayer: InnerLayer {
 
                     for i in 0 ..< N {
 
-                        let chain_grad = V2.get_grad(x: x, y: y, d: i)
-                        V.set_grad(x: x, y: y, d: self.switches[n], v: chain_grad)
+                        let chain_grad = V2.getGrad(x: x, y: y, d: i)
+                        V.setGrad(x: x, y: y, d: self.switches[n], v: chain_grad)
                         n++
                     }
                 }
@@ -312,19 +313,19 @@ class MaxoutLayer: InnerLayer {
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["out_depth"] = self.out_depth
-        json["out_sx"] = self.out_sx
-        json["out_sy"] = self.out_sy
-        json["layer_type"] = self.layer_type.rawValue
+        json["outDepth"] = self.outDepth
+        json["outSx"] = self.outSx
+        json["outSy"] = self.outSy
+        json["layerType"] = self.layerType.rawValue
         json["group_size"] = self.group_size
         return json
     }
 
     func fromJSON(json: [String: AnyObject]) -> () {
-        self.out_depth = json["out_depth"] as! Int
-        self.out_sx = json["out_sx"] as! Int
-        self.out_sy = json["out_sy"] as! Int
-        self.layer_type = LayerType(rawValue: json["layer_type"] as! String)!
+        self.outDepth = json["outDepth"] as! Int
+        self.outSx = json["outSx"] as! Int
+        self.outSy = json["outSy"] as! Int
+        self.layerType = LayerType(rawValue: json["layerType"] as! String)!
         if let group_size = json["group_size"] {
             self.group_size = group_size as! Int
         }
@@ -337,48 +338,48 @@ class MaxoutLayer: InnerLayer {
 // so the output is between -1 and 1.
 
 struct TanhLayerOpt: LayerInOptProtocol {
-    var layer_type: LayerType = .tanh
+    var layerType: LayerType = .Tanh
 
-    var in_sx: Int = 0
-    var in_sy: Int = 0
-    var in_depth: Int = 0
+    var inSx: Int = 0
+    var inSy: Int = 0
+    var inDepth: Int = 0
 }
 
 class TanhLayer: InnerLayer {
     
-    var layer_type: LayerType
-    var out_sx: Int
-    var out_sy: Int
-    var out_depth: Int
-    var in_act: Vol?
-    var out_act: Vol?
+    var layerType: LayerType
+    var outSx: Int
+    var outSy: Int
+    var outDepth: Int
+    var inAct: Vol?
+    var outAct: Vol?
     
-    init(opt: TanhLayerOpt){
+    init(opt: TanhLayerOpt) {
         
         // computed
-        self.out_sx = opt.in_sx
-        self.out_sy = opt.in_sy
-        self.out_depth = opt.in_depth
-        self.layer_type = .tanh
+        self.outSx = opt.inSx
+        self.outSy = opt.inSy
+        self.outDepth = opt.inDepth
+        self.layerType = .Tanh
     }
     
-    func forward(inout V: Vol, is_training: Bool) -> Vol {
-        self.in_act = V
+    func forward(inout V: Vol, isTraining: Bool) -> Vol {
+        self.inAct = V
         let V2 = V.cloneAndZero()
         let N = V.w.count
         for i in 0 ..< N {
 
             V2.w[i] = tanh(V.w[i])
         }
-        self.out_act = V2
-        return self.out_act!
+        self.outAct = V2
+        return self.outAct!
     }
     
     func backward() -> () {
-        guard let V = self.in_act,
-            let V2 = self.out_act
+        guard let V = self.inAct,
+            let V2 = self.outAct
             else { // we need to set dw of this
-                fatalError("self.in_act or self.out_act is nil")
+                fatalError("self.inAct or self.outAct is nil")
         }
         let N = V.w.count
         V.dw = zerosd(N) // zero out gradient wrt data
@@ -399,18 +400,17 @@ class TanhLayer: InnerLayer {
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["out_depth"] = self.out_depth
-        json["out_sx"] = self.out_sx
-        json["out_sy"] = self.out_sy
-        json["layer_type"] = self.layer_type.rawValue
+        json["outDepth"] = self.outDepth
+        json["outSx"] = self.outSx
+        json["outSy"] = self.outSy
+        json["layerType"] = self.layerType.rawValue
         return json
     }
 
     func fromJSON(json: [String: AnyObject]) -> () {
-        self.out_depth = json["out_depth"] as! Int
-        self.out_sx = json["out_sx"] as! Int
-        self.out_sy = json["out_sy"] as! Int
-        self.layer_type = LayerType(rawValue: json["layer_type"] as! String)!
+        self.outDepth = json["outDepth"] as! Int
+        self.outSx = json["outSx"] as! Int
+        self.outSy = json["outSy"] as! Int
+        self.layerType = LayerType(rawValue: json["layerType"] as! String)!
     }
 }
-

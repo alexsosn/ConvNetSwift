@@ -1,4 +1,3 @@
-
 // Vol is the basic building block of all data in a net.
 // it is essentially just a 3D volume of numbers, with a
 // width (sx), height (sy), and depth (depth).
@@ -11,7 +10,7 @@ import Foundation
 
 class Vol {
     var sx: Int = 1
-    var sy:Int = 1
+    var sy: Int = 1
     var depth: Int = 0
     var w: [Double] = []
     var dw: [Double] = []
@@ -42,11 +41,11 @@ class Vol {
     }
     
     convenience init(sx: Int, sy: Int, depth: Int) {
-        self.init(width:sx, height:sy, depth:depth, c: nil)
+        self.init(width: sx, height: sy, depth: depth, c: nil)
     }
     
     convenience init(sx: Int, sy: Int, depth: Int, c: Double) {
-        self.init(width:sx, height:sy, depth:depth, c: c)
+        self.init(width: sx, height: sy, depth: depth, c: c)
     }
     
     convenience init(width sx: Int, height sy: Int, depth: Int, c: Double?) {
@@ -58,7 +57,7 @@ class Vol {
         let n = sx*sy*depth
         self.w = zerosd(n)
         self.dw = zerosd(n)
-        if(c == nil) {
+        if c == nil {
             // weight normalization is done to equalize the output
             // variance of every neuron, otherwise neurons with a lot
             // of incoming connections have outputs of larger variance
@@ -76,32 +75,32 @@ class Vol {
         
     }
     
-    func get(x x:Int, y:Int, d:Int) -> Double {
+    func get(x x: Int, y: Int, d: Int) -> Double {
         let ix=((self.sx * y)+x)*self.depth+d
         return self.w[ix]
     }
     
-    func set(x x:Int, y:Int, d:Int, v:Double) -> () {
+    func set(x x: Int, y: Int, d: Int, v: Double) -> () {
         let ix=((self.sx * y)+x)*self.depth+d
         self.w[ix] = v
     }
     
-    func add(x x: Int, y: Int, d :Int, v:Double) -> () {
+    func add(x x: Int, y: Int, d: Int, v: Double) -> () {
         let ix=((self.sx * y)+x)*self.depth+d
         self.w[ix] += v
     }
     
-    func get_grad(x x:Int, y:Int, d:Int) -> Double {
+    func getGrad(x x: Int, y: Int, d: Int) -> Double {
         let ix = ((self.sx * y)+x)*self.depth+d
         return self.dw[ix]
     }
     
-    func set_grad(x x:Int, y:Int, d:Int, v: Double) -> () {
+    func setGrad(x x: Int, y: Int, d: Int, v: Double) -> () {
         let ix = ((self.sx * y)+x)*self.depth+d
         self.dw[ix] = v
     }
     
-    func add_grad(x x:Int, y:Int, d:Int, v: Double) -> () {
+    func addGrad(x x: Int, y: Int, d: Int, v: Double) -> () {
         let ix = ((self.sx * y)+x)*self.depth+d
         self.dw[ix] += v
     }
@@ -132,13 +131,13 @@ class Vol {
     }
     
     func setConst(a: Double) {
-        for(var k=0; k<self.w.count; k++) {
+        for var k=0; k<self.w.count; k++ {
             self.w[k] = a
         }
     }
     
     func toJSON() -> [String: AnyObject] {
-        // todo: we may want to only save d most significant digits to save space
+        // TODO: we may want to only save d most significant digits to save space
         var json: [String: AnyObject] = [:]
         json["sx"] = self.sx
         json["sy"] = self.sy
@@ -147,7 +146,7 @@ class Vol {
         return json
         // we wont back up gradients to save space
     }
-//
+
 //    func fromJSON(json: [String: AnyObject]) -> () {
 //        self.sx = json["sx"]
 //        self.sy = json["sy"]

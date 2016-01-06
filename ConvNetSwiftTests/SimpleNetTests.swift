@@ -18,13 +18,15 @@ class SimpleNetTests: XCTestCase {
 
         net = Net()
         
-        let input = InputLayerOpt(out_sx:1, out_sy:1, out_depth:2)
-        let fc1 = FullyConnLayerOpt(num_neurons:5, activation:.tanh)
-        let fc2 = FullyConnLayerOpt(num_neurons:5, activation:.tanh)
+        let input = InputLayerOpt(outSx: 1, outSy: 1, outDepth: 2)
+        let fc1 = FullyConnLayerOpt(num_neurons: 50, activation: .Tanh)
+        let fc2 = FullyConnLayerOpt(num_neurons: 40, activation: .Tanh)
+        let fc3 = FullyConnLayerOpt(num_neurons: 60, activation: .Tanh)
+        let fc4 = FullyConnLayerOpt(num_neurons: 30, activation: .Tanh)
         let softmax = SoftmaxLayerOpt(num_classes: 3)
-        let layer_defs: [LayerOptTypeProtocol] = [input, fc1, fc2, softmax]
+        let layerDefs: [LayerOptTypeProtocol] = [input, fc1, fc2, fc3, fc4, softmax]
         
-        net!.makeLayers(layer_defs)
+        net!.makeLayers(layerDefs)
         
         var trainerOpts = TrainerOpt()
         trainerOpts.learning_rate = 0.0001
@@ -39,7 +41,7 @@ class SimpleNetTests: XCTestCase {
         super.tearDown()
     }
     
-    //should be possible to initialize
+    // should be possible to initialize
     func testInit() {
         
         // tanh are their own layers. Softmax gets its own fully connected layer.
@@ -47,15 +49,15 @@ class SimpleNetTests: XCTestCase {
         XCTAssertEqual(net!.layers.count, 7)
     }
     
-    //should forward prop volumes to probabilities
+    // should forward prop volumes to probabilities
     func testForward() {
         
-        var x = Vol(array: [0.2, -0.3]);
-        let probability_volume = net!.forward(&x)
+        var x = Vol(array: [0.2, -0.3])
+        let probabilityVolume = net!.forward(&x)
         
-        XCTAssertEqual(probability_volume.w.count, 3)  // 3 classes output
-        var w = probability_volume.w;
-        for(var i=0;i<3;i++) {
+        XCTAssertEqual(probabilityVolume.w.count, 3)  // 3 classes output
+        var w = probabilityVolume.w
+        for var i=0;i<3;i++ {
             XCTAssertGreaterThan(w[i], 0.0)
             XCTAssertLessThan(w[i], 1.0)
         }
@@ -63,34 +65,34 @@ class SimpleNetTests: XCTestCase {
         XCTAssertEqualWithAccuracy(w[0]+w[1]+w[2], 1.0, accuracy: 0.000000000001)
     }
     
-    //should increase probabilities for ground truth class when trained
+    // should increase probabilities for ground truth class when trained
     func testTrain() {
         
         // lets test 100 random point and label settings
         // note that this should work since l2 and l1 regularization are off
         // an issue is that if step size is too high, this could technically fail...
-        for(var k=0; k<100; k++) {
-            var x = Vol(array: [RandUtils.random_js() * 2 - 1, RandUtils.random_js() * 2 - 1]);
-            let pv = net!.forward(&x);
-            let gti = Int(RandUtils.random_js() * 3);
-            let train_res = trainer!.train(x: &x, y: gti);
-            print(train_res)
+        for var k=0; k<100; k++ {
+            var x = Vol(array: [RandUtils.random_js() * 2 - 1, RandUtils.random_js() * 2 - 1])
+            let pv = net!.forward(&x)
+            let gti = Int(RandUtils.random_js() * 3)
+            let trainRes = trainer!.train(x: &x, y: gti)
+            print(trainRes)
             
-            let pv2 = net!.forward(&x);
+            let pv2 = net!.forward(&x)
             XCTAssertGreaterThan(pv2.w[gti], pv.w[gti])
         }
     }
     
-    //should compute correct gradient at data
+    // should compute correct gradient at data
     func testGrad() {
         
         // here we only test the gradient at data, but if this is
         // right then that's comforting, because it is a function
         // of all gradients above, for all layers.
         
-        var x = Vol(array: [RandUtils.random_js() * 2.0 - 1.0, RandUtils.random_js() * 2.0 - 1.0]);
-        let gti = Int(RandUtils.random_js() * 3); // ground truth index
-        let res = trainer!.train(x: &x, y: gti); // computes gradients at all layers, and at x
+        var x = Vol(array: [RandUtils.random_js() * 2.0 - 1.0, RandUtils.random_js() * 2.0 - 1.0])
+        let gti = Int(RandUtils.random_js() * 3) // ground truth index
+        let res = trainer!.train(x: &x, y: gti) // computes gradients at all layers, and at x
         
         print(res)
         
@@ -115,24 +117,30 @@ class SimpleNetTests: XCTestCase {
         softmax_loss: 0.8871066776430543
         */
         
-        let delta = 0.000001;
+        let Δ = 0.0001
         
         for i: Int in 0 ..< x.w.count {
-            //            let grad_analytic1 = (net?.layers.first! as! InputLayer).in_act!.dw[i]
-            //            let grad_analytic2 = (net?.layers.last! as! SoftmaxLayer).in_act!.dw[i]
+
+            // finite difference approximation
             
-            let grad_analytic = x.dw[i];
+            let gradAnalytic = x.dw[i]
             
-            let xold = x.w[i];
-            x.w[i] += delta;
-            let c0 = net!.getCostLoss(V: &x, y: gti);
-            x.w[i] -= 2*delta;
-            let c1 = net!.getCostLoss(V: &x, y: gti);
-            x.w[i] = xold; // reset
+            let xold = x.w[i]
+            x.w[i] += Δ
+            let c0 = net!.getCostLoss(V: &x, y: gti)
+            x.w[i] -= 2*Δ
+            let c1 = net!.getCostLoss(V: &x, y: gti)
+            x.w[i] = xold // reset
             
-            let grad_numeric = (c0 - c1)/(2.0 * delta);
-            let rel_error = abs(grad_analytic - grad_numeric)/abs(grad_analytic + grad_numeric);
-            print("\(i): numeric: \(grad_numeric), analytic: \(grad_analytic) => rel error \(rel_error)");
+            let gradNumeric = (c0 - c1)/(2.0 * Δ)
+            let rel_error = abs(gradAnalytic - gradNumeric)/abs(gradAnalytic + gradNumeric)
+            print("\(i): numeric: \(gradNumeric), analytic: \(gradAnalytic) => rel error \(rel_error)")
+            
+            /*
+            0: analytic: 5.06892403415712e-18
+            1: numeric: 0
+            */
+            
             
             /* js:
             0: numeric: -0.18889002029176538, analytic: -0.18886165813376557 => rel error 0.00007508148770648791
@@ -143,4 +151,5 @@ class SimpleNetTests: XCTestCase {
             
         }
     }
+    
 }

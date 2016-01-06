@@ -52,7 +52,7 @@ class UtilTests: XCTestCase {
         let bitsPerComponent: Int = 8
         let pixels = calloc(height * width, sizeof(UInt32))
         
-        let bitmapInfo:CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue | CGBitmapInfo.ByteOrder32Big.rawValue)
+        let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue | CGBitmapInfo.ByteOrder32Big.rawValue)
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         
         let context = CGBitmapContextCreate(
@@ -69,8 +69,8 @@ class UtilTests: XCTestCase {
         let dataCtxt = CGBitmapContextGetData(context)
         let data = NSData(bytesNoCopy: dataCtxt, length: width*height*components, freeWhenDone: true)
         
-        var pixelMem = [UInt8](count:data.length, repeatedValue:0)
-        data.getBytes(&pixelMem, length:data.length)
+        var pixelMem = [UInt8](count: data.length, repeatedValue: 0)
+        data.getBytes(&pixelMem, length: data.length)
         
         let doubleNormArray = pixelMem.map { (elem: UInt8) -> Double in
             return Double(elem)/255.0

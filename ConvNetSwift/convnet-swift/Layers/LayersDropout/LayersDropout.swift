@@ -8,11 +8,11 @@
 import Foundation
 
 struct DropoutLayerOpt: LayerInOptProtocol, DropProbProtocol {
-    var layer_type: LayerType = .dropout
+    var layerType: LayerType = .Dropout
 
-    var in_depth: Int = 0
-    var in_sx: Int = 0
-    var in_sy: Int = 0
+    var inDepth: Int = 0
+    var inSx: Int = 0
+    var inSy: Int = 0
     var drop_prob: Double? = 0.5
     init(drop_prob: Double) {
         self.drop_prob = drop_prob
@@ -20,37 +20,37 @@ struct DropoutLayerOpt: LayerInOptProtocol, DropProbProtocol {
 }
 
 class DropoutLayer: InnerLayer {
-    var out_sx: Int = 0
-    var out_sy: Int = 0
-    var out_depth: Int = 0
-    var layer_type: LayerType
+    var outSx: Int = 0
+    var outSy: Int = 0
+    var outDepth: Int = 0
+    var layerType: LayerType
     
     var dropped: [Bool] = []
     var drop_prob: Double = 0.0
     
-    var in_act: Vol?
-    var out_act: Vol?
+    var inAct: Vol?
+    var outAct: Vol?
     
     init(opt: DropoutLayerOpt) {
         
         // computed
-        self.out_sx = opt.in_sx
-        self.out_sy = opt.in_sy
-        self.out_depth = opt.in_depth
-        self.layer_type = .dropout
+        self.outSx = opt.inSx
+        self.outSy = opt.inSy
+        self.outDepth = opt.inDepth
+        self.layerType = .Dropout
         self.drop_prob = opt.drop_prob ?? 0.0
-        self.dropped = [Bool](count: self.out_sx*self.out_sy*self.out_depth, repeatedValue: false)
+        self.dropped = [Bool](count: self.outSx*self.outSy*self.outDepth, repeatedValue: false)
     }
     
     // default is prediction mode
-    func forward(inout V: Vol, is_training: Bool = false) -> Vol {
-        self.in_act = V
+    func forward(inout V: Vol, isTraining: Bool = false) -> Vol {
+        self.inAct = V
         let V2 = V.clone()
         let N = V.w.count
         
         self.dropped = [Bool](count: N, repeatedValue: false)
         
-        if(is_training) {
+        if(isTraining) {
             // do dropout
             for i in 0 ..< N {
                 
@@ -68,14 +68,14 @@ class DropoutLayer: InnerLayer {
                 V2.w[i]*=self.drop_prob
             }
         }
-        self.out_act = V2
-        return self.out_act! // dummy identity function for now
+        self.outAct = V2
+        return self.outAct! // dummy identity function for now
     }
     
     func backward() -> () {
         
-        guard let V = self.in_act, // we need to set dw of this
-            let chain_grad = self.out_act
+        guard let V = self.inAct, // we need to set dw of this
+            let chain_grad = self.outAct
             else { return }
         let N = V.w.count
         V.dw = zerosd(N) // zero out gradient wrt data
@@ -97,19 +97,19 @@ class DropoutLayer: InnerLayer {
     
         func toJSON() -> [String: AnyObject] {
             var json: [String: AnyObject] = [:]
-            json["out_depth"] = self.out_depth
-            json["out_sx"] = self.out_sx
-            json["out_sy"] = self.out_sy
-            json["layer_type"] = self.layer_type.rawValue
+            json["outDepth"] = self.outDepth
+            json["outSx"] = self.outSx
+            json["outSy"] = self.outSy
+            json["layerType"] = self.layerType.rawValue
             json["drop_prob"] = self.drop_prob
             return json
         }
     //
     //    func fromJSON(json) -> () {
-    //        self.out_depth = json["out_depth"]
-    //        self.out_sx = json["out_sx"]
-    //        self.out_sy = json["out_sy"]
-    //        self.layer_type = json["layer_type"];
+    //        self.outDepth = json["outDepth"]
+    //        self.outSx = json["outSx"]
+    //        self.outSy = json["outSy"]
+    //        self.layerType = json["layerType"];
     //        self.drop_prob = json["drop_prob"]
     //    }
 }

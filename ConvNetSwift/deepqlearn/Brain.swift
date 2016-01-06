@@ -29,11 +29,11 @@ struct BrainOpt {
     var temporal_window: Int = 1
     var experience_size: Int = 30000
     var start_learn_threshold: Int = 1000
-    var gamma: Double = 0.8
+    var γ: Double = 0.8
     var learning_steps_total: Int = 100000
     var learning_steps_burnin: Int = 3000
-    var epsilon_min: Double = 0.05
-    var epsilon_test_time: Double = 0.01
+    var ε_min: Double = 0.05
+    var ε_test_time: Double = 0.01
     var random_action_distribution: [Double] = []
     var layer_defs: [LayerOptTypeProtocol]?
     var hidden_layer_sizes: [Int] = []
@@ -51,11 +51,11 @@ class Brain {
     var temporal_window: Int
     var experience_size: Int
     var start_learn_threshold: Int
-    var gamma: Double
+    var γ: Double
     var learning_steps_total: Int
     var learning_steps_burnin: Int
-    var epsilon_min: Double
-    var epsilon_test_time: Double
+    var ε_min: Double
+    var ε_test_time: Double
     var num_actions: Int
     var random_action_distribution: [Double]
     var net_inputs: Int
@@ -70,7 +70,7 @@ class Brain {
     var experience: [Experience]
     var age: Int
     var forward_passes: Int
-    var epsilon: Double
+    var ε: Double
     var latest_reward: Double
     var last_input_array: [Double]
     var average_reward_window: Window
@@ -89,16 +89,16 @@ class Brain {
         // number of examples in experience replay memory before we begin learning
         self.start_learn_threshold = opt.start_learn_threshold
         // gamma is a crucial parameter that controls how much plan-ahead the agent does. In [0,1]
-        self.gamma = opt.gamma
+        self.γ = opt.γ
         
         // number of steps we will learn for
         self.learning_steps_total = opt.learning_steps_total
         // how many steps of the above to perform only random actions (in the beginning)?
         self.learning_steps_burnin = opt.learning_steps_burnin
-        // what epsilon value do we bottom out on? 0.0 => purely deterministic policy at end
-        self.epsilon_min = opt.epsilon_min
-        // what epsilon to use at test time? (i.e. when learning is disabled)
-        self.epsilon_test_time = opt.epsilon_test_time
+        // what ε value do we bottom out on? 0.0 => purely deterministic policy at end
+        self.ε_min = opt.ε_min
+        // what ε to use at test time? (i.e. when learning is disabled)
+        self.ε_test_time = opt.ε_test_time
         
         // advanced feature. Sometimes a random action should be biased towards some values
         // for example in flappy bird, we may want to choose to not flap more often
@@ -147,7 +147,7 @@ class Brain {
             
             let first = layer_defs.first as! LayerOutOptProtocol
             
-            assert(first.out_depth * first.out_sx * first.out_sy == net_inputs,
+            assert(first.outDepth * first.outSx * first.outSy == net_inputs,
                 "TROUBLE! Number of inputs must be num_states * temporal_window + num_actions * temporal_window + num_states!")
             
             let last = layer_defs.last as! RegressionLayerOpt
@@ -156,13 +156,13 @@ class Brain {
                 "TROUBLE! Number of regression neurons should be num_actions!")
         } else {
             // create a very simple neural net by default
-            layer_defs.append(InputLayerOpt(out_sx: 1, out_sy: 1, out_depth: self.net_inputs))
+            layer_defs.append(InputLayerOpt(outSx: 1, outSy: 1, outDepth: self.net_inputs))
                 // allow user to specify this via the option, for convenience
                 var hl = opt.hidden_layer_sizes
                 for k: Int in 0 ..< hl.count {
-                    layer_defs.append(FullyConnLayerOpt(num_neurons: hl[k], activation: .relu)) // relu by default
+                    layer_defs.append(FullyConnLayerOpt(num_neurons: hl[k], activation: .ReLU)) // relu by default
                 }
-            layer_defs.append(RegressionLayerOpt(num_neurons:num_actions)) // value function output
+            layer_defs.append(RegressionLayerOpt(num_neurons: num_actions)) // value function output
         }
         self.value_net = Net()
         self.value_net.makeLayers(layer_defs)
@@ -184,7 +184,7 @@ class Brain {
         // various housekeeping variables
         self.age = 0 // incremented every backward()
         self.forward_passes = 0 // incremented every forward()
-        self.epsilon = 1.0 // controls exploration exploitation tradeoff. Should be annealed over time
+        self.ε = 1.0 // controls exploration exploitation tradeoff. Should be annealed over time
         self.latest_reward = 0
         self.last_input_array = []
         self.average_reward_window = Window(size: 1000, minsize: 10)
@@ -231,7 +231,7 @@ class Brain {
                 maxk = k
                 maxval = action_values.w[k] }
         }
-        return Policy(action:maxk, value:maxval)
+        return Policy(action: maxk, value: maxval)
     }
     
     func getNetInput(xt: [Double]) -> [Double] {
@@ -246,7 +246,7 @@ class Brain {
             w.append(self.state_window[n-1-k])
             // action, encoded as 1-of-k indicator vector. We scale it up a bit because
             // we dont want weight regularization to undervalue this information, as it only exists once
-            var action1ofk = [Double](count: self.num_actions, repeatedValue:0)
+            var action1ofk = [Double](count: self.num_actions, repeatedValue: 0)
             action1ofk[self.action_window[n-1-k]] = Double(self.num_states)
             w.appendContentsOf(action1ofk)
         }
@@ -265,14 +265,14 @@ class Brain {
             // we have enough to actually do something reasonable
             net_input = self.getNetInput(input_array)
             if(self.learning) {
-                // compute epsilon for the epsilon-greedy policy
-                self.epsilon = min(1.0, max(self.epsilon_min, 1.0-(Double(self.age) - Double(self.learning_steps_burnin))/(Double(self.learning_steps_total) - Double(self.learning_steps_burnin))))
+                // compute ε for the ε-greedy policy
+                self.ε = min(1.0, max(self.ε_min, 1.0-(Double(self.age) - Double(self.learning_steps_burnin))/(Double(self.learning_steps_total) - Double(self.learning_steps_burnin))))
             } else {
-                self.epsilon = self.epsilon_test_time // use test-time value
+                self.ε = self.ε_test_time // use test-time value
             }
             let rf = RandUtils.randf(0,1)
-            if(rf < self.epsilon) {
-                // choose a random action with epsilon probability
+            if(rf < self.ε) {
+                // choose a random action with ε probability
                 action = self.random_action()!
             } else {
                 // otherwise use our policy to make decision
@@ -336,7 +336,7 @@ class Brain {
                 var x = Vol(sx: 1, sy: 1, depth: self.net_inputs)
                 x.w = [e.state0]
                 let maxact = self.policy([e.state1])
-                let r = e.reward0 + self.gamma * maxact.value
+                let r = e.reward0 + self.γ * maxact.value
                 let ystruct = RegressionLayer.Pair(dim: e.action0, val: r)
                 let loss = self.tdtrainer.train(x: &x, y: ystruct)
                 avcost += loss.loss
@@ -351,7 +351,7 @@ class Brain {
         
         // basic information
         let t = "experience replay size: \(self.experience.count) <br>" +
-        "exploration epsilon: \(self.epsilon)<br>" +
+        "exploration epsilon: \(self.ε)<br>" +
         "age: \(self.age)<br>" +
         "average Q-learning loss: \(self.average_loss_window.get_average())<br />" +
         "smooth-ish reward: \(self.average_reward_window.get_average())<br />"

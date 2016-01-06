@@ -107,7 +107,7 @@ class MagicNet {
         for _ in 0 ..< self.num_folds {
             var p = randperm(N)
             let fold = Fold(
-                train_ix:Array(p[0 ..< num_train]),
+                train_ix: Array(p[0 ..< num_train]),
                 test_ix: Array(p[num_train ..< N]))
             self.folds.append(fold)
         }
@@ -121,15 +121,15 @@ class MagicNet {
         // sample network topology and hyperparameters
         var layer_defs: [LayerOptTypeProtocol] = []
         let layer_input = InputLayerOpt(
-            out_sx: 1,
-            out_sy: 1,
-            out_depth: input_depth)
+            outSx: 1,
+            outSy: 1,
+            outDepth: input_depth)
         layer_defs.append(layer_input)
         let nl = Int(weightedSample([0,1,2,3], probs: [0.2, 0.3, 0.3, 0.2])!) // prefer nets with 1,2 hidden layers
         for _ in 0 ..< nl { // WARNING: iterator was q
 
             let ni = RandUtils.randi(self.neurons_min, self.neurons_max)
-            let actarr: [ActivationType] = [.tanh, .maxout, .relu]
+            let actarr: [ActivationType] = [.Tanh, .Maxout, .ReLU]
             let act = actarr[RandUtils.randi(0,3)]
             if(RandUtils.randf(0,1) < 0.5) {
                 let dp = RandUtils.random_js()
@@ -186,7 +186,7 @@ class MagicNet {
 //        cand.trainer_def = trainer_def
 //        cand.net = net
 //        cand.trainer = trainer
-        return Candidate(acc:[], accv:0, layer_defs: layer_defs, trainer_def: trainer_def, net: net, trainer: trainer)
+        return Candidate(acc:[], accv: 0, layer_defs: layer_defs, trainer_def: trainer_def, net: net, trainer: trainer)
     }
     
     // sets self.candidates with self.num_candidates candidate nets
@@ -358,7 +358,7 @@ class MagicNet {
 //        // dump the top ensemble_size networks as a list
 //        let nv = min(self.ensemble_size, self.evaluated_candidates.count)
 //        var json: [String: AnyObject] = [:]
-//        var j_nets: [[String:AnyObject]] = []
+//        var j_nets: [[String: AnyObject]] = []
 //        for i in 0 ..< nv {
 //            j_nets.append(self.evaluated_candidates[i].net.toJSON())
 //        }

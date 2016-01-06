@@ -1,73 +1,73 @@
 import Foundation
 
 struct InputLayerOpt: LayerOutOptProtocol {
-    var layer_type: LayerType = .input
+    var layerType: LayerType = .Input
     
-    var out_sx: Int
-    var out_sy: Int
-    var out_depth: Int
+    var outSx: Int
+    var outSy: Int
+    var outDepth: Int
     
-    init(out_sx: Int,
-        out_sy: Int,
-        out_depth: Int) {
-            self.out_sx = out_sx
-            self.out_sy = out_sy
-            self.out_depth = out_depth
+    init(outSx: Int,
+        outSy: Int,
+        outDepth: Int) {
+            self.outSx = outSx
+            self.outSy = outSy
+            self.outDepth = outDepth
     }
 }
 
 class InputLayer: InnerLayer {
     
-    var out_depth: Int
-    var out_sx: Int
-    var out_sy: Int
-    var layer_type: LayerType
+    var outDepth: Int
+    var outSx: Int
+    var outSy: Int
+    var layerType: LayerType
     
-    var in_act: Vol?
-    var out_act: Vol?
+    var inAct: Vol?
+    var outAct: Vol?
     
-    init(opt: InputLayerOpt){
+    init(opt: InputLayerOpt) {
         
         // required: depth
-        self.out_depth = opt.out_depth ?? 0
+        self.outDepth = opt.outDepth ?? 0
         
         // optional: default these dimensions to 1
-        self.out_sx = opt.out_sx ?? 1
-        self.out_sy = opt.out_sy ?? 1
+        self.outSx = opt.outSx ?? 1
+        self.outSy = opt.outSy ?? 1
         
         // computed
-        self.layer_type = .input
+        self.layerType = .Input
     }
     
-    func forward(inout V: Vol, is_training: Bool) -> Vol {
-        self.in_act = V
-        self.out_act = V
-        return self.out_act! // simply identity function for now
+    func forward(inout V: Vol, isTraining: Bool) -> Vol {
+        self.inAct = V
+        self.outAct = V
+        return self.outAct! // simply identity function for now
     }
     
-    func backward() -> () { }
+    func backward() -> () {}
     
     func getParamsAndGrads() -> [ParamsAndGrads] {
         return []
     }
+    
     func assignParamsAndGrads(paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["out_depth"] = self.out_depth
-        json["out_sx"] = self.out_sx
-        json["out_sy"] = self.out_sy
-        json["layer_type"] = self.layer_type.rawValue
+        json["outDepth"] = self.outDepth
+        json["outSx"] = self.outSx
+        json["outSy"] = self.outSy
+        json["layerType"] = self.layerType.rawValue
         return json
     }
-//
+
 //    func fromJSON(json: [String: AnyObject]) -> () {
-//        self.out_depth = json["out_depth"]
-//        self.out_sx = json["out_sx"]
-//        self.out_sy = json["out_sy"]
-//        self.layer_type = json["layer_type"]; 
+//        self.outDepth = json["outDepth"]
+//        self.outSx = json["outSx"]
+//        self.outSy = json["outSy"]
+//        self.layerType = json["layerType"]; 
 //    }
 }
-

@@ -30,14 +30,14 @@ class Net {
                 new_defs.append(FullyConnLayerOpt(num_neurons: (def as! RegressionLayerOpt).num_neurons))//["type":.fc, "num_neurons": def.num_neurons])
             case is FullyConnLayerOpt:
                 var def = def as! FullyConnLayerOpt
-                if def.activation == .relu {
+                if def.activation == .ReLU {
                     def.bias_pref = 0.1 // relus like a bit of positive bias to get gradients early
                     // otherwise it's technically possible that a relu unit will never turn on (by chance)
                     // and will never get any gradient and never contribute any computation. Dead relu.
                 }
             case is ConvLayerOpt:
                 var def = def as! ConvLayerOpt
-                if def.activation == .relu {
+                if def.activation == .ReLU {
                     def.bias_pref = 0.1 // relus like a bit of positive bias to get gradients early
                     // otherwise it's technically possible that a relu unit will never turn on (by chance)
                     // and will never get any gradient and never contribute any computation. Dead relu.
@@ -52,19 +52,21 @@ class Net {
                 var def = def as! LayerOptActivationProtocol
                 
                 switch def.activation {
-                case .relu:
+                case .Undefined:
+                    break
+                case .ReLU:
                     new_defs.append(ReluLayerOpt())
-                case .sigmoid:
+                case .Sigmoid:
                     new_defs.append(SigmoidLayerOpt())
-                case .tanh:
+                case .Tanh:
                     new_defs.append(TanhLayerOpt())
-                case .maxout: 
+                case .Maxout:
                     // create maxout activation, and pass along group size, if provided
                     let def = def as! MaxoutLayerOpt
                     let gs = def.group_size ?? 2
                     new_defs.append(MaxoutLayerOpt(group_size: gs))//["type":.maxout, "group_size":gs])
-                default:
-                    fatalError("ERROR unsupported activation \(def.activation)")
+//                default:
+//                    fatalError("ERROR unsupported activation \(def.activation)")
                 }
             }
             
@@ -73,7 +75,6 @@ class Net {
                     new_defs.append(DropoutLayerOpt(drop_prob: prob))
                 }
             }
-            
         }
         return new_defs
     }
@@ -95,9 +96,9 @@ class Net {
             if(i>0) {
                 var in_def = def as! LayerInOptProtocol
                 var prev = self.layers[i-1]
-                in_def.in_sx = prev.out_sx
-                in_def.in_sy = prev.out_sy
-                in_def.in_depth = prev.out_depth
+                in_def.inSx = prev.outSx
+                in_def.inSy = prev.outSy
+                in_def.inDepth = prev.outDepth
                 def = in_def
             }
             
@@ -140,19 +141,19 @@ class Net {
     }
     
     // forward prop the network.
-    // The trainer class passes is_training = true, but when this function is
+    // The trainer class passes isTraining = true, but when this function is
     // called from outside (not from the trainer), it defaults to prediction mode
-    func forward(inout V: Vol, is_training: Bool = false) -> Vol {
+    func forward(inout V: Vol, isTraining: Bool = false) -> Vol {
 
-        var act = self.layers[0].forward(&V, is_training: is_training)
+        var act = self.layers[0].forward(&V, isTraining: isTraining)
         for i in 1 ..< self.layers.count {
-            act = self.layers[i].forward(&act, is_training: is_training)
+            act = self.layers[i].forward(&act, isTraining: isTraining)
         }
         return act
     }
     
     func getCostLoss(inout V V: Vol, y: Int) -> Double {
-        self.forward(&V, is_training: false)
+        self.forward(&V, isTraining: false)
         let loss = (self.layers.last! as! LossLayer).backward(y)
         return loss
     }
@@ -161,7 +162,7 @@ class Net {
     func backward(y: Int) -> Double {
         let loss = (self.layers.last! as! LossLayer).backward(y) // last layer assumed to be loss layer
         let N = self.layers.count
-        for(var i=N-2;i>=0;i--) { // first layer assumed input
+        for(var i=N-2; i>=0; i--) { // first layer assumed input
             (self.layers[i] as! InnerLayer).backward()
         }
         return loss
@@ -170,7 +171,7 @@ class Net {
     func backward(y: [Double]) -> Double {
         let loss = (self.layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
         let N = self.layers.count
-        for(var i=N-2;i>=0;i--) { // first layer assumed input
+        for(var i=N-2; i>=0; i--) { // first layer assumed input
             (self.layers[i] as! InnerLayer).backward()
         }
         return loss
@@ -179,7 +180,7 @@ class Net {
     func backward(y: Double) -> Double {
         let loss = (self.layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
         let N = self.layers.count
-        for(var i=N-2;i>=0;i--) { // first layer assumed input
+        for(var i=N-2; i>=0; i--) { // first layer assumed input
             (self.layers[i] as! InnerLayer).backward()
         }
         return loss
@@ -227,13 +228,13 @@ class Net {
         // this is a convenience function for returning the argmax
         // prediction, assuming the last layer of the net is a softmax
         var S = self.layers[self.layers.count-1]
-        assert(S.layer_type == .softmax, "getPrediction function assumes softmax as last layer of the net!")
+        assert(S.layerType == .Softmax, "getPrediction function assumes softmax as last layer of the net!")
         
-        guard let out_act = S.out_act else {
-            fatalError("S.out_act is nil.")
+        guard let outAct = S.outAct else {
+            fatalError("S.outAct is nil.")
         }
         
-        var p = out_act.w
+        var p = outAct.w
         
         var maxv = p[0]
         var maxi = 0
@@ -262,7 +263,7 @@ class Net {
 //        for i in 0 ..< json["layers"].count {
 //
 //            var Lj = json["layers"][i]
-//            var t = Lj.layer_type
+//            var t = Lj.layerType
 //            var L
 //            if(t=="input") { L = InputLayer() }
 //            if(t=="relu") { L = ReluLayer() }

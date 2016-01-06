@@ -18,15 +18,15 @@ struct TrainerOpt {
     var momentum: Double = 0.9
     var ro: Double = 0.95
     var eps: Double = 1e-8
-    var beta1: Double = 0.9
-    var beta2: Double = 0.999
+    var β1: Double = 0.9
+    var β2: Double = 0.999
 }
 
 class Trainer {
     
     struct TrainResult {
         var fwd_time: Int
-        var bwd_time:Int
+        var bwd_time: Int
         var l2_decay_loss: Double
         var l1_decay_loss: Double
         var cost_loss: Double
@@ -43,8 +43,8 @@ class Trainer {
     var momentum: Double = 0.0
     var ro: Double = 0.0
     var eps: Double = 0.0
-    var beta1: Double = 0.0
-    var beta2: Double = 0.0
+    var β1: Double = 0.0
+    var β2: Double = 0.0
     var k: Int = 0
     var gsum: [[Double]] = []
     var xsum: [[Double]] = []
@@ -63,15 +63,15 @@ class Trainer {
         self.momentum = options.momentum ?? 0.9
         self.ro = options.ro ?? 0.95 // used in adadelta
         self.eps = options.eps ?? 1e-8 // used in adam or adadelta
-        self.beta1 = options.beta1 ?? 0.9 // used in adam
-        self.beta2 = options.beta2 ?? 0.999 // used in adam
+        self.β1 = options.β1 ?? 0.9 // used in adam
+        self.β2 = options.β2 ?? 0.999 // used in adam
         
         self.k = 0 // iteration counter
         self.gsum = [] // last iteration gradients (used for momentum calculations)
         self.xsum = [] // used in adam or adadelta
         
         // check if regression is expected
-        if(self.net.layers[self.net.layers.count - 1].layer_type == .regression) {
+        if(self.net.layers[self.net.layers.count - 1].layerType == .Regression) {
             self.regression = true
         } else {
             self.regression = false
@@ -82,7 +82,7 @@ class Trainer {
         assert(self.regression)
         
         let startf = NSDate()
-        self.net.forward(&x, is_training: true) // also set the flag that lets the net know we're just training
+        self.net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
         let endf = NSDate()
         let fwd_time = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startf, toDate: endf, options: []).nanosecond
         
@@ -97,9 +97,13 @@ class Trainer {
         // in future, TODO: have to completely redo the way loss is done around the network as currently
         // loss is a bit of a hack. Ideally, user should specify arbitrary number of loss functions on any layer
         // and it should all be computed correctly and automatically.
-        return TrainResult(fwd_time: fwd_time, bwd_time: bwd_time,
-            l2_decay_loss: l2_decay_loss, l1_decay_loss: l1_decay_loss,
-            cost_loss: cost_loss, softmax_loss: cost_loss,
+        return TrainResult(
+            fwd_time: fwd_time,
+            bwd_time: bwd_time,
+            l2_decay_loss: l2_decay_loss,
+            l1_decay_loss: l1_decay_loss,
+            cost_loss: cost_loss,
+            softmax_loss: cost_loss,
             loss: cost_loss + l1_decay_loss + l2_decay_loss)
     }
     
@@ -107,7 +111,7 @@ class Trainer {
         assert(self.regression)
         
         let startf = NSDate()
-        self.net.forward(&x, is_training: true) // also set the flag that lets the net know we're just training
+        self.net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
         let endf = NSDate()
         let fwd_time = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startf, toDate: endf, options: []).nanosecond
         
@@ -118,9 +122,13 @@ class Trainer {
         
         let (l1_decay_loss, l2_decay_loss) = _perform_train()
         
-        return TrainResult(fwd_time: fwd_time, bwd_time: bwd_time,
-            l2_decay_loss: l2_decay_loss, l1_decay_loss: l1_decay_loss,
-            cost_loss: cost_loss, softmax_loss: cost_loss,
+        return TrainResult(
+            fwd_time: fwd_time,
+            bwd_time: bwd_time,
+            l2_decay_loss: l2_decay_loss,
+            l1_decay_loss: l1_decay_loss,
+            cost_loss: cost_loss,
+            softmax_loss: cost_loss,
             loss: cost_loss + l1_decay_loss + l2_decay_loss)
     }
     
@@ -128,7 +136,7 @@ class Trainer {
         assert(!self.regression)
         
         let startf = NSDate()
-        self.net.forward(&x, is_training: true) // also set the flag that lets the net know we're just training
+        self.net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
         let endf = NSDate()
         let fwd_time = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startf, toDate: endf, options: []).nanosecond
         
@@ -139,9 +147,13 @@ class Trainer {
         
         let (l1_decay_loss, l2_decay_loss) = _perform_train()
         
-        return TrainResult(fwd_time: fwd_time, bwd_time: bwd_time,
-            l2_decay_loss: l2_decay_loss, l1_decay_loss: l1_decay_loss,
-            cost_loss: cost_loss, softmax_loss: cost_loss,
+        return TrainResult(
+            fwd_time: fwd_time,
+            bwd_time: bwd_time,
+            l2_decay_loss: l2_decay_loss,
+            l1_decay_loss: l1_decay_loss,
+            cost_loss: cost_loss,
+            softmax_loss: cost_loss,
             loss: cost_loss + l1_decay_loss + l2_decay_loss)
     }
     
@@ -180,10 +192,10 @@ class Trainer {
                 var g = pg.grads
                 
                 // learning rate for some parameters.
-                let l2_decay_mul = pg.l2_decay_mul ?? 1.0
-                let l1_decay_mul = pg.l1_decay_mul ?? 1.0
-                let l2_decay = self.l2_decay * l2_decay_mul
-                let l1_decay = self.l1_decay * l1_decay_mul
+                let l2DecayMul = pg.l2DecayMul ?? 1.0
+                let l1DecayMul = pg.l1DecayMul ?? 1.0
+                let l2_decay = self.l2_decay * l2DecayMul
+                let l1_decay = self.l1_decay * l1DecayMul
                 
                 let plen = p.count
                 for j in 0 ..< plen {
@@ -205,10 +217,10 @@ class Trainer {
                     
                     if self.method == .adam {
                         // adam update
-                        gsumi[j] = gsumi[j] * self.beta1 + (1-self.beta1) * gij // update biased first moment estimate
-                        xsumi[j] = xsumi[j] * self.beta2 + (1-self.beta2) * gij * gij // update biased second moment estimate
-                        let biasCorr1 = gsumi[j] * (1 - pow(self.beta1, Double(self.k))) // correct bias first moment estimate
-                        let biasCorr2 = xsumi[j] * (1 - pow(self.beta2, Double(self.k))) // correct bias second moment estimate
+                        gsumi[j] = gsumi[j] * self.β1 + (1-self.β1) * gij // update biased first moment estimate
+                        xsumi[j] = xsumi[j] * self.β2 + (1-self.β2) * gij * gij // update biased second moment estimate
+                        let biasCorr1 = gsumi[j] * (1 - pow(self.β1, Double(self.k))) // correct bias first moment estimate
+                        let biasCorr2 = xsumi[j] * (1 - pow(self.β2, Double(self.k))) // correct bias second moment estimate
                         let dx =  -self.learning_rate * biasCorr1 / (sqrt(biasCorr2) + self.eps)
                         p[j] += dx
                     } else if(self.method == .adagrad) {
@@ -249,7 +261,7 @@ class Trainer {
                 }
                 
                 newParamsAndGradients.append(
-                    ParamsAndGrads(params: &p, grads: &g, l1_decay_mul: l1_decay_mul, l2_decay_mul: l2_decay_mul)
+                    ParamsAndGrads(params: &p, grads: &g, l1DecayMul: l1DecayMul, l2DecayMul: l2DecayMul)
                 )
             }
             

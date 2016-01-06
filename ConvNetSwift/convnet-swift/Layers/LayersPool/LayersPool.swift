@@ -1,13 +1,13 @@
 import Foundation
 
 struct PoolLayerOpt: LayerInOptProtocol {
-    var layer_type: LayerType = .pool
+    var layerType: LayerType = .Pool
 
     var sx: Int
     var sy: Int = 0
-    var in_depth: Int = 0
-    var in_sx: Int = 0
-    var in_sy: Int = 0
+    var inDepth: Int = 0
+    var inSx: Int = 0
+    var inSy: Int = 0
     var stride: Int? = nil
     var pad: Int? = nil
     
@@ -20,27 +20,27 @@ struct PoolLayerOpt: LayerInOptProtocol {
 class PoolLayer: InnerLayer {
     var sx: Int
     var sy: Int
-    var in_depth: Int
-    var in_sx: Int
-    var in_sy: Int
+    var inDepth: Int
+    var inSx: Int
+    var inSy: Int
     var stride: Int = 2
     var pad: Int = 0
-    var out_depth: Int
-    var out_sx: Int
-    var out_sy: Int
-    var layer_type: LayerType
+    var outDepth: Int
+    var outSx: Int
+    var outSy: Int
+    var layerType: LayerType
     var switchx: [Int]
     var switchy: [Int]
-    var in_act: Vol?
-    var out_act: Vol?
+    var inAct: Vol?
+    var outAct: Vol?
     
     init(opt: PoolLayerOpt){
         
         // required
         self.sx = opt.sx // filter size
-        self.in_depth = opt.in_depth
-        self.in_sx = opt.in_sx
-        self.in_sy = opt.in_sy
+        self.inDepth = opt.inDepth
+        self.inSx = opt.inSx
+        self.inSy = opt.inSy
         
         // optional
         self.sy = opt.sy ?? opt.sx
@@ -48,28 +48,28 @@ class PoolLayer: InnerLayer {
         self.pad = opt.pad ?? 0 // amount of 0 padding to add around borders of input volume
         
         // computed
-        self.out_depth = self.in_depth
-        self.out_sx = (self.in_sx + self.pad * 2 - self.sx) / self.stride + 1
-        self.out_sy = (self.in_sy + self.pad * 2 - self.sy) / self.stride + 1
-        self.layer_type = .pool
+        self.outDepth = self.inDepth
+        self.outSx = (self.inSx + self.pad * 2 - self.sx) / self.stride + 1
+        self.outSy = (self.inSy + self.pad * 2 - self.sy) / self.stride + 1
+        self.layerType = .Pool
         // store switches for x,y coordinates for where the max comes from, for each output neuron
-        self.switchx = zeros(self.out_sx*self.out_sy*self.out_depth)
-        self.switchy = zeros(self.out_sx*self.out_sy*self.out_depth)
+        self.switchx = zeros(self.outSx*self.outSy*self.outDepth)
+        self.switchy = zeros(self.outSx*self.outSy*self.outDepth)
     }
     
-    func forward(inout V: Vol, is_training: Bool) -> Vol {
-        self.in_act = V
+    func forward(inout V: Vol, isTraining: Bool) -> Vol {
+        self.inAct = V
         
-        let A = Vol(sx: self.out_sx, sy: self.out_sy, depth: self.out_depth, c: 0.0)
+        let A = Vol(sx: self.outSx, sy: self.outSy, depth: self.outDepth, c: 0.0)
         
         var n=0 // a counter for switches
-        for d in 0 ..< self.out_depth {
+        for d in 0 ..< self.outDepth {
 
             var x = -self.pad
             var y = -self.pad
-            for(var ax=0; ax<self.out_sx; x+=self.stride,ax++) {
+            for(var ax=0; ax<self.outSx; x+=self.stride,ax++) {
                 y = -self.pad
-                for(var ay=0; ay<self.out_sy; y+=self.stride,ay++) {
+                for(var ay=0; ay<self.outSy; y+=self.stride,ay++) {
                     
                     // convolve centered at this particular location
                     var a = -99999.0 // hopefully small enough ;\
@@ -96,35 +96,35 @@ class PoolLayer: InnerLayer {
                 }
             }
         }
-        self.out_act = A
-        return self.out_act!
+        self.outAct = A
+        return self.outAct!
     }
     
     func backward() -> () {
         // pooling layers have no parameters, so simply compute
         // gradient wrt data here
-        guard let V = self.in_act else {
-            fatalError("self.in_act is nil")
+        guard let V = self.inAct else {
+            fatalError("self.inAct is nil")
         }
         
-        guard let out_act = self.out_act else {
-            fatalError("self.out_act is nil")
+        guard let outAct = self.outAct else {
+            fatalError("self.outAct is nil")
         }
         
         V.dw = zerosd(V.w.count) // zero out gradient wrt data
-//        var A = self.out_act // computed in forward pass
+//        var A = self.outAct // computed in forward pass
         
         var n = 0
-        for d in 0 ..< self.out_depth {
+        for d in 0 ..< self.outDepth {
 
             var x = -self.pad
             var y = -self.pad
-            for(var ax=0; ax<self.out_sx; x+=self.stride,ax++) {
+            for(var ax=0; ax<self.outSx; x+=self.stride,ax++) {
                 y = -self.pad
-                for(var ay=0; ay<self.out_sy; y+=self.stride,ay++) {
+                for(var ay=0; ay<self.outSy; y+=self.stride,ay++) {
                     
-                    let chain_grad = out_act.get_grad(x: ax, y: ay, d: d)
-                    V.add_grad(x: self.switchx[n], y: self.switchy[n], d: d, v: chain_grad)
+                    let chain_grad = outAct.getGrad(x: ax, y: ay, d: d)
+                    V.addGrad(x: self.switchx[n], y: self.switchy[n], d: d, v: chain_grad)
                     n++
                     
                 }
@@ -145,27 +145,27 @@ class PoolLayer: InnerLayer {
         json["sx"] = self.sx
         json["sy"] = self.sy
         json["stride"] = self.stride
-        json["in_depth"] = self.in_depth
-        json["out_depth"] = self.out_depth
-        json["out_sx"] = self.out_sx
-        json["out_sy"] = self.out_sy
-        json["layer_type"] = self.layer_type.rawValue
+        json["inDepth"] = self.inDepth
+        json["outDepth"] = self.outDepth
+        json["outSx"] = self.outSx
+        json["outSy"] = self.outSy
+        json["layerType"] = self.layerType.rawValue
         json["pad"] = self.pad
         return json
     }
 //
 //    func fromJSON(json: [String: AnyObject]) -> () {
-//        self.out_depth = json["out_depth"]
-//        self.out_sx = json["out_sx"]
-//        self.out_sy = json["out_sy"]
-//        self.layer_type = json["layer_type"]
+//        self.outDepth = json["outDepth"]
+//        self.outSx = json["outSx"]
+//        self.outSy = json["outSy"]
+//        self.layerType = json["layerType"]
 //        self.sx = json["sx"]
 //        self.sy = json["sy"]
 //        self.stride = json["stride"]
-//        self.in_depth = json["in_depth"]
+//        self.inDepth = json["inDepth"]
 //        self.pad = json["pad"] != nil ? json["pad"] : 0 // backwards compatibility
-//        self.switchx = zeros(self.out_sx*self.out_sy*self.out_depth) // need to re-init these appropriately
-//        self.switchy = zeros(self.out_sx*self.out_sy*self.out_depth)
+//        self.switchx = zeros(self.outSx*self.outSy*self.outDepth) // need to re-init these appropriately
+//        self.switchy = zeros(self.outSx*self.outSy*self.outDepth)
 //    }
 }
 

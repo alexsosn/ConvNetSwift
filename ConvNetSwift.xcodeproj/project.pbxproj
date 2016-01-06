@@ -100,6 +100,7 @@
 		2B7E518A1C119D59006BE7F2 /* Nyura.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2B7E51871C119D59006BE7F2 /* Nyura.jpg */; };
 		2B7E518B1C119D59006BE7F2 /* Nyura.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7E51881C119D59006BE7F2 /* Nyura.png */; };
 		2B7E518C1C119D59006BE7F2 /* Nyura.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7E51881C119D59006BE7F2 /* Nyura.png */; };
+		2B872B5D1C12043700654CB9 /* AutoencoderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B872B5C1C12043700654CB9 /* AutoencoderTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,11 +125,11 @@
 		2B16E0961BD93A3300E0A2AA /* ConvNetSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ConvNetSwiftTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0981BD93A3300E0A2AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B16E0A91BD93A5A00E0A2AA /* Magicnet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Magicnet.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		2B16E0AA1BD93A5A00E0A2AA /* Net.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Net.swift; sourceTree = "<group>"; };
+		2B16E0AA1BD93A5A00E0A2AA /* Net.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Net.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0AB1BD93A5A00E0A2AA /* Trainers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Trainers.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		2B16E0AD1BD93A5A00E0A2AA /* Options.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
+		2B16E0AD1BD93A5A00E0A2AA /* Options.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Options.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0AE1BD93A5A00E0A2AA /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Util.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		2B16E0AF1BD93A5A00E0A2AA /* Vol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vol.swift; sourceTree = "<group>"; };
+		2B16E0AF1BD93A5A00E0A2AA /* Vol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Vol.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0B01BD93A5A00E0A2AA /* VolUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = VolUtil.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0C21BD93BB100E0A2AA /* LayersDotproducts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersDotproducts.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0C41BD93BB100E0A2AA /* LayersDropout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersDropout.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -183,13 +184,14 @@
 		2B4064931BEA7B9000C0B618 /* deepqlearn.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = deepqlearn.js; sourceTree = "<group>"; };
 		2B4064941BEA7B9000C0B618 /* util.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = util.js; sourceTree = "<group>"; };
 		2B4064951BEA7B9000C0B618 /* vis.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = vis.js; sourceTree = "<group>"; };
-		2B480E5D1C048BA30056865A /* UtilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilTests.swift; sourceTree = "<group>"; };
+		2B480E5D1C048BA30056865A /* UtilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = UtilTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B480E621C048FAD0056865A /* convnet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet.js; sourceTree = "<group>"; };
 		2B480E651C0502DC0056865A /* VolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VolTests.swift; sourceTree = "<group>"; };
-		2B66251E1BEF902500D59B65 /* Brain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
+		2B66251E1BEF902500D59B65 /* Brain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 2; path = Brain.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B7E51841C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg"; sourceTree = "<group>"; };
 		2B7E51871C119D59006BE7F2 /* Nyura.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Nyura.jpg; sourceTree = "<group>"; };
 		2B7E51881C119D59006BE7F2 /* Nyura.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Nyura.png; sourceTree = "<group>"; };
+		2B872B5C1C12043700654CB9 /* AutoencoderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoencoderTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -255,6 +257,7 @@
 				2B4064901BE9770900C0B618 /* JSTest.swift */,
 				2B16E0981BD93A3300E0A2AA /* Info.plist */,
 				2B480E651C0502DC0056865A /* VolTests.swift */,
+				2B872B5C1C12043700654CB9 /* AutoencoderTest.swift */,
 			);
 			path = ConvNetSwiftTests;
 			sourceTree = "<group>";
@@ -480,6 +483,7 @@
 				2B16E07A1BD93A3300E0A2AA /* Sources */,
 				2B16E07B1BD93A3300E0A2AA /* Frameworks */,
 				2B16E07C1BD93A3300E0A2AA /* Resources */,
+				2FD3ED505210408EC5714B4F /* Tailor */,
 			);
 			buildRules = (
 			);
@@ -520,6 +524,7 @@
 				TargetAttributes = {
 					2B16E07D1BD93A3300E0A2AA = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = AUMEW37ZKN;
 					};
 					2B16E0911BD93A3300E0A2AA = {
 						CreatedOnToolsVersion = 7.1;
@@ -617,6 +622,23 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2FD3ED505210408EC5714B4F /* Tailor */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Tailor;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if hash tailor 2>/dev/null; then\ntailor --except=trailing-whitespace .\nelse\necho \"warning: Please install Tailor from https://tailor.sh\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		2B16E07A1BD93A3300E0A2AA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -648,6 +670,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B4064811BE92EAC00C0B618 /* Layer.swift in Sources */,
+				2B872B5D1C12043700654CB9 /* AutoencoderTest.swift in Sources */,
 				2B40648F1BE92F1900C0B618 /* VolUtil.swift in Sources */,
 				2B40648A1BE92ED000C0B618 /* Magicnet.swift in Sources */,
 				2B480E5E1C048BA30056865A /* UtilTests.swift in Sources */,
@@ -786,6 +809,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = ConvNetSwift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = OWL.ConvNetSwift;
@@ -797,6 +821,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = ConvNetSwift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = OWL.ConvNetSwift;

@@ -1,18 +1,18 @@
 
 protocol LayerOptTypeProtocol {
-    var layer_type: LayerType {get}
+    var layerType: LayerType {get}
 }
 
 protocol LayerOutOptProtocol: LayerOptTypeProtocol {
-    var out_sx: Int {get set}
-    var out_sy: Int {get set}
-    var out_depth: Int {get set}
+    var outSx: Int {get set}
+    var outSy: Int {get set}
+    var outDepth: Int {get set}
 }
 
 protocol LayerInOptProtocol: LayerOptTypeProtocol {
-    var in_sx: Int {get set}
-    var in_sy: Int {get set}
-    var in_depth: Int {get set}
+    var inSx: Int {get set}
+    var inSy: Int {get set}
+    var inDepth: Int {get set}
 
 }
 
