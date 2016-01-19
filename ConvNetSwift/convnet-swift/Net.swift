@@ -136,7 +136,6 @@ class Net {
             if layer != nil {
                 self.layers.append(layer!)
             }
-            
         }
     }
     
@@ -158,11 +157,17 @@ class Net {
         return loss
     }
     
+    func getCostLoss(inout V V: Vol, y: Double) -> Double {
+        self.forward(&V, isTraining: false)
+        let loss = (self.layers.last! as! RegressionLayer).backward(y)
+        return loss
+    }
+    
     // backprop: compute gradients wrt all parameters
     func backward(y: Int) -> Double {
         let loss = (self.layers.last! as! LossLayer).backward(y) // last layer assumed to be loss layer
         let N = self.layers.count
-        for(var i=N-2; i>=0; i--) { // first layer assumed input
+        for var i=N-2; i>=0; i-- { // first layer assumed input
             (self.layers[i] as! InnerLayer).backward()
         }
         return loss
@@ -171,7 +176,7 @@ class Net {
     func backward(y: [Double]) -> Double {
         let loss = (self.layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
         let N = self.layers.count
-        for(var i=N-2; i>=0; i--) { // first layer assumed input
+        for var i=N-2; i>=0; i-- { // first layer assumed input
             (self.layers[i] as! InnerLayer).backward()
         }
         return loss
@@ -180,7 +185,7 @@ class Net {
     func backward(y: Double) -> Double {
         let loss = (self.layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
         let N = self.layers.count
-        for(var i=N-2; i>=0; i--) { // first layer assumed input
+        for var i=N-2; i>=0; i-- { // first layer assumed input
             (self.layers[i] as! InnerLayer).backward()
         }
         return loss
@@ -189,7 +194,7 @@ class Net {
     func backward(y: RegressionLayer.Pair) -> Double {
         let loss = (self.layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
         let N = self.layers.count
-        for(var i=N-2;i>=0;i--) { // first layer assumed input
+        for var i=N-2; i>=0; i-- { // first layer assumed input
             (self.layers[i] as! InnerLayer).backward()
         }
         return loss

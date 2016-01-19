@@ -21,10 +21,10 @@ class SimpleNetTests: XCTestCase {
         let input = InputLayerOpt(outSx: 1, outSy: 1, outDepth: 2)
         let fc1 = FullyConnLayerOpt(num_neurons: 50, activation: .Tanh)
         let fc2 = FullyConnLayerOpt(num_neurons: 40, activation: .Tanh)
-        let fc3 = FullyConnLayerOpt(num_neurons: 60, activation: .Tanh)
-        let fc4 = FullyConnLayerOpt(num_neurons: 30, activation: .Tanh)
+//        let fc3 = FullyConnLayerOpt(num_neurons: 60, activation: .Tanh)
         let softmax = SoftmaxLayerOpt(num_classes: 3)
-        let layerDefs: [LayerOptTypeProtocol] = [input, fc1, fc2, fc3, fc4, softmax]
+//        let regression = RegressionLayerOpt(num_neurons: 1)
+        let layerDefs: [LayerOptTypeProtocol] = [input, fc1, fc2, softmax]
         
         net!.makeLayers(layerDefs)
         
@@ -57,7 +57,7 @@ class SimpleNetTests: XCTestCase {
         
         XCTAssertEqual(probabilityVolume.w.count, 3)  // 3 classes output
         var w = probabilityVolume.w
-        for var i=0;i<3;i++ {
+        for var i=0; i<3; i++ {
             XCTAssertGreaterThan(w[i], 0.0)
             XCTAssertLessThan(w[i], 1.0)
         }
@@ -117,7 +117,7 @@ class SimpleNetTests: XCTestCase {
         softmax_loss: 0.8871066776430543
         */
         
-        let Δ = 0.0001
+        let Δ = 0.000001
         
         for i: Int in 0 ..< x.w.count {
 
@@ -133,8 +133,8 @@ class SimpleNetTests: XCTestCase {
             x.w[i] = xold // reset
             
             let gradNumeric = (c0 - c1)/(2.0 * Δ)
-            let rel_error = abs(gradAnalytic - gradNumeric)/abs(gradAnalytic + gradNumeric)
-            print("\(i): numeric: \(gradNumeric), analytic: \(gradAnalytic) => rel error \(rel_error)")
+            let relError = abs(gradAnalytic - gradNumeric)/abs(gradAnalytic + gradNumeric)
+            print("\(i): numeric: \(gradNumeric), analytic: \(gradAnalytic) => rel error \(relError)")
             
             /*
             0: analytic: 5.06892403415712e-18
@@ -147,7 +147,7 @@ class SimpleNetTests: XCTestCase {
             1: numeric: 0.05234599215198088, analytic: 0.05234719879335431 => rel error 0.000011525500011363902
             */
             
-            XCTAssertLessThan(rel_error, 1e-2)
+            XCTAssertLessThan(relError, 1e-2)
             
         }
     }

@@ -85,7 +85,7 @@ class SoftmaxLayer: LossLayer {
         guard let x = self.inAct else {
             fatalError("self.inAct is nil")
         }
-        x.dw = [Double](count: x.w.count, repeatedValue: 0.0) // zero out the gradient of input Vol
+        x.dw = zerosd(x.w.count) // zero out the gradient of input Vol
         
         for i in 0 ..< self.outDepth {
             

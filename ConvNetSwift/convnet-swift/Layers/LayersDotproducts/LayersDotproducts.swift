@@ -301,8 +301,8 @@ class FullyConnLayer: InnerLayer {
         var layerType: LayerType
         var inAct: Vol?
         var outAct: Vol?
-        var l1DecayMul: Double = 0.0
-        var l2DecayMul: Double = 1.0
+        var l1DecayMul: Double
+        var l2DecayMul: Double
         var num_inputs: Int
         var filters: [Vol]
         var biases: Vol
@@ -327,7 +327,10 @@ class FullyConnLayer: InnerLayer {
         
         // initializations
         let bias = opt.bias_pref
-        self.filters = [Vol](count: outDepth, repeatedValue: Vol(sx: 1, sy: 1, depth: num_inputs))
+        self.filters = []
+        for _ in 0 ..< outDepth {
+            self.filters.append(Vol(sx: 1, sy: 1, depth: num_inputs)) // Volumes should be different!
+        }
         biases = Vol(sx: 1, sy: 1, depth: outDepth, c: bias)
     }
     
