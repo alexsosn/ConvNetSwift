@@ -263,7 +263,7 @@ class ConvLayer: InnerLayer {
 //    }
 }
 
-struct FullyConnLayerOpt: LayerInOptProtocol, LayerOptActivationProtocol, DropProbProtocol {
+struct FullyConnectedLayerOpt: LayerInOptProtocol, LayerOptActivationProtocol, DropProbProtocol {
     var layerType: LayerType = .FC
 
     var numNeurons: Int?
@@ -293,7 +293,7 @@ struct FullyConnLayerOpt: LayerInOptProtocol, LayerOptActivationProtocol, DropPr
     }
 }
 
-class FullyConnLayer: InnerLayer {
+class FullyConnectedLayer: InnerLayer {
     
         var outDepth: Int
         var outSx: Int
@@ -308,7 +308,7 @@ class FullyConnLayer: InnerLayer {
         var biases: Vol
     
     
-    init(opt: FullyConnLayerOpt) {
+    init(opt: FullyConnectedLayerOpt) {
 
         // required
         // ok fine we will allow 'filters' as the word as well

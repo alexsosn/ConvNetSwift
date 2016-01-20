@@ -160,7 +160,7 @@ class Brain {
                 // allow user to specify this via the option, for convenience
                 var hl = opt.hiddenLayerSizes
                 for k: Int in 0 ..< hl.count {
-                    layerDefs.append(FullyConnLayerOpt(numNeurons: hl[k], activation: .ReLU)) // relu by default
+                    layerDefs.append(FullyConnectedLayerOpt(numNeurons: hl[k], activation: .ReLU)) // relu by default
                 }
             layerDefs.append(RegressionLayerOpt(numNeurons: numActions)) // value function output
         }

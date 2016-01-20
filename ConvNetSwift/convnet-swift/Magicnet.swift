@@ -133,13 +133,13 @@ class MagicNet {
             let act = actarr[RandUtils.randi(0,3)]
             if(RandUtils.randf(0,1) < 0.5) {
                 let dp = RandUtils.random_js()
-                let layerFC = FullyConnLayerOpt(
+                let layerFC = FullyConnectedLayerOpt(
                     numNeurons: ni,
                     activation: act,
                     dropProb: dp)
                 layerDefs.append(layerFC)
             } else {
-                let layerFC = FullyConnLayerOpt(
+                let layerFC = FullyConnectedLayerOpt(
                     numNeurons: ni,
                     activation: act)
                 layerDefs.append(layerFC

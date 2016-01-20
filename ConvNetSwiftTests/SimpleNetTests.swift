@@ -19,9 +19,9 @@ class SimpleNetTests: XCTestCase {
         net = Net()
         
         let input = InputLayerOpt(outSx: 1, outSy: 1, outDepth: 2)
-        let fc1 = FullyConnLayerOpt(numNeurons: 50, activation: .Tanh)
-        let fc2 = FullyConnLayerOpt(numNeurons: 40, activation: .Tanh)
-//        let fc3 = FullyConnLayerOpt(numNeurons: 60, activation: .Tanh)
+        let fc1 = FullyConnectedLayerOpt(numNeurons: 50, activation: .Tanh)
+        let fc2 = FullyConnectedLayerOpt(numNeurons: 40, activation: .Tanh)
+//        let fc3 = FullyConnectedLayerOpt(numNeurons: 60, activation: .Tanh)
         let softmax = SoftmaxLayerOpt(numClasses: 3)
 //        let regression = RegressionLayerOpt(numNeurons: 1)
         let layerDefs: [LayerOptTypeProtocol] = [input, fc1, fc2, softmax]

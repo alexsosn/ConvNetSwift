@@ -7,7 +7,6 @@
 //
 
 import XCTest
-@testable import ConvNetSwift
 
 class ConvNetSwiftTests: XCTestCase {
     
@@ -30,7 +29,7 @@ class ConvNetSwiftTests: XCTestCase {
             // then the first two dimensions (sx, sy) will always be kept at size 1
             let input = InputLayerOpt(outSx: 1, outSy: 1, outDepth: 2)
             // declare 20 neurons, followed by ReLU (rectified linear unit non-linearity)
-            let fc = FullyConnLayerOpt(numNeurons: 20, activation: .ReLU)
+            let fc = FullyConnectedLayerOpt(numNeurons: 20, activation: .ReLU)
             // declare the linear classifier on top of the previous hidden layer
             let softmax = SoftmaxLayerOpt(numClasses: 10)
             
@@ -91,8 +90,10 @@ class ConvNetSwiftTests: XCTestCase {
             net.makeLayers(layerDefs)
 
             // helpful utility for converting images into Vols is included
-//            var x = img_to_vol(document.getElementById("#some_image"))
-//            var output_probabilities_vol = net.forward(x)
+            let img = UIImage(named: "Nyura")!
+            var x = img.toVol(convert_grayscale: false)
+            let output_probabilities_vol = net.forward(&x)
+            print(output_probabilities_vol.w)
         }
     }
     

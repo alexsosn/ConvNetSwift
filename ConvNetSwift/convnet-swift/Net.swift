@@ -19,17 +19,17 @@ class Net {
             case is SoftmaxLayerOpt:
                 // add an fc layer here, there is no reason the user should
                 // have to worry about this and we almost always want to
-                new_defs.append(FullyConnLayerOpt(numNeurons: (def as! SoftmaxLayerOpt).numClasses))
+                new_defs.append(FullyConnectedLayerOpt(numNeurons: (def as! SoftmaxLayerOpt).numClasses))
             case is SVMLayerOpt:
                 // add an fc layer here, there is no reason the user should
                 // have to worry about this and we almost always want to
-                new_defs.append(FullyConnLayerOpt(numNeurons: (def as! SVMLayerOpt).numClasses))
+                new_defs.append(FullyConnectedLayerOpt(numNeurons: (def as! SVMLayerOpt).numClasses))
             case is RegressionLayerOpt:
                 // add an fc layer here, there is no reason the user should
                 // have to worry about this and we almost always want to
-                new_defs.append(FullyConnLayerOpt(numNeurons: (def as! RegressionLayerOpt).numNeurons))//["type":.fc, "numNeurons": def.numNeurons])
-            case is FullyConnLayerOpt:
-                var def = def as! FullyConnLayerOpt
+                new_defs.append(FullyConnectedLayerOpt(numNeurons: (def as! RegressionLayerOpt).numNeurons))//["type":.fc, "numNeurons": def.numNeurons])
+            case is FullyConnectedLayerOpt:
+                var def = def as! FullyConnectedLayerOpt
                 if def.activation == .ReLU {
                     def.biasPref = 0.1 // relus like a bit of positive bias to get gradients early
                     // otherwise it's technically possible that a relu unit will never turn on (by chance)
@@ -104,8 +104,8 @@ class Net {
             
             var layer: Layer?
             switch def {
-            case is FullyConnLayerOpt:
-                layer = FullyConnLayer(opt: def as! FullyConnLayerOpt)
+            case is FullyConnectedLayerOpt:
+                layer = FullyConnectedLayer(opt: def as! FullyConnectedLayerOpt)
             case is LocalResponseNormalizationLayerOpt:
                 layer = LocalResponseNormalizationLayer(opt: def as! LocalResponseNormalizationLayerOpt)
             case is DropoutLayerOpt:
@@ -280,7 +280,7 @@ class Net {
 //            if(t=="lrn") { L = LocalResponseNormalizationLayer() }
 //            if(t=="softmax") { L = SoftmaxLayer() }
 //            if(t=="regression") { L = RegressionLayer() }
-//            if(t=="fc") { L = FullyConnLayer() }
+//            if(t=="fc") { L = FullyConnectedLayer() }
 //            if(t=="maxout") { L = MaxoutLayer() }
 //            if(t=="svm") { L = SVMLayer() }
 //            L.fromJSON(Lj)

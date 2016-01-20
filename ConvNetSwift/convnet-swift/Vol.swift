@@ -14,7 +14,7 @@ class Vol {
     var depth: Int = 0
     var w: [Double] = []
     var dw: [Double] = []
-        
+    
     convenience init (array: [Double]) {
         self.init()
 
@@ -161,4 +161,12 @@ class Vol {
 //            self.w[i] = json["w"][i]
 //        }
 //    }
+    
+    func description() -> String {
+        return "size: \(sx)*\(sy)*\(depth)\nw:\n\(w)\ndw:\n\(dw)"
+    }
+    
+    func debugDescription() -> String {
+        return "size: \(sx)*\(sy)*\(depth)\nw:\n\(w)\ndw:\n\(dw)"
+    }
 }

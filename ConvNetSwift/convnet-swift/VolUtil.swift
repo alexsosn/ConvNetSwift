@@ -123,6 +123,7 @@ import CoreGraphics
 
 
 extension Vol {
+    
     func denormalize(pixelChannel: Double) -> UInt8{
         return UInt8(pixelChannel * 255.0)
     }
