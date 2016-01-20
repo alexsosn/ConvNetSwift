@@ -19,20 +19,20 @@ class SimpleNetTests: XCTestCase {
         net = Net()
         
         let input = InputLayerOpt(outSx: 1, outSy: 1, outDepth: 2)
-        let fc1 = FullyConnLayerOpt(num_neurons: 50, activation: .Tanh)
-        let fc2 = FullyConnLayerOpt(num_neurons: 40, activation: .Tanh)
-//        let fc3 = FullyConnLayerOpt(num_neurons: 60, activation: .Tanh)
-        let softmax = SoftmaxLayerOpt(num_classes: 3)
-//        let regression = RegressionLayerOpt(num_neurons: 1)
+        let fc1 = FullyConnLayerOpt(numNeurons: 50, activation: .Tanh)
+        let fc2 = FullyConnLayerOpt(numNeurons: 40, activation: .Tanh)
+//        let fc3 = FullyConnLayerOpt(numNeurons: 60, activation: .Tanh)
+        let softmax = SoftmaxLayerOpt(numClasses: 3)
+//        let regression = RegressionLayerOpt(numNeurons: 1)
         let layerDefs: [LayerOptTypeProtocol] = [input, fc1, fc2, softmax]
         
         net!.makeLayers(layerDefs)
         
         var trainerOpts = TrainerOpt()
-        trainerOpts.learning_rate = 0.0001
+        trainerOpts.learningRate = 0.0001
         trainerOpts.momentum = 0.0
-        trainerOpts.batch_size = 1
-        trainerOpts.l2_decay = 0.0
+        trainerOpts.batchSize = 1
+        trainerOpts.l2Decay = 0.0
         trainer = Trainer(net: net!, options: trainerOpts)
     }
     
@@ -98,23 +98,23 @@ class SimpleNetTests: XCTestCase {
         
         /*
         TrainResult(
-        fwd_time: 9223372036854775807, 
-        bwd_time: 9223372036854775807, 
-        l2_decay_loss: 0.0, 
-        l1_decay_loss: 0.0, 
-        cost_loss: 0.784027673681949, 
-        softmax_loss: 0.784027673681949, 
+        forwardTime: 9223372036854775807, 
+        backwardTime: 9223372036854775807, 
+        l2DecayLoss: 0.0, 
+        l1DecayLoss: 0.0, 
+        costLoss: 0.784027673681949, 
+        softmaxLoss: 0.784027673681949, 
         loss: 0.784027673681949)
         */
         
         /* js:
-        bwd_time: 1
-        cost_loss: 0.8871066776430543
-        fwd_time: 0
-        l1_decay_loss: 0
-        l2_decay_loss: 0
+        backwardTime: 1
+        costLoss: 0.8871066776430543
+        forwardTime: 0
+        l1DecayLoss: 0
+        l2DecayLoss: 0
         loss: 0.8871066776430543
-        softmax_loss: 0.8871066776430543
+        softmaxLoss: 0.8871066776430543
         */
         
         let Δ = 0.000001

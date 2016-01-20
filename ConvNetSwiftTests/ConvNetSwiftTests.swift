@@ -30,13 +30,13 @@ class ConvNetSwiftTests: XCTestCase {
             // then the first two dimensions (sx, sy) will always be kept at size 1
             let input = InputLayerOpt(outSx: 1, outSy: 1, outDepth: 2)
             // declare 20 neurons, followed by ReLU (rectified linear unit non-linearity)
-            let fc = FullyConnLayerOpt(num_neurons: 20, activation: .ReLU)
+            let fc = FullyConnLayerOpt(numNeurons: 20, activation: .ReLU)
             // declare the linear classifier on top of the previous hidden layer
-            let softmax = SoftmaxLayerOpt(num_classes: 10)
+            let softmax = SoftmaxLayerOpt(numClasses: 10)
             
-            let layer_defs: [LayerOptTypeProtocol] = [input, fc, softmax]
+            let layerDefs: [LayerOptTypeProtocol] = [input, fc, softmax]
             let net = Net()
-            net.makeLayers(layer_defs)
+            net.makeLayers(layerDefs)
             
             // forward a random data point through the network
             var x = Vol(array: [0.3, -0.5])
@@ -47,8 +47,8 @@ class ConvNetSwiftTests: XCTestCase {
             XCTAssertEqualWithAccuracy(prob.w[0], 0.50101, accuracy: 0.1)
             
             var traindef = TrainerOpt()
-            traindef.learning_rate = 0.01
-            traindef.l2_decay = 0.001
+            traindef.learningRate = 0.01
+            traindef.l2Decay = 0.001
             
             let trainer = Trainer(net: net, options: traindef)
             trainer.train(x: &x, y: 0) // train the network, specifying that x is class zero
@@ -82,13 +82,13 @@ class ConvNetSwiftTests: XCTestCase {
             // output Vol is of size 8x8x20 here
             let pool3 = PoolLayerOpt(sx: 2, stride: 2)
             // output Vol is of size 4x4x20 here
-            let softmax = SoftmaxLayerOpt(num_classes: 10)
+            let softmax = SoftmaxLayerOpt(numClasses: 10)
             // output Vol is of size 1x1x10 here
 
-            let layer_defs: [LayerOptTypeProtocol] = [input, conv1, pool1, conv2, pool2, conv3, pool3, softmax]
+            let layerDefs: [LayerOptTypeProtocol] = [input, conv1, pool1, conv2, pool2, conv3, pool3, softmax]
 
             let net = Net()
-            net.makeLayers(layer_defs)
+            net.makeLayers(layerDefs)
 
             // helpful utility for converting images into Vols is included
 //            var x = img_to_vol(document.getElementById("#some_image"))

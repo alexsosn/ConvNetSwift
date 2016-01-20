@@ -11,10 +11,10 @@ enum TrainerType: String {
 
 struct TrainerOpt {
     var method: TrainerType = .sgd
-    var batch_size: Int = 1
-    var l1_decay: Double = 0.0
-    var l2_decay: Double = 0.0
-    var learning_rate: Double = 0.01
+    var batchSize: Int = 1
+    var l1Decay: Double = 0.0
+    var l2Decay: Double = 0.0
+    var learningRate: Double = 0.01
     var momentum: Double = 0.9
     var ρ: Double = 0.95
     var ε: Double = 1e-8
@@ -25,20 +25,20 @@ struct TrainerOpt {
 class Trainer {
     
     struct TrainResult {
-        var fwd_time: Int
-        var bwd_time: Int
-        var l2_decay_loss: Double
-        var l1_decay_loss: Double
-        var cost_loss: Double
-        var softmax_loss: Double
+        var forwardTime: Int
+        var backwardTime: Int
+        var l2DecayLoss: Double
+        var l1DecayLoss: Double
+        var costLoss: Double
+        var softmaxLoss: Double
         var loss: Double
     }
     
     var net: Net
-    var learning_rate: Double = 0.0
-    var l1_decay: Double = 0.0
-    var l2_decay: Double = 0.0
-    var batch_size: Int = 0
+    var learningRate: Double = 0.0
+    var l1Decay: Double = 0.0
+    var l2Decay: Double = 0.0
+    var batchSize: Int = 0
     var method: TrainerType
     var momentum: Double = 0.0
     var ρ: Double = 0.0
@@ -54,10 +54,10 @@ class Trainer {
         
         self.net = net
         
-        self.learning_rate = options.learning_rate ?? 0.01
-        self.l1_decay = options.l1_decay ?? 0.0
-        self.l2_decay = options.l2_decay ?? 0.0
-        self.batch_size = options.batch_size ?? 1
+        self.learningRate = options.learningRate ?? 0.01
+        self.l1Decay = options.l1Decay ?? 0.0
+        self.l2Decay = options.l2Decay ?? 0.0
+        self.batchSize = options.batchSize ?? 1
         self.method = options.method ?? .sgd // sgd/adam/adagrad/adadelta/windowgrad/netsterov
         
         self.momentum = options.momentum ?? 0.9
@@ -84,27 +84,27 @@ class Trainer {
         let startf = NSDate()
         self.net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
         let endf = NSDate()
-        let fwd_time = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startf, toDate: endf, options: []).nanosecond
+        let forwardTime = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startf, toDate: endf, options: []).nanosecond
         
         let startb = NSDate()
-        let cost_loss = self.net.backward(y)
+        let costLoss = self.net.backward(y)
         let endb = NSDate()
-        let bwd_time = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startb, toDate: endb, options: []).nanosecond
+        let backwardTime = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startb, toDate: endb, options: []).nanosecond
         
-        let (l1_decay_loss, l2_decay_loss) = _perform_train()
+        let (l1DecayLoss, l2DecayLoss) = _perform_train()
         
-        // appending softmax_loss for backwards compatibility, but from now on we will always use cost_loss
+        // appending softmaxLoss for backwards compatibility, but from now on we will always use costLoss
         // in future, TODO: have to completely redo the way loss is done around the network as currently
         // loss is a bit of a hack. Ideally, user should specify arbitrary number of loss functions on any layer
         // and it should all be computed correctly and automatically.
         return TrainResult(
-            fwd_time: fwd_time,
-            bwd_time: bwd_time,
-            l2_decay_loss: l2_decay_loss,
-            l1_decay_loss: l1_decay_loss,
-            cost_loss: cost_loss,
-            softmax_loss: cost_loss,
-            loss: cost_loss + l1_decay_loss + l2_decay_loss)
+            forwardTime: forwardTime,
+            backwardTime: backwardTime,
+            l2DecayLoss: l2DecayLoss,
+            l1DecayLoss: l1DecayLoss,
+            costLoss: costLoss,
+            softmaxLoss: costLoss,
+            loss: costLoss + l1DecayLoss + l2DecayLoss)
     }
     
     func train(inout x x: Vol, y: RegressionLayer.Pair) -> TrainResult {
@@ -113,23 +113,23 @@ class Trainer {
         let startf = NSDate()
         self.net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
         let endf = NSDate()
-        let fwd_time = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startf, toDate: endf, options: []).nanosecond
+        let forwardTime = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startf, toDate: endf, options: []).nanosecond
         
         let startb = NSDate()
-        let cost_loss = self.net.backward(y)
+        let costLoss = self.net.backward(y)
         let endb = NSDate()
-        let bwd_time = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startb, toDate: endb, options: []).nanosecond
+        let backwardTime = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startb, toDate: endb, options: []).nanosecond
         
-        let (l1_decay_loss, l2_decay_loss) = _perform_train()
+        let (l1DecayLoss, l2DecayLoss) = _perform_train()
         
         return TrainResult(
-            fwd_time: fwd_time,
-            bwd_time: bwd_time,
-            l2_decay_loss: l2_decay_loss,
-            l1_decay_loss: l1_decay_loss,
-            cost_loss: cost_loss,
-            softmax_loss: cost_loss,
-            loss: cost_loss + l1_decay_loss + l2_decay_loss)
+            forwardTime: forwardTime,
+            backwardTime: backwardTime,
+            l2DecayLoss: l2DecayLoss,
+            l1DecayLoss: l1DecayLoss,
+            costLoss: costLoss,
+            softmaxLoss: costLoss,
+            loss: costLoss + l1DecayLoss + l2DecayLoss)
     }
     
     func train(inout x x: Vol, y: Int) -> TrainResult {
@@ -138,31 +138,31 @@ class Trainer {
         let startf = NSDate()
         self.net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
         let endf = NSDate()
-        let fwd_time = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startf, toDate: endf, options: []).nanosecond
+        let forwardTime = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startf, toDate: endf, options: []).nanosecond
         
         let startb = NSDate()
-        let cost_loss = self.net.backward(y)
+        let costLoss = self.net.backward(y)
         let endb = NSDate()
-        let bwd_time = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startb, toDate: endb, options: []).nanosecond
+        let backwardTime = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startb, toDate: endb, options: []).nanosecond
         
-        let (l1_decay_loss, l2_decay_loss) = _perform_train()
+        let (l1DecayLoss, l2DecayLoss) = _perform_train()
         
         return TrainResult(
-            fwd_time: fwd_time,
-            bwd_time: bwd_time,
-            l2_decay_loss: l2_decay_loss,
-            l1_decay_loss: l1_decay_loss,
-            cost_loss: cost_loss,
-            softmax_loss: cost_loss,
-            loss: cost_loss + l1_decay_loss + l2_decay_loss)
+            forwardTime: forwardTime,
+            backwardTime: backwardTime,
+            l2DecayLoss: l2DecayLoss,
+            l1DecayLoss: l1DecayLoss,
+            costLoss: costLoss,
+            softmaxLoss: costLoss,
+            loss: costLoss + l1DecayLoss + l2DecayLoss)
     }
     
-    func _perform_train() -> (l1_decay_loss: Double, l2_decay_loss: Double) {
-        var l2_decay_loss = 0.0
-        var l1_decay_loss = 0.0
+    func _perform_train() -> (l1DecayLoss: Double, l2DecayLoss: Double) {
+        var l2DecayLoss = 0.0
+        var l1DecayLoss = 0.0
         
         self.k++
-        if(self.k % self.batch_size == 0) {
+        if(self.k % self.batchSize == 0) {
             
             var pglist = self.net.getParamsAndGrads()
             var newParamsAndGradients: [ParamsAndGrads] = []
@@ -175,9 +175,9 @@ class Trainer {
                 // adam and adadelta needs gsum and xsum
                 for i in 0 ..< pglist.count {
                     
-                    self.gsum.append(zerosd(pglist[i].params.count))
+                    self.gsum.append(zerosDouble(pglist[i].params.count))
                     if(self.method == TrainerType.adam || self.method == TrainerType.adadelta) {
-                        self.xsum.append(zerosd(pglist[i].params.count))
+                        self.xsum.append(zerosDouble(pglist[i].params.count))
                     } else {
                         self.xsum.append([]) // conserve memory
                     }
@@ -194,18 +194,18 @@ class Trainer {
                 // learning rate for some parameters.
                 let l2DecayMul = pg.l2DecayMul ?? 1.0
                 let l1DecayMul = pg.l1DecayMul ?? 1.0
-                let l2_decay = self.l2_decay * l2DecayMul
-                let l1_decay = self.l1_decay * l1DecayMul
+                let l2Decay = self.l2Decay * l2DecayMul
+                let l1Decay = self.l1Decay * l1DecayMul
                 
                 let plen = p.count
                 for j in 0 ..< plen {
                     
-                    l2_decay_loss += l2_decay*p[j]*p[j]/2 // accumulate weight decay loss
-                    l1_decay_loss += l1_decay*abs(p[j])
-                    let l1grad = l1_decay * (p[j] > 0 ? 1 : -1)
-                    let l2grad = l2_decay * (p[j])
+                    l2DecayLoss += l2Decay*p[j]*p[j]/2 // accumulate weight decay loss
+                    l1DecayLoss += l1Decay*abs(p[j])
+                    let l1grad = l1Decay * (p[j] > 0 ? 1 : -1)
+                    let l2grad = l2Decay * (p[j])
                     
-                    let gij = (l2grad + l1grad + g[j]) / Double(self.batch_size) // raw batch gradient
+                    let gij = (l2grad + l1grad + g[j]) / Double(self.batchSize) // raw batch gradient
                     
                     var gsumi: [Double] = []
                     var xsumi: [Double] = []
@@ -221,19 +221,19 @@ class Trainer {
                         xsumi[j] = xsumi[j] * self.β2 + (1-self.β2) * gij * gij // update biased second moment estimate
                         let biasCorr1 = gsumi[j] * (1 - pow(self.β1, Double(self.k))) // correct bias first moment estimate
                         let biasCorr2 = xsumi[j] * (1 - pow(self.β2, Double(self.k))) // correct bias second moment estimate
-                        let dx =  -self.learning_rate * biasCorr1 / (sqrt(biasCorr2) + self.ε)
+                        let dx =  -self.learningRate * biasCorr1 / (sqrt(biasCorr2) + self.ε)
                         p[j] += dx
                     } else if(self.method == .adagrad) {
                         // adagrad update
                         gsumi[j] = gsumi[j] + gij * gij
-                        let dx = -self.learning_rate / sqrt(gsumi[j] + self.ε) * gij
+                        let dx = -self.learningRate / sqrt(gsumi[j] + self.ε) * gij
                         p[j] += dx
                     } else if(self.method == .windowgrad) {
                         // this is adagrad but with a moving window weighted average
                         // so the gradient is not accumulated over the entire history of the run.
                         // it's also referred to as Idea #1 in Zeiler paper on Adadelta. Seems reasonable to me!
                         gsumi[j] = self.ρ * gsumi[j] + (1-self.ρ) * gij * gij
-                        let dx = -self.learning_rate / sqrt(gsumi[j] + self.ε) * gij // eps added for better conditioning
+                        let dx = -self.learningRate / sqrt(gsumi[j] + self.ε) * gij // eps added for better conditioning
                         p[j] += dx
                     } else if(self.method == .adadelta) {
                         gsumi[j] = self.ρ * gsumi[j] + (1-self.ρ) * gij * gij
@@ -242,19 +242,19 @@ class Trainer {
                         p[j] += dx
                     } else if(self.method == .nesterov) {
                         var dx = gsumi[j]
-                        gsumi[j] = gsumi[j] * self.momentum + self.learning_rate * gij
+                        gsumi[j] = gsumi[j] * self.momentum + self.learningRate * gij
                         dx = self.momentum * dx - (1.0 + self.momentum) * gsumi[j]
                         p[j] += dx
                     } else {
                         // assume SGD
                         if(self.momentum > 0.0) {
                             // momentum update
-                            let dx = self.momentum * gsumi[j] - self.learning_rate * gij // step
+                            let dx = self.momentum * gsumi[j] - self.learningRate * gij // step
                             gsumi[j] = dx // back this up for next iteration of momentum
                             p[j] += dx // apply corrected gradient
                         } else {
                             // vanilla sgd
-                            p[j] +=  -self.learning_rate * gij
+                            p[j] +=  -self.learningRate * gij
                         }
                     }
                     g[j] = 0.0 // zero out gradient so that we can begin accumulating anew
@@ -267,7 +267,7 @@ class Trainer {
             
             self.net.assignParamsAndGrads(newParamsAndGradients)
         }
-        return (l1_decay_loss, l2_decay_loss)
+        return (l1DecayLoss, l2DecayLoss)
     }
     
 }

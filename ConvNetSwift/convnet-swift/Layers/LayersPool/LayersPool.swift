@@ -53,8 +53,8 @@ class PoolLayer: InnerLayer {
         self.outSy = (self.inSy + self.pad * 2 - self.sy) / self.stride + 1
         self.layerType = .Pool
         // store switches for x,y coordinates for where the max comes from, for each output neuron
-        self.switchx = zeros(self.outSx*self.outSy*self.outDepth)
-        self.switchy = zeros(self.outSx*self.outSy*self.outDepth)
+        self.switchx = zerosInt(self.outSx*self.outSy*self.outDepth)
+        self.switchy = zerosInt(self.outSx*self.outSy*self.outDepth)
     }
     
     func forward(inout V: Vol, isTraining: Bool) -> Vol {
@@ -111,7 +111,7 @@ class PoolLayer: InnerLayer {
             fatalError("self.outAct is nil")
         }
         
-        V.dw = zerosd(V.w.count) // zero out gradient wrt data
+        V.dw = zerosDouble(V.w.count) // zero out gradient wrt data
 //        var A = self.outAct // computed in forward pass
         
         var n = 0
@@ -123,8 +123,8 @@ class PoolLayer: InnerLayer {
                 y = -self.pad
                 for(var ay=0; ay<self.outSy; y+=self.stride,ay++) {
                     
-                    let chain_grad = outAct.getGrad(x: ax, y: ay, d: d)
-                    V.addGrad(x: self.switchx[n], y: self.switchy[n], d: d, v: chain_grad)
+                    let chainGrad = outAct.getGrad(x: ax, y: ay, d: d)
+                    V.addGrad(x: self.switchx[n], y: self.switchy[n], d: d, v: chainGrad)
                     n++
                     
                 }

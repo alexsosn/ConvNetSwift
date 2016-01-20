@@ -28,46 +28,6 @@
 		2B16E0D41BD93BB100E0A2AA /* LayersNormalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0CC1BD93BB100E0A2AA /* LayersNormalization.swift */; };
 		2B16E0D51BD93BB100E0A2AA /* LayersPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0CE1BD93BB100E0A2AA /* LayersPool.swift */; };
 		2B16E0D71BD93CA700E0A2AA /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0D61BD93CA700E0A2AA /* Layer.swift */; };
-		2B4064571BE8CA2000C0B618 /* autoencoder.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B40642B1BE8CA2000C0B618 /* autoencoder.html */; };
-		2B4064581BE8CA2000C0B618 /* automatic.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B40642C1BE8CA2000C0B618 /* automatic.html */; };
-		2B4064591BE8CA2000C0B618 /* cifar10.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B40642D1BE8CA2000C0B618 /* cifar10.html */; };
-		2B40645A1BE8CA2000C0B618 /* classify2d.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B40642E1BE8CA2000C0B618 /* classify2d.html */; };
-		2B40645B1BE8CA2000C0B618 /* automatic.css in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064301BE8CA2000C0B618 /* automatic.css */; };
-		2B40645C1BE8CA2000C0B618 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064311BE8CA2000C0B618 /* style.css */; };
-		2B40645D1BE8CA2000C0B618 /* image_regression.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064321BE8CA2000C0B618 /* image_regression.html */; };
-		2B40645E1BE8CA2000C0B618 /* autoencoder.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064341BE8CA2000C0B618 /* autoencoder.js */; };
-		2B40645F1BE8CA2000C0B618 /* automatic.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064351BE8CA2000C0B618 /* automatic.js */; };
-		2B4064601BE8CA2000C0B618 /* classify2d.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064361BE8CA2000C0B618 /* classify2d.js */; };
-		2B4064611BE8CA2000C0B618 /* image-helpers.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064371BE8CA2000C0B618 /* image-helpers.js */; };
-		2B4064621BE8CA2000C0B618 /* image_regression.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064381BE8CA2000C0B618 /* image_regression.js */; };
-		2B4064631BE8CA2000C0B618 /* images-demo.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064391BE8CA2000C0B618 /* images-demo.js */; };
-		2B4064641BE8CA2000C0B618 /* jquery-1.8.3.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40643A1BE8CA2000C0B618 /* jquery-1.8.3.min.js */; };
-		2B4064651BE8CA2000C0B618 /* npgmain.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40643B1BE8CA2000C0B618 /* npgmain.js */; };
-		2B4064661BE8CA2000C0B618 /* pica.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40643C1BE8CA2000C0B618 /* pica.js */; };
-		2B4064671BE8CA2000C0B618 /* regression.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40643D1BE8CA2000C0B618 /* regression.js */; };
-		2B4064681BE8CA2000C0B618 /* rldemo.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40643E1BE8CA2000C0B618 /* rldemo.js */; };
-		2B4064691BE8CA2000C0B618 /* trainers.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40643F1BE8CA2000C0B618 /* trainers.js */; };
-		2B40646A1BE8CA2000C0B618 /* mnist.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064401BE8CA2000C0B618 /* mnist.html */; };
-		2B40646B1BE8CA2000C0B618 /* regression.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064411BE8CA2000C0B618 /* regression.html */; };
-		2B40646C1BE8CA2000C0B618 /* rldemo.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064421BE8CA2000C0B618 /* rldemo.html */; };
-		2B40646D1BE8CA2000C0B618 /* speedtest.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064431BE8CA2000C0B618 /* speedtest.html */; };
-		2B40646E1BE8CA2000C0B618 /* trainers.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064441BE8CA2000C0B618 /* trainers.html */; };
-		2B40646F1BE8CA2000C0B618 /* NeuralNetSpec.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064461BE8CA2000C0B618 /* NeuralNetSpec.js */; };
-		2B4064701BE8CA2000C0B618 /* convnet_export.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064481BE8CA2000C0B618 /* convnet_export.js */; };
-		2B4064711BE8CA2000C0B618 /* convnet_init.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064491BE8CA2000C0B618 /* convnet_init.js */; };
-		2B4064721BE8CA2000C0B618 /* convnet_layers_dotproducts.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40644A1BE8CA2000C0B618 /* convnet_layers_dotproducts.js */; };
-		2B4064731BE8CA2000C0B618 /* convnet_layers_dropout.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40644B1BE8CA2000C0B618 /* convnet_layers_dropout.js */; };
-		2B4064741BE8CA2000C0B618 /* convnet_layers_input.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40644C1BE8CA2000C0B618 /* convnet_layers_input.js */; };
-		2B4064751BE8CA2000C0B618 /* convnet_layers_loss.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40644D1BE8CA2000C0B618 /* convnet_layers_loss.js */; };
-		2B4064761BE8CA2000C0B618 /* convnet_layers_nonlinearities.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40644E1BE8CA2000C0B618 /* convnet_layers_nonlinearities.js */; };
-		2B4064771BE8CA2000C0B618 /* convnet_layers_normalization.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B40644F1BE8CA2000C0B618 /* convnet_layers_normalization.js */; };
-		2B4064781BE8CA2000C0B618 /* convnet_layers_pool.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064501BE8CA2000C0B618 /* convnet_layers_pool.js */; };
-		2B4064791BE8CA2000C0B618 /* convnet_magicnet.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064511BE8CA2000C0B618 /* convnet_magicnet.js */; };
-		2B40647A1BE8CA2000C0B618 /* convnet_net.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064521BE8CA2000C0B618 /* convnet_net.js */; };
-		2B40647B1BE8CA2000C0B618 /* convnet_trainers.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064531BE8CA2000C0B618 /* convnet_trainers.js */; };
-		2B40647C1BE8CA2000C0B618 /* convnet_util.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064541BE8CA2000C0B618 /* convnet_util.js */; };
-		2B40647D1BE8CA2000C0B618 /* convnet_vol.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064551BE8CA2000C0B618 /* convnet_vol.js */; };
-		2B40647E1BE8CA2000C0B618 /* convnet_vol_util.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064561BE8CA2000C0B618 /* convnet_vol_util.js */; };
 		2B4064801BE8CABD00C0B618 /* SimpleNetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40647F1BE8CABD00C0B618 /* SimpleNetTests.swift */; };
 		2B4064811BE92EAC00C0B618 /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0D61BD93CA700E0A2AA /* Layer.swift */; };
 		2B4064821BE92EB000C0B618 /* LayersDotproducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C21BD93BB100E0A2AA /* LayersDotproducts.swift */; };
@@ -84,13 +44,7 @@
 		2B40648D1BE92F1200C0B618 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AE1BD93A5A00E0A2AA /* Util.swift */; };
 		2B40648E1BE92F1500C0B618 /* Vol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AF1BD93A5A00E0A2AA /* Vol.swift */; };
 		2B40648F1BE92F1900C0B618 /* VolUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0B01BD93A5A00E0A2AA /* VolUtil.swift */; };
-		2B4064911BE9770900C0B618 /* JSTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4064901BE9770900C0B618 /* JSTest.swift */; };
-		2B4064961BEA7B9000C0B618 /* deepqlearn.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064931BEA7B9000C0B618 /* deepqlearn.js */; };
-		2B4064971BEA7B9000C0B618 /* util.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064941BEA7B9000C0B618 /* util.js */; };
-		2B4064981BEA7B9000C0B618 /* vis.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B4064951BEA7B9000C0B618 /* vis.js */; };
 		2B480E5E1C048BA30056865A /* UtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B480E5D1C048BA30056865A /* UtilTests.swift */; };
-		2B480E631C048FAD0056865A /* convnet.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B480E621C048FAD0056865A /* convnet.js */; };
-		2B480E641C048FD90056865A /* convnet.js in Resources */ = {isa = PBXBuildFile; fileRef = 2B480E621C048FAD0056865A /* convnet.js */; };
 		2B480E661C0502DC0056865A /* VolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B480E651C0502DC0056865A /* VolTests.swift */; };
 		2B6625201BEFE93F00D59B65 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66251E1BEF902500D59B65 /* Brain.swift */; };
 		2B6625211BF00F5E00D59B65 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66251E1BEF902500D59B65 /* Brain.swift */; };
@@ -139,53 +93,8 @@
 		2B16E0CC1BD93BB100E0A2AA /* LayersNormalization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersNormalization.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0CE1BD93BB100E0A2AA /* LayersPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersPool.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0D61BD93CA700E0A2AA /* Layer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layer.swift; sourceTree = "<group>"; };
-		2B40642B1BE8CA2000C0B618 /* autoencoder.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = autoencoder.html; sourceTree = "<group>"; };
-		2B40642C1BE8CA2000C0B618 /* automatic.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = automatic.html; sourceTree = "<group>"; };
-		2B40642D1BE8CA2000C0B618 /* cifar10.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = cifar10.html; sourceTree = "<group>"; };
-		2B40642E1BE8CA2000C0B618 /* classify2d.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = classify2d.html; sourceTree = "<group>"; };
-		2B4064301BE8CA2000C0B618 /* automatic.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = automatic.css; sourceTree = "<group>"; };
-		2B4064311BE8CA2000C0B618 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
-		2B4064321BE8CA2000C0B618 /* image_regression.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = image_regression.html; sourceTree = "<group>"; };
-		2B4064341BE8CA2000C0B618 /* autoencoder.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = autoencoder.js; sourceTree = "<group>"; };
-		2B4064351BE8CA2000C0B618 /* automatic.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = automatic.js; sourceTree = "<group>"; };
-		2B4064361BE8CA2000C0B618 /* classify2d.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = classify2d.js; sourceTree = "<group>"; };
-		2B4064371BE8CA2000C0B618 /* image-helpers.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "image-helpers.js"; sourceTree = "<group>"; };
-		2B4064381BE8CA2000C0B618 /* image_regression.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = image_regression.js; sourceTree = "<group>"; };
-		2B4064391BE8CA2000C0B618 /* images-demo.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "images-demo.js"; sourceTree = "<group>"; };
-		2B40643A1BE8CA2000C0B618 /* jquery-1.8.3.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jquery-1.8.3.min.js"; sourceTree = "<group>"; };
-		2B40643B1BE8CA2000C0B618 /* npgmain.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = npgmain.js; sourceTree = "<group>"; };
-		2B40643C1BE8CA2000C0B618 /* pica.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = pica.js; sourceTree = "<group>"; };
-		2B40643D1BE8CA2000C0B618 /* regression.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = regression.js; sourceTree = "<group>"; };
-		2B40643E1BE8CA2000C0B618 /* rldemo.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = rldemo.js; sourceTree = "<group>"; };
-		2B40643F1BE8CA2000C0B618 /* trainers.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = trainers.js; sourceTree = "<group>"; };
-		2B4064401BE8CA2000C0B618 /* mnist.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = mnist.html; sourceTree = "<group>"; };
-		2B4064411BE8CA2000C0B618 /* regression.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = regression.html; sourceTree = "<group>"; };
-		2B4064421BE8CA2000C0B618 /* rldemo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = rldemo.html; sourceTree = "<group>"; };
-		2B4064431BE8CA2000C0B618 /* speedtest.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = speedtest.html; sourceTree = "<group>"; };
-		2B4064441BE8CA2000C0B618 /* trainers.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = trainers.html; sourceTree = "<group>"; };
-		2B4064461BE8CA2000C0B618 /* NeuralNetSpec.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = NeuralNetSpec.js; sourceTree = "<group>"; };
-		2B4064481BE8CA2000C0B618 /* convnet_export.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_export.js; sourceTree = "<group>"; };
-		2B4064491BE8CA2000C0B618 /* convnet_init.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_init.js; sourceTree = "<group>"; };
-		2B40644A1BE8CA2000C0B618 /* convnet_layers_dotproducts.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_layers_dotproducts.js; sourceTree = "<group>"; };
-		2B40644B1BE8CA2000C0B618 /* convnet_layers_dropout.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_layers_dropout.js; sourceTree = "<group>"; };
-		2B40644C1BE8CA2000C0B618 /* convnet_layers_input.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_layers_input.js; sourceTree = "<group>"; };
-		2B40644D1BE8CA2000C0B618 /* convnet_layers_loss.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_layers_loss.js; sourceTree = "<group>"; };
-		2B40644E1BE8CA2000C0B618 /* convnet_layers_nonlinearities.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_layers_nonlinearities.js; sourceTree = "<group>"; };
-		2B40644F1BE8CA2000C0B618 /* convnet_layers_normalization.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_layers_normalization.js; sourceTree = "<group>"; };
-		2B4064501BE8CA2000C0B618 /* convnet_layers_pool.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_layers_pool.js; sourceTree = "<group>"; };
-		2B4064511BE8CA2000C0B618 /* convnet_magicnet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_magicnet.js; sourceTree = "<group>"; };
-		2B4064521BE8CA2000C0B618 /* convnet_net.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_net.js; sourceTree = "<group>"; };
-		2B4064531BE8CA2000C0B618 /* convnet_trainers.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_trainers.js; sourceTree = "<group>"; };
-		2B4064541BE8CA2000C0B618 /* convnet_util.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_util.js; sourceTree = "<group>"; };
-		2B4064551BE8CA2000C0B618 /* convnet_vol.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_vol.js; sourceTree = "<group>"; };
-		2B4064561BE8CA2000C0B618 /* convnet_vol_util.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet_vol_util.js; sourceTree = "<group>"; };
 		2B40647F1BE8CABD00C0B618 /* SimpleNetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleNetTests.swift; sourceTree = "<group>"; };
-		2B4064901BE9770900C0B618 /* JSTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSTest.swift; sourceTree = "<group>"; };
-		2B4064931BEA7B9000C0B618 /* deepqlearn.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = deepqlearn.js; sourceTree = "<group>"; };
-		2B4064941BEA7B9000C0B618 /* util.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = util.js; sourceTree = "<group>"; };
-		2B4064951BEA7B9000C0B618 /* vis.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = vis.js; sourceTree = "<group>"; };
 		2B480E5D1C048BA30056865A /* UtilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = UtilTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		2B480E621C048FAD0056865A /* convnet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = convnet.js; sourceTree = "<group>"; };
 		2B480E651C0502DC0056865A /* VolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VolTests.swift; sourceTree = "<group>"; };
 		2B66251E1BEF902500D59B65 /* Brain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 2; path = Brain.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B7E51841C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg"; sourceTree = "<group>"; };
@@ -215,7 +124,6 @@
 		2B16E0751BD93A3200E0A2AA = {
 			isa = PBXGroup;
 			children = (
-				2B4064291BE8CA2000C0B618 /* js */,
 				2B7E51831C119BE7006BE7F2 /* img */,
 				2B16E0801BD93A3300E0A2AA /* ConvNetSwift */,
 				2B16E0951BD93A3300E0A2AA /* ConvNetSwiftTests */,
@@ -250,11 +158,9 @@
 		2B16E0951BD93A3300E0A2AA /* ConvNetSwiftTests */ = {
 			isa = PBXGroup;
 			children = (
-				2B480E611C048FAD0056865A /* js_lib */,
 				2B40647F1BE8CABD00C0B618 /* SimpleNetTests.swift */,
 				2B16E0961BD93A3300E0A2AA /* ConvNetSwiftTests.swift */,
 				2B480E5D1C048BA30056865A /* UtilTests.swift */,
-				2B4064901BE9770900C0B618 /* JSTest.swift */,
 				2B16E0981BD93A3300E0A2AA /* Info.plist */,
 				2B480E651C0502DC0056865A /* VolTests.swift */,
 				2B872B5C1C12043700654CB9 /* AutoencoderTest.swift */,
@@ -346,112 +252,6 @@
 				2B16E0CE1BD93BB100E0A2AA /* LayersPool.swift */,
 			);
 			path = LayersPool;
-			sourceTree = "<group>";
-		};
-		2B4064291BE8CA2000C0B618 /* js */ = {
-			isa = PBXGroup;
-			children = (
-				2B4064921BEA7B9000C0B618 /* build */,
-				2B40642A1BE8CA2000C0B618 /* demo */,
-				2B4064451BE8CA2000C0B618 /* spec */,
-				2B4064471BE8CA2000C0B618 /* src */,
-			);
-			path = js;
-			sourceTree = "<group>";
-		};
-		2B40642A1BE8CA2000C0B618 /* demo */ = {
-			isa = PBXGroup;
-			children = (
-				2B40642B1BE8CA2000C0B618 /* autoencoder.html */,
-				2B40642C1BE8CA2000C0B618 /* automatic.html */,
-				2B40642D1BE8CA2000C0B618 /* cifar10.html */,
-				2B40642E1BE8CA2000C0B618 /* classify2d.html */,
-				2B40642F1BE8CA2000C0B618 /* css */,
-				2B4064321BE8CA2000C0B618 /* image_regression.html */,
-				2B4064331BE8CA2000C0B618 /* js */,
-				2B4064401BE8CA2000C0B618 /* mnist.html */,
-				2B4064411BE8CA2000C0B618 /* regression.html */,
-				2B4064421BE8CA2000C0B618 /* rldemo.html */,
-				2B4064431BE8CA2000C0B618 /* speedtest.html */,
-				2B4064441BE8CA2000C0B618 /* trainers.html */,
-			);
-			path = demo;
-			sourceTree = "<group>";
-		};
-		2B40642F1BE8CA2000C0B618 /* css */ = {
-			isa = PBXGroup;
-			children = (
-				2B4064301BE8CA2000C0B618 /* automatic.css */,
-				2B4064311BE8CA2000C0B618 /* style.css */,
-			);
-			path = css;
-			sourceTree = "<group>";
-		};
-		2B4064331BE8CA2000C0B618 /* js */ = {
-			isa = PBXGroup;
-			children = (
-				2B4064341BE8CA2000C0B618 /* autoencoder.js */,
-				2B4064351BE8CA2000C0B618 /* automatic.js */,
-				2B4064361BE8CA2000C0B618 /* classify2d.js */,
-				2B4064371BE8CA2000C0B618 /* image-helpers.js */,
-				2B4064381BE8CA2000C0B618 /* image_regression.js */,
-				2B4064391BE8CA2000C0B618 /* images-demo.js */,
-				2B40643A1BE8CA2000C0B618 /* jquery-1.8.3.min.js */,
-				2B40643B1BE8CA2000C0B618 /* npgmain.js */,
-				2B40643C1BE8CA2000C0B618 /* pica.js */,
-				2B40643D1BE8CA2000C0B618 /* regression.js */,
-				2B40643E1BE8CA2000C0B618 /* rldemo.js */,
-				2B40643F1BE8CA2000C0B618 /* trainers.js */,
-			);
-			path = js;
-			sourceTree = "<group>";
-		};
-		2B4064451BE8CA2000C0B618 /* spec */ = {
-			isa = PBXGroup;
-			children = (
-				2B4064461BE8CA2000C0B618 /* NeuralNetSpec.js */,
-			);
-			path = spec;
-			sourceTree = "<group>";
-		};
-		2B4064471BE8CA2000C0B618 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				2B4064481BE8CA2000C0B618 /* convnet_export.js */,
-				2B4064491BE8CA2000C0B618 /* convnet_init.js */,
-				2B40644A1BE8CA2000C0B618 /* convnet_layers_dotproducts.js */,
-				2B40644B1BE8CA2000C0B618 /* convnet_layers_dropout.js */,
-				2B40644C1BE8CA2000C0B618 /* convnet_layers_input.js */,
-				2B40644D1BE8CA2000C0B618 /* convnet_layers_loss.js */,
-				2B40644E1BE8CA2000C0B618 /* convnet_layers_nonlinearities.js */,
-				2B40644F1BE8CA2000C0B618 /* convnet_layers_normalization.js */,
-				2B4064501BE8CA2000C0B618 /* convnet_layers_pool.js */,
-				2B4064511BE8CA2000C0B618 /* convnet_magicnet.js */,
-				2B4064521BE8CA2000C0B618 /* convnet_net.js */,
-				2B4064531BE8CA2000C0B618 /* convnet_trainers.js */,
-				2B4064541BE8CA2000C0B618 /* convnet_util.js */,
-				2B4064551BE8CA2000C0B618 /* convnet_vol.js */,
-				2B4064561BE8CA2000C0B618 /* convnet_vol_util.js */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
-		2B4064921BEA7B9000C0B618 /* build */ = {
-			isa = PBXGroup;
-			children = (
-				2B4064931BEA7B9000C0B618 /* deepqlearn.js */,
-				2B4064941BEA7B9000C0B618 /* util.js */,
-				2B4064951BEA7B9000C0B618 /* vis.js */,
-			);
-			path = build;
-			sourceTree = "<group>";
-		};
-		2B480E611C048FAD0056865A /* js_lib */ = {
-			isa = PBXGroup;
-			children = (
-				2B480E621C048FAD0056865A /* convnet.js */,
-			);
-			path = js_lib;
 			sourceTree = "<group>";
 		};
 		2B66251D1BEF902500D59B65 /* deepqlearn */ = {
@@ -557,55 +357,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B7E51891C119D59006BE7F2 /* Nyura.jpg in Resources */,
-				2B40646F1BE8CA2000C0B618 /* NeuralNetSpec.js in Resources */,
-				2B4064571BE8CA2000C0B618 /* autoencoder.html in Resources */,
-				2B4064631BE8CA2000C0B618 /* images-demo.js in Resources */,
-				2B4064691BE8CA2000C0B618 /* trainers.js in Resources */,
-				2B4064711BE8CA2000C0B618 /* convnet_init.js in Resources */,
-				2B40646A1BE8CA2000C0B618 /* mnist.html in Resources */,
-				2B40647C1BE8CA2000C0B618 /* convnet_util.js in Resources */,
-				2B4064781BE8CA2000C0B618 /* convnet_layers_pool.js in Resources */,
-				2B40646D1BE8CA2000C0B618 /* speedtest.html in Resources */,
-				2B4064641BE8CA2000C0B618 /* jquery-1.8.3.min.js in Resources */,
-				2B40645C1BE8CA2000C0B618 /* style.css in Resources */,
-				2B4064981BEA7B9000C0B618 /* vis.js in Resources */,
 				2B7E518B1C119D59006BE7F2 /* Nyura.png in Resources */,
-				2B40645F1BE8CA2000C0B618 /* automatic.js in Resources */,
-				2B40646E1BE8CA2000C0B618 /* trainers.html in Resources */,
-				2B4064751BE8CA2000C0B618 /* convnet_layers_loss.js in Resources */,
-				2B4064581BE8CA2000C0B618 /* automatic.html in Resources */,
-				2B4064971BEA7B9000C0B618 /* util.js in Resources */,
-				2B480E641C048FD90056865A /* convnet.js in Resources */,
-				2B4064621BE8CA2000C0B618 /* image_regression.js in Resources */,
 				2B16E08C1BD93A3300E0A2AA /* LaunchScreen.storyboard in Resources */,
-				2B4064661BE8CA2000C0B618 /* pica.js in Resources */,
-				2B40646B1BE8CA2000C0B618 /* regression.html in Resources */,
-				2B40647B1BE8CA2000C0B618 /* convnet_trainers.js in Resources */,
-				2B40645B1BE8CA2000C0B618 /* automatic.css in Resources */,
-				2B4064651BE8CA2000C0B618 /* npgmain.js in Resources */,
-				2B4064611BE8CA2000C0B618 /* image-helpers.js in Resources */,
-				2B4064771BE8CA2000C0B618 /* convnet_layers_normalization.js in Resources */,
-				2B4064681BE8CA2000C0B618 /* rldemo.js in Resources */,
-				2B4064961BEA7B9000C0B618 /* deepqlearn.js in Resources */,
-				2B4064721BE8CA2000C0B618 /* convnet_layers_dotproducts.js in Resources */,
 				2B7E51851C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg in Resources */,
-				2B40645D1BE8CA2000C0B618 /* image_regression.html in Resources */,
-				2B4064671BE8CA2000C0B618 /* regression.js in Resources */,
-				2B4064791BE8CA2000C0B618 /* convnet_magicnet.js in Resources */,
-				2B4064591BE8CA2000C0B618 /* cifar10.html in Resources */,
-				2B4064761BE8CA2000C0B618 /* convnet_layers_nonlinearities.js in Resources */,
 				2B16E0891BD93A3300E0A2AA /* Assets.xcassets in Resources */,
 				2B16E0871BD93A3300E0A2AA /* Main.storyboard in Resources */,
-				2B40646C1BE8CA2000C0B618 /* rldemo.html in Resources */,
-				2B40645E1BE8CA2000C0B618 /* autoencoder.js in Resources */,
-				2B4064731BE8CA2000C0B618 /* convnet_layers_dropout.js in Resources */,
-				2B40645A1BE8CA2000C0B618 /* classify2d.html in Resources */,
-				2B40647A1BE8CA2000C0B618 /* convnet_net.js in Resources */,
-				2B4064601BE8CA2000C0B618 /* classify2d.js in Resources */,
-				2B4064701BE8CA2000C0B618 /* convnet_export.js in Resources */,
-				2B40647D1BE8CA2000C0B618 /* convnet_vol.js in Resources */,
-				2B40647E1BE8CA2000C0B618 /* convnet_vol_util.js in Resources */,
-				2B4064741BE8CA2000C0B618 /* convnet_layers_input.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -615,7 +371,6 @@
 			files = (
 				2B7E51861C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg in Resources */,
 				2B7E518A1C119D59006BE7F2 /* Nyura.jpg in Resources */,
-				2B480E631C048FAD0056865A /* convnet.js in Resources */,
 				2B7E518C1C119D59006BE7F2 /* Nyura.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -625,7 +380,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		2FD3ED505210408EC5714B4F /* Tailor */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -633,7 +388,7 @@
 			name = Tailor;
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "if hash tailor 2>/dev/null; then\ntailor --except=trailing-whitespace .\nelse\necho \"warning: Please install Tailor from https://tailor.sh\"\nfi";
 		};
@@ -687,7 +442,6 @@
 				2B4064801BE8CABD00C0B618 /* SimpleNetTests.swift in Sources */,
 				2B4064881BE92ECA00C0B618 /* LayersNormalization.swift in Sources */,
 				2B4064841BE92EBF00C0B618 /* LayersDropout.swift in Sources */,
-				2B4064911BE9770900C0B618 /* JSTest.swift in Sources */,
 				2B40648B1BE92ED600C0B618 /* Trainers.swift in Sources */,
 				2B4064891BE92ECD00C0B618 /* LayersPool.swift in Sources */,
 				2B4064851BE92EC100C0B618 /* LayersInput.swift in Sources */,

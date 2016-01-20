@@ -51,7 +51,7 @@ class ReluLayer: InnerLayer {
         }
 
         let N = V.w.count
-        V.dw = zerosd(N) // zero out gradient wrt data
+        V.dw = zerosDouble(N) // zero out gradient wrt data
         for i in 0 ..< N {
 
             if(V2.w[i] <= 0) {
@@ -138,7 +138,7 @@ class SigmoidLayer: InnerLayer {
                 fatalError("self.inAct or self.outAct is nil")
         }
         let N = V.w.count
-        V.dw = zerosd(N) // zero out gradient wrt data
+        V.dw = zerosDouble(N) // zero out gradient wrt data
         for i in 0 ..< N {
 
             let v2wi = V2.w[i]
@@ -210,7 +210,7 @@ class MaxoutLayer: InnerLayer {
         self.outDepth = opt.inDepth / self.group_size // WARNING: floor was here
         self.layerType = .Maxout
         
-        self.switches = zeros(self.outSx*self.outSy*self.outDepth) // useful for backprop
+        self.switches = zerosInt(self.outSx*self.outSy*self.outDepth) // useful for backprop
     }
     
     func forward(inout V: Vol, isTraining: Bool) -> Vol {
@@ -276,14 +276,14 @@ class MaxoutLayer: InnerLayer {
                 fatalError("self.inAct or self.outAct is nil")
         }
         let N = self.outDepth
-        V.dw = zerosd(V.w.count) // zero out gradient wrt data
+        V.dw = zerosDouble(V.w.count) // zero out gradient wrt data
         
         // pass the gradient through the appropriate switch
         if(self.outSx == 1 && self.outSy == 1) {
             for i in 0 ..< N {
 
-                let chain_grad = V2.dw[i]
-                V.dw[self.switches[i]] = chain_grad
+                let chainGrad = V2.dw[i]
+                V.dw[self.switches[i]] = chainGrad
             }
         } else {
             // bleh okay, lets do this the hard way
@@ -294,8 +294,8 @@ class MaxoutLayer: InnerLayer {
 
                     for i in 0 ..< N {
 
-                        let chain_grad = V2.getGrad(x: x, y: y, d: i)
-                        V.setGrad(x: x, y: y, d: self.switches[n], v: chain_grad)
+                        let chainGrad = V2.getGrad(x: x, y: y, d: i)
+                        V.setGrad(x: x, y: y, d: self.switches[n], v: chainGrad)
                         n++
                     }
                 }
@@ -329,7 +329,7 @@ class MaxoutLayer: InnerLayer {
         if let group_size = json["group_size"] {
             self.group_size = group_size as! Int
         }
-        self.switches = zeros(self.group_size)
+        self.switches = zerosInt(self.group_size)
     }
 }
 
@@ -382,7 +382,7 @@ class TanhLayer: InnerLayer {
                 fatalError("self.inAct or self.outAct is nil")
         }
         let N = V.w.count
-        V.dw = zerosd(N) // zero out gradient wrt data
+        V.dw = zerosDouble(N) // zero out gradient wrt data
         for i in 0 ..< N {
 
             let v2wi = V2.w[i]

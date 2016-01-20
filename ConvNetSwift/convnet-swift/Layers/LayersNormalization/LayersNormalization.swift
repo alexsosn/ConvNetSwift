@@ -90,7 +90,7 @@ class LocalResponseNormalizationLayer: InnerLayer {
                 fatalError("self.inAct or self.outAct or S_cache_ is nil")
         }
         
-        V.dw = zerosd(V.w.count) // zero out gradient wrt data
+        V.dw = zerosDouble(V.w.count) // zero out gradient wrt data
 //        let A = self.outAct // computed in forward pass
         
         let n2 = Int(floor(self.n/2))
@@ -101,7 +101,7 @@ class LocalResponseNormalizationLayer: InnerLayer {
                 for i in 0 ..< V.depth {
 
                     
-                    let chain_grad = outAct.getGrad(x: x, y: y, d: i)
+                    let chainGrad = outAct.getGrad(x: x, y: y, d: i)
                     let S = S_cache_.get(x: x, y: y, d: i)
                     let SB = pow(S, self.β)
                     let SB2 = SB*SB
@@ -114,7 +114,7 @@ class LocalResponseNormalizationLayer: InnerLayer {
                             g += SB
                         }
                         g /= SB2
-                        g *= chain_grad
+                        g *= chainGrad
                         V.addGrad(x: x, y: y, d: j, v: g)
                     }
                     

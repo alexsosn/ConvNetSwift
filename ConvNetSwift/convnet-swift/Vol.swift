@@ -24,8 +24,8 @@ class Vol {
         self.depth = array.count
         // we have to do the following copy because we want to use
         // fast typed arrays, not an ordinary javascript array
-        self.w = zerosd(self.depth)
-        self.dw = zerosd(self.depth)
+        self.w = zerosDouble(self.depth)
+        self.dw = zerosDouble(self.depth)
         for i in 0 ..< self.depth {
             self.w[i] = array[i]
         }
@@ -55,8 +55,8 @@ class Vol {
         self.sy = sy
         self.depth = depth
         let n = sx*sy*depth
-        self.w = zerosd(n)
-        self.dw = zerosd(n)
+        self.w = zerosDouble(n)
+        self.dw = zerosDouble(n)
         if c == nil {
             // weight normalization is done to equalize the output
             // variance of every neuron, otherwise neurons with a lot

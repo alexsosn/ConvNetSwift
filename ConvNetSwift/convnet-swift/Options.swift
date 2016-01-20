@@ -21,5 +21,5 @@ protocol LayerOptActivationProtocol {
 }
 
 protocol DropProbProtocol {
-    var drop_prob: Double? {get set}
+    var dropProb: Double? {get set}
 }

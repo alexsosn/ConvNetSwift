@@ -26,75 +26,75 @@ class Experience {
 // over time it receives some inputs and some rewards
 // and its job is to set the outputs to maximize the expected reward
 struct BrainOpt {
-    var temporal_window: Int = 1
-    var experience_size: Int = 30000
-    var start_learn_threshold: Int = 1000
+    var temporalWindow: Int = 1
+    var experienceSize: Int = 30000
+    var startLearnThreshold: Int = 1000
     var γ: Double = 0.8
-    var learning_steps_total: Int = 100000
-    var learning_steps_burnin: Int = 3000
+    var learningStepsTotal: Int = 100000
+    var learningStepsBurnin: Int = 3000
     var ε_min: Double = 0.05
     var ε_test_time: Double = 0.01
-    var random_action_distribution: [Double] = []
-    var layer_defs: [LayerOptTypeProtocol]?
-    var hidden_layer_sizes: [Int] = []
-    var tdtrainer_options: TrainerOpt?
+    var randomActionDistribution: [Double] = []
+    var layerDefs: [LayerOptTypeProtocol]?
+    var hiddenLayerSizes: [Int] = []
+    var tdtrainerOptions: TrainerOpt?
     
     init(){}
     
-    init (experience_size: Int, start_learn_threshold: Int) {
-        self.experience_size = experience_size
-        self.start_learn_threshold = Int(min(Double(experience_size)*0.1, 1000))
+    init (experienceSize: Int, startLearnThreshold: Int) {
+        self.experienceSize = experienceSize
+        self.startLearnThreshold = Int(min(Double(experienceSize)*0.1, 1000))
     }
 }
 
 class Brain {
-    var temporal_window: Int
-    var experience_size: Int
-    var start_learn_threshold: Int
+    var temporalWindow: Int
+    var experienceSize: Int
+    var startLearnThreshold: Int
     var γ: Double
-    var learning_steps_total: Int
-    var learning_steps_burnin: Int
+    var learningStepsTotal: Int
+    var learningStepsBurnin: Int
     var ε_min: Double
     var ε_test_time: Double
-    var num_actions: Int
-    var random_action_distribution: [Double]
-    var net_inputs: Int
-    var num_states: Int
-    var window_size: Int
-    var state_window: [Double]
-    var action_window: [Int]
-    var reward_window: [Double]
-    var net_window: [Double]
-    var value_net: Net
+    var numActions: Int
+    var randomActionDistribution: [Double]
+    var netInputs: Int
+    var numStates: Int
+    var windowSize: Int
+    var stateWindow: [Double]
+    var actionWindow: [Int]
+    var rewardWindow: [Double]
+    var netWindow: [Double]
+    var valueNet: Net
     var tdtrainer: Trainer
     var experience: [Experience]
     var age: Int
-    var forward_passes: Int
+    var forwardPasses: Int
     var ε: Double
-    var latest_reward: Double
-    var last_input_array: [Double]
-    var average_reward_window: Window
-    var average_loss_window: Window
+    var latestReward: Double
+    var lastInputArray: [Double]
+    var averageRewardWindow: Window
+    var averageLossWindow: Window
     var learning: Bool
 //    var policy: Int
     
-    init (num_states: Int, num_actions: Int, opt: BrainOpt?) {
+    init (numStates: Int, numActions: Int, opt: BrainOpt?) {
         let opt = opt ?? BrainOpt()
         // in number of time steps, of temporal memory
-        // the ACTUAL input to the net will be (x,a) temporal_window times, and followed by current x
+        // the ACTUAL input to the net will be (x,a) temporalWindow times, and followed by current x
         // so to have no information from previous time step going into value function, set to 0.
-        self.temporal_window = opt.temporal_window
+        self.temporalWindow = opt.temporalWindow
         // size of experience replay memory
-        self.experience_size = opt.experience_size
+        self.experienceSize = opt.experienceSize
         // number of examples in experience replay memory before we begin learning
-        self.start_learn_threshold = opt.start_learn_threshold
+        self.startLearnThreshold = opt.startLearnThreshold
         // gamma is a crucial parameter that controls how much plan-ahead the agent does. In [0,1]
         self.γ = opt.γ
         
         // number of steps we will learn for
-        self.learning_steps_total = opt.learning_steps_total
+        self.learningStepsTotal = opt.learningStepsTotal
         // how many steps of the above to perform only random actions (in the beginning)?
-        self.learning_steps_burnin = opt.learning_steps_burnin
+        self.learningStepsBurnin = opt.learningStepsBurnin
         // what ε value do we bottom out on? 0.0 => purely deterministic policy at end
         self.ε_min = opt.ε_min
         // what ε to use at test time? (i.e. when learning is disabled)
@@ -102,109 +102,109 @@ class Brain {
         
         // advanced feature. Sometimes a random action should be biased towards some values
         // for example in flappy bird, we may want to choose to not flap more often
-        // this better sum to 1 by the way, and be of length self.num_actions
-        self.random_action_distribution = opt.random_action_distribution
-        assert( opt.random_action_distribution.count == num_actions,
-            "TROUBLE. random_action_distribution should be same length as num_actions.")
+        // this better sum to 1 by the way, and be of length self.numActions
+        self.randomActionDistribution = opt.randomActionDistribution
+        assert( opt.randomActionDistribution.count == numActions,
+            "TROUBLE. randomActionDistribution should be same length as numActions.")
         
-        var a = self.random_action_distribution
+        var a = self.randomActionDistribution
         var s = 0.0
         for k: Int in 0 ..< a.count {
             s += a[k]
         }
         assert( abs(s-1.0)<=0.0001,
-            "TROUBLE. random_action_distribution should sum to 1!")
+            "TROUBLE. randomActionDistribution should sum to 1!")
         
         // states that go into neural net to predict optimal action look as
         // x0,a0,x1,a1,x2,a2,...xt
         // this variable controls the size of that temporal window. Actions are
         // encoded as 1-of-k hot vectors
-        let net_inputs = num_states * self.temporal_window + num_actions * self.temporal_window + num_states
-        self.net_inputs = net_inputs
-        self.num_states = num_states
-        self.num_actions = num_actions
-        self.window_size = max(self.temporal_window, 2) // must be at least 2, but if we want more context even more
-        self.state_window = [Double](count: self.window_size, repeatedValue: 0.0)
-        self.action_window = [Int](count: self.window_size, repeatedValue: 0)
-        self.reward_window = [Double](count: self.window_size, repeatedValue: 0.0)
-        self.net_window = [Double](count: self.window_size, repeatedValue: 0.0)
+        let netInputs = numStates * self.temporalWindow + numActions * self.temporalWindow + numStates
+        self.netInputs = netInputs
+        self.numStates = numStates
+        self.numActions = numActions
+        self.windowSize = max(self.temporalWindow, 2) // must be at least 2, but if we want more context even more
+        self.stateWindow = zerosDouble(self.windowSize)
+        self.actionWindow = zerosInt(self.windowSize)
+        self.rewardWindow = zerosDouble(self.windowSize)
+        self.netWindow = zerosDouble(self.windowSize)
         
         // create [state -> value of all possible actions] modeling net for the value function
-        var layer_defs: [LayerOptTypeProtocol] = []
-        if opt.layer_defs != nil {
+        var layerDefs: [LayerOptTypeProtocol] = []
+        if opt.layerDefs != nil {
             // this is an advanced usage feature, because size of the input to the network, and number of
             // actions must check out. This is not very pretty Object Oriented programming but I can't see
             // a way out of it :(
-            layer_defs = opt.layer_defs!
+            layerDefs = opt.layerDefs!
             
-            assert(layer_defs.count >= 2, "TROUBLE! must have at least 2 layers")
+            assert(layerDefs.count >= 2, "TROUBLE! must have at least 2 layers")
             
-            assert(layer_defs.first is InputLayerOpt,
+            assert(layerDefs.first is InputLayerOpt,
                 "TROUBLE! first layer must be input layer!")
             
-            assert(layer_defs.last is RegressionLayerOpt,
+            assert(layerDefs.last is RegressionLayerOpt,
                 "TROUBLE! last layer must be input regression!")
             
-            let first = layer_defs.first as! LayerOutOptProtocol
+            let first = layerDefs.first as! LayerOutOptProtocol
             
-            assert(first.outDepth * first.outSx * first.outSy == net_inputs,
-                "TROUBLE! Number of inputs must be num_states * temporal_window + num_actions * temporal_window + num_states!")
+            assert(first.outDepth * first.outSx * first.outSy == netInputs,
+                "TROUBLE! Number of inputs must be numStates * temporalWindow + numActions * temporalWindow + numStates!")
             
-            let last = layer_defs.last as! RegressionLayerOpt
+            let last = layerDefs.last as! RegressionLayerOpt
 
-            assert(last.num_neurons == num_actions,
-                "TROUBLE! Number of regression neurons should be num_actions!")
+            assert(last.numNeurons == numActions,
+                "TROUBLE! Number of regression neurons should be numActions!")
         } else {
             // create a very simple neural net by default
-            layer_defs.append(InputLayerOpt(outSx: 1, outSy: 1, outDepth: self.net_inputs))
+            layerDefs.append(InputLayerOpt(outSx: 1, outSy: 1, outDepth: self.netInputs))
                 // allow user to specify this via the option, for convenience
-                var hl = opt.hidden_layer_sizes
+                var hl = opt.hiddenLayerSizes
                 for k: Int in 0 ..< hl.count {
-                    layer_defs.append(FullyConnLayerOpt(num_neurons: hl[k], activation: .ReLU)) // relu by default
+                    layerDefs.append(FullyConnLayerOpt(numNeurons: hl[k], activation: .ReLU)) // relu by default
                 }
-            layer_defs.append(RegressionLayerOpt(num_neurons: num_actions)) // value function output
+            layerDefs.append(RegressionLayerOpt(numNeurons: numActions)) // value function output
         }
-        self.value_net = Net()
-        self.value_net.makeLayers(layer_defs)
+        self.valueNet = Net()
+        self.valueNet.makeLayers(layerDefs)
         
         // and finally we need a Temporal Difference Learning trainer!
-        var tdtrainer_options = TrainerOpt()
-            tdtrainer_options.learning_rate = 0.01
-            tdtrainer_options.momentum = 0.0
-            tdtrainer_options.batch_size = 64
-            tdtrainer_options.l2_decay = 0.01
-        if(opt.tdtrainer_options != nil) {
-            tdtrainer_options = opt.tdtrainer_options! // allow user to overwrite this
+        var tdtrainerOptions = TrainerOpt()
+            tdtrainerOptions.learningRate = 0.01
+            tdtrainerOptions.momentum = 0.0
+            tdtrainerOptions.batchSize = 64
+            tdtrainerOptions.l2Decay = 0.01
+        if(opt.tdtrainerOptions != nil) {
+            tdtrainerOptions = opt.tdtrainerOptions! // allow user to overwrite this
         }
-        self.tdtrainer = Trainer(net: self.value_net, options: tdtrainer_options)
+        self.tdtrainer = Trainer(net: self.valueNet, options: tdtrainerOptions)
         
         // experience replay
         self.experience = []
         
         // various housekeeping variables
         self.age = 0 // incremented every backward()
-        self.forward_passes = 0 // incremented every forward()
+        self.forwardPasses = 0 // incremented every forward()
         self.ε = 1.0 // controls exploration exploitation tradeoff. Should be annealed over time
-        self.latest_reward = 0
-        self.last_input_array = []
-        self.average_reward_window = Window(size: 1000, minsize: 10)
-        self.average_loss_window = Window(size: 1000, minsize: 10)
+        self.latestReward = 0
+        self.lastInputArray = []
+        self.averageRewardWindow = Window(size: 1000, minsize: 10)
+        self.averageLossWindow = Window(size: 1000, minsize: 10)
         self.learning = true
     }
     
-    func random_action() -> Int? {
+    func randomAction() -> Int? {
         // a bit of a helper function. It returns a random action
         // we are abstracting this away because in future we may want to
         // do more sophisticated things. For example some actions could be more
         // or less likely at "rest"/default state.
-        if(self.random_action_distribution.count == 0) {
-            return RandUtils.randi(0, self.num_actions)
+        if(self.randomActionDistribution.count == 0) {
+            return RandUtils.randi(0, self.numActions)
         } else {
             // okay, lets do some fancier sampling:
             let p = RandUtils.randf(0, 1.0)
             var cumprob = 0.0
-            for k: Int in 0 ..< self.num_actions {
-                cumprob += self.random_action_distribution[k]
+            for k: Int in 0 ..< self.numActions {
+                cumprob += self.randomActionDistribution[k]
                 if(p < cumprob) {
                     return k
                 }
@@ -221,87 +221,87 @@ class Brain {
     func policy(s: [Double]) -> Policy {
         // compute the value of doing any action in this state
         // and return the argmax action and its value
-        var svol = Vol(sx: 1, sy: 1, depth: self.net_inputs)
+        var svol = Vol(sx: 1, sy: 1, depth: self.netInputs)
         svol.w = s
-        let action_values = self.value_net.forward(&svol)
+        let actionValues = self.valueNet.forward(&svol)
         var maxk = 0
-        var maxval = action_values.w[0]
-        for k: Int in 1 ..< self.num_actions {
-            if(action_values.w[k] > maxval) {
+        var maxval = actionValues.w[0]
+        for k: Int in 1 ..< self.numActions {
+            if(actionValues.w[k] > maxval) {
                 maxk = k
-                maxval = action_values.w[k] }
+                maxval = actionValues.w[k] }
         }
         return Policy(action: maxk, value: maxval)
     }
     
     func getNetInput(xt: [Double]) -> [Double] {
         // return s = (x,a,x,a,x,a,xt) state vector.
-        // It's a concatenation of last window_size (x,a) pairs and current state x
+        // It's a concatenation of last windowSize (x,a) pairs and current state x
         var w: [Double] = []
         w.appendContentsOf(xt) // start with current state
-        // and now go backwards and append states and actions from history temporal_window times
-        let n = self.window_size
-        for k: Int in 0 ..< self.temporal_window {
+        // and now go backwards and append states and actions from history temporalWindow times
+        let n = self.windowSize
+        for k: Int in 0 ..< self.temporalWindow {
             // state
-            w.append(self.state_window[n-1-k])
+            w.append(self.stateWindow[n-1-k])
             // action, encoded as 1-of-k indicator vector. We scale it up a bit because
             // we dont want weight regularization to undervalue this information, as it only exists once
-            var action1ofk = [Double](count: self.num_actions, repeatedValue: 0)
-            action1ofk[self.action_window[n-1-k]] = Double(self.num_states)
+            var action1ofk = [Double](count: self.numActions, repeatedValue: 0)
+            action1ofk[self.actionWindow[n-1-k]] = Double(self.numStates)
             w.appendContentsOf(action1ofk)
         }
         return w
     }
     
-    func forward(input_array: [Double]) -> Int {
+    func forward(inputArray: [Double]) -> Int {
         // compute forward (behavior) pass given the input neuron signals from body
-        self.forward_passes += 1
-        self.last_input_array = input_array // back this up
+        self.forwardPasses += 1
+        self.lastInputArray = inputArray // back this up
         
         // create network input
         var action: Int
-        var net_input: [Double]
-        if(self.forward_passes > self.temporal_window) {
+        var netInput: [Double]
+        if(self.forwardPasses > self.temporalWindow) {
             // we have enough to actually do something reasonable
-            net_input = self.getNetInput(input_array)
+            netInput = self.getNetInput(inputArray)
             if(self.learning) {
                 // compute ε for the ε-greedy policy
-                self.ε = min(1.0, max(self.ε_min, 1.0-(Double(self.age) - Double(self.learning_steps_burnin))/(Double(self.learning_steps_total) - Double(self.learning_steps_burnin))))
+                self.ε = min(1.0, max(self.ε_min, 1.0-(Double(self.age) - Double(self.learningStepsBurnin))/(Double(self.learningStepsTotal) - Double(self.learningStepsBurnin))))
             } else {
                 self.ε = self.ε_test_time // use test-time value
             }
             let rf = RandUtils.randf(0,1)
             if(rf < self.ε) {
                 // choose a random action with ε probability
-                action = self.random_action()!
+                action = self.randomAction()!
             } else {
                 // otherwise use our policy to make decision
-                let maxact = self.policy(net_input)
+                let maxact = self.policy(netInput)
                 action = maxact.action
             }
         } else {
             // pathological case that happens first few iterations
-            // before we accumulate window_size inputs
-            net_input = []
-            action = self.random_action()!
+            // before we accumulate windowSize inputs
+            netInput = []
+            action = self.randomAction()!
         }
         
         // remember the state and action we took for backward pass
-        self.net_window.removeFirst()
-        self.net_window.appendContentsOf(net_input)
-        self.state_window.removeFirst()
-        self.state_window.appendContentsOf(input_array)
-        self.action_window.removeFirst()
-        self.action_window.append(action)
+        self.netWindow.removeFirst()
+        self.netWindow.appendContentsOf(netInput)
+        self.stateWindow.removeFirst()
+        self.stateWindow.appendContentsOf(inputArray)
+        self.actionWindow.removeFirst()
+        self.actionWindow.append(action)
         
         return action
     }
     
     func backward(reward: Double) {
-        self.latest_reward = reward
-        self.average_reward_window.add(reward)
-        self.reward_window.removeFirst()
-        self.reward_window.append(reward)
+        self.latestReward = reward
+        self.averageRewardWindow.add(reward)
+        self.rewardWindow.removeFirst()
+        self.rewardWindow.append(reward)
         
         if(!self.learning) { return }
         
@@ -310,30 +310,30 @@ class Brain {
         
         // it is time t+1 and we have to store (s_t, a_t, r_t, s_{t+1}) as new experience
         // (given that an appropriate number of state measurements already exist, of course)
-        if(self.forward_passes > self.temporal_window + 1) {
-            let n = self.window_size
+        if(self.forwardPasses > self.temporalWindow + 1) {
+            let n = self.windowSize
             let e = Experience(
-                state0: self.net_window[n-2],
-                action0: self.action_window[n-2],
-                reward0: self.reward_window[n-2],
-                state1: self.net_window[n-1])
-            if(self.experience.count < self.experience_size) {
+                state0: self.netWindow[n-2],
+                action0: self.actionWindow[n-2],
+                reward0: self.rewardWindow[n-2],
+                state1: self.netWindow[n-1])
+            if(self.experience.count < self.experienceSize) {
                 self.experience.append(e)
             } else {
                 // replace. finite memory!
-                let ri = RandUtils.randi(0, self.experience_size)
+                let ri = RandUtils.randi(0, self.experienceSize)
                 self.experience[ri] = e
             }
         }
         
         // learn based on experience, once we have some samples to go on
         // this is where the magic happens...
-        if(self.experience.count > self.start_learn_threshold) {
+        if(self.experience.count > self.startLearnThreshold) {
             var avcost = 0.0
-            for _: Int in 0 ..< self.tdtrainer.batch_size {
+            for _: Int in 0 ..< self.tdtrainer.batchSize {
                 let re = RandUtils.randi(0, self.experience.count)
                 let e = self.experience[re]
-                var x = Vol(sx: 1, sy: 1, depth: self.net_inputs)
+                var x = Vol(sx: 1, sy: 1, depth: self.netInputs)
                 x.w = [e.state0]
                 let maxact = self.policy([e.state1])
                 let r = e.reward0 + self.γ * maxact.value
@@ -341,8 +341,8 @@ class Brain {
                 let loss = self.tdtrainer.train(x: &x, y: ystruct)
                 avcost += loss.loss
             }
-            avcost = Double(avcost)/Double(self.tdtrainer.batch_size)
-            self.average_loss_window.add(avcost)
+            avcost = Double(avcost)/Double(self.tdtrainer.batchSize)
+            self.averageLossWindow.add(avcost)
         }
     }
     
@@ -353,8 +353,8 @@ class Brain {
         let t = "experience replay size: \(self.experience.count) <br>" +
         "exploration epsilon: \(self.ε)<br>" +
         "age: \(self.age)<br>" +
-        "average Q-learning loss: \(self.average_loss_window.get_average())<br />" +
-        "smooth-ish reward: \(self.average_reward_window.get_average())<br />"
+        "average Q-learning loss: \(self.averageLossWindow.average())<br />" +
+        "smooth-ish reward: \(self.averageRewardWindow.average())<br />"
         let brainvis = "<div><div>\(t)</div></div>"
 
         return brainvis
@@ -389,7 +389,7 @@ class Window {
         }
     }
     
-    func get_average() -> Double {
+    func average() -> Double {
         if self.v.count < self.minsize {
             return -1
         } else  {

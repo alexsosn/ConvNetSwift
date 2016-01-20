@@ -8,7 +8,7 @@ class Net {
     var layers: [Layer] = []
     var layerResponseLengths: [Int] = []
     
-    // desugar layer_defs for adding activation, dropout layers etc
+    // desugar layerDefs for adding activation, dropout layers etc
     func desugar(defs: [LayerOptTypeProtocol]) -> [LayerOptTypeProtocol] {
         var new_defs:[LayerOptTypeProtocol] = []
         for i in 0 ..< defs.count {
@@ -19,26 +19,26 @@ class Net {
             case is SoftmaxLayerOpt:
                 // add an fc layer here, there is no reason the user should
                 // have to worry about this and we almost always want to
-                new_defs.append(FullyConnLayerOpt(num_neurons: (def as! SoftmaxLayerOpt).num_classes))
+                new_defs.append(FullyConnLayerOpt(numNeurons: (def as! SoftmaxLayerOpt).numClasses))
             case is SVMLayerOpt:
                 // add an fc layer here, there is no reason the user should
                 // have to worry about this and we almost always want to
-                new_defs.append(FullyConnLayerOpt(num_neurons: (def as! SVMLayerOpt).num_classes))
+                new_defs.append(FullyConnLayerOpt(numNeurons: (def as! SVMLayerOpt).numClasses))
             case is RegressionLayerOpt:
                 // add an fc layer here, there is no reason the user should
                 // have to worry about this and we almost always want to
-                new_defs.append(FullyConnLayerOpt(num_neurons: (def as! RegressionLayerOpt).num_neurons))//["type":.fc, "num_neurons": def.num_neurons])
+                new_defs.append(FullyConnLayerOpt(numNeurons: (def as! RegressionLayerOpt).numNeurons))//["type":.fc, "numNeurons": def.numNeurons])
             case is FullyConnLayerOpt:
                 var def = def as! FullyConnLayerOpt
                 if def.activation == .ReLU {
-                    def.bias_pref = 0.1 // relus like a bit of positive bias to get gradients early
+                    def.biasPref = 0.1 // relus like a bit of positive bias to get gradients early
                     // otherwise it's technically possible that a relu unit will never turn on (by chance)
                     // and will never get any gradient and never contribute any computation. Dead relu.
                 }
             case is ConvLayerOpt:
                 var def = def as! ConvLayerOpt
                 if def.activation == .ReLU {
-                    def.bias_pref = 0.1 // relus like a bit of positive bias to get gradients early
+                    def.biasPref = 0.1 // relus like a bit of positive bias to get gradients early
                     // otherwise it's technically possible that a relu unit will never turn on (by chance)
                     // and will never get any gradient and never contribute any computation. Dead relu.
                 }
@@ -71,8 +71,8 @@ class Net {
             }
             
             if def is DropProbProtocol && !(def is DropoutLayerOpt) {
-                if let prob = (def as! DropProbProtocol).drop_prob {
-                    new_defs.append(DropoutLayerOpt(drop_prob: prob))
+                if let prob = (def as! DropProbProtocol).dropProb {
+                    new_defs.append(DropoutLayerOpt(dropProb: prob))
                 }
             }
         }

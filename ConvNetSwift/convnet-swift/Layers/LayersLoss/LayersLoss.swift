@@ -20,16 +20,16 @@ struct SoftmaxLayerOpt: LayerInOptProtocol {
     var inSx: Int = 0
     var inSy: Int = 0
     var inDepth: Int = 0
-    var num_classes: Int
+    var numClasses: Int
     
-    init (num_classes: Int) {
-        self.num_classes = num_classes
+    init (numClasses: Int) {
+        self.numClasses = numClasses
     }
 }
 
 class SoftmaxLayer: LossLayer {
     
-    var num_inputs: Int
+    var numInputs: Int
     var outDepth: Int
     var outSx: Int
     var outSy: Int
@@ -41,8 +41,8 @@ class SoftmaxLayer: LossLayer {
     
     init(opt: SoftmaxLayerOpt) {
         // computed
-        self.num_inputs = opt.inSx * opt.inSy * opt.inDepth
-        self.outDepth = self.num_inputs
+        self.numInputs = opt.inSx * opt.inSy * opt.inDepth
+        self.outDepth = self.numInputs
         self.outSx = 1
         self.outSy = 1
         self.layerType = .Softmax
@@ -58,7 +58,7 @@ class SoftmaxLayer: LossLayer {
         let amax = V.w.maxElement()!
         
         // compute exponentials (carefully to not blow up)
-        var es = zerosd(self.outDepth)
+        var es = zerosDouble(self.outDepth)
         var esum = 0.0
         for i in 0 ..< self.outDepth {
             
@@ -85,7 +85,7 @@ class SoftmaxLayer: LossLayer {
         guard let x = self.inAct else {
             fatalError("self.inAct is nil")
         }
-        x.dw = zerosd(x.w.count) // zero out the gradient of input Vol
+        x.dw = zerosDouble(x.w.count) // zero out the gradient of input Vol
         
         for i in 0 ..< self.outDepth {
             
@@ -112,7 +112,7 @@ class SoftmaxLayer: LossLayer {
         json["outSx"] = self.outSx
         json["outSy"] = self.outSy
         json["layerType"] = self.layerType.rawValue
-        json["num_inputs"] = self.num_inputs
+        json["numInputs"] = self.numInputs
         return json
     }
     //
@@ -121,7 +121,7 @@ class SoftmaxLayer: LossLayer {
     //        self.outSx = json["outSx"]
     //        self.outSy = json["outSy"]
     //        self.layerType = json["layerType"]
-    //        self.num_inputs = json["num_inputs"]
+    //        self.numInputs = json["numInputs"]
     //    }
 }
 
@@ -135,21 +135,21 @@ struct RegressionLayerOpt: LayerInOptProtocol {
     var inSx: Int
     var inSy: Int
     var inDepth: Int
-    var num_neurons: Int
+    var numNeurons: Int
     
-    init(num_neurons: Int) {
+    init(numNeurons: Int) {
         // warning: creativity!
         self.inSx = 1
         self.inSy = 1
         self.inDepth = 1
-        self.num_neurons = num_neurons
+        self.numNeurons = numNeurons
         
     }
 }
 
 class RegressionLayer: LossLayer {
     
-    var num_inputs: Int
+    var numInputs: Int
     var outDepth: Int
     var outSx: Int
     var outSy: Int
@@ -160,8 +160,8 @@ class RegressionLayer: LossLayer {
     init(opt: RegressionLayerOpt) {
         
         // computed
-        self.num_inputs = opt.inSx * opt.inSy * opt.inDepth
-        self.outDepth = self.num_inputs
+        self.numInputs = opt.inSx * opt.inSy * opt.inDepth
+        self.outDepth = self.numInputs
         self.outSx = 1
         self.outSy = 1
         self.layerType = .Regression
@@ -173,7 +173,7 @@ class RegressionLayer: LossLayer {
         return V // identity function
     }
 
-    // y is a list here of size num_inputs
+    // y is a list here of size numInputs
     // or it can be a number if only one value is regressed
     // or it can be a struct {dim: i, val: x} where we only want to
     // regress on dimension i and asking it to have value x
@@ -184,7 +184,7 @@ class RegressionLayer: LossLayer {
         guard let x = self.inAct else {
             fatalError("self.inAct is nil")
         }
-        x.dw = [Double](count: x.w.count, repeatedValue: 0.0) // zero out the gradient of input Vol
+        x.dw = zerosDouble(x.w.count) // zero out the gradient of input Vol
         var loss = 0.0
         for i in 0 ..< self.outDepth {
             let dy = x.w[i] - y[i]
@@ -200,7 +200,7 @@ class RegressionLayer: LossLayer {
         guard let x = self.inAct else {
             fatalError("self.inAct is nil")
         }
-        x.dw = [Double](count: x.w.count, repeatedValue: 0.0) // zero out the gradient of input Vol
+        x.dw = zerosDouble(x.w.count) // zero out the gradient of input Vol
         var loss = 0.0
         // lets hope that only one number is being regressed
         let dy = x.w[0] - y
@@ -223,7 +223,7 @@ class RegressionLayer: LossLayer {
         guard let x = self.inAct else {
             fatalError("self.inAct is nil")
         }
-        x.dw = [Double](count: x.w.count, repeatedValue: 0.0) // zero out the gradient of input Vol
+        x.dw = zerosDouble(x.w.count) // zero out the gradient of input Vol
         var loss = 0.0
         // assume it is a struct with entries .dim and .val
         // and we pass gradient only along dimension dim to be equal to val
@@ -249,7 +249,7 @@ class RegressionLayer: LossLayer {
         json["outSx"] = self.outSx
         json["outSy"] = self.outSy
         json["layerType"] = self.layerType.rawValue
-        json["num_inputs"] = self.num_inputs
+        json["numInputs"] = self.numInputs
         return json
     }
     //
@@ -258,7 +258,7 @@ class RegressionLayer: LossLayer {
     //        self.outSx = json["outSx"]
     //        self.outSy = json["outSy"]
     //        self.layerType = json["layerType"]
-    //        self.num_inputs = json["num_inputs"]
+    //        self.numInputs = json["numInputs"]
     //    }
 }
 
@@ -268,12 +268,12 @@ struct SVMLayerOpt: LayerInOptProtocol {
     var inSx: Int
     var inSy: Int
     var inDepth: Int
-    var num_classes: Int
+    var numClasses: Int
 }
 
 class SVMLayer: LossLayer {
     
-    var num_inputs: Int
+    var numInputs: Int
     var outDepth: Int
     var outSx: Int
     var outSy: Int
@@ -283,8 +283,8 @@ class SVMLayer: LossLayer {
     
     init(opt: SVMLayerOpt){
         // computed
-        self.num_inputs = opt.inSx * opt.inSy * opt.inDepth
-        self.outDepth = self.num_inputs
+        self.numInputs = opt.inSx * opt.inSy * opt.inDepth
+        self.outDepth = self.numInputs
         self.outSx = 1
         self.outSy = 1
         self.layerType = .SVM
@@ -303,7 +303,7 @@ class SVMLayer: LossLayer {
             fatalError("self.inAct is nil")
         }
         
-        x.dw = [Double](count: x.w.count, repeatedValue: 0.0) // zero out the gradient of input Vol
+        x.dw = zerosDouble(x.w.count) // zero out the gradient of input Vol
         
         // we're using structured loss here, which means that the score
         // of the ground truth should be higher than the score of any other
@@ -340,7 +340,7 @@ class SVMLayer: LossLayer {
         json["outSx"] = self.outSx
         json["outSy"] = self.outSy
         json["layerType"] = self.layerType.rawValue
-        json["num_inputs"] = self.num_inputs
+        json["numInputs"] = self.numInputs
         return json
     }
     //
@@ -349,7 +349,7 @@ class SVMLayer: LossLayer {
     //        self.outSx = json["outSx"]
     //        self.outSy = json["outSy"]
     //        self.layerType = json["layerType"]
-    //        self.num_inputs = json["num_inputs"]
+    //        self.numInputs = json["numInputs"]
     //    }
 }
 

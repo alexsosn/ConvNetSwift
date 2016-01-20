@@ -56,22 +56,16 @@ class RandUtils {
     
 }
 // Array utilities
-func zeros(n: Int) -> [Int] {
-    //    if(typeof(n)==="undefined" || isNaN(n)) { return []; }
-    //    if(ArrayBuffer == nil) {
-    //      // lacking browser support
-    //      var arr = Array(n);
-    //      for i in 0 ..< n {
-    // arr[i]= 0;}
-    //      return arr;
-    //    } else {
-    //      return Float64Array(n);
-    //    }
+func zerosInt(n: Int) -> [Int] {
     return [Int](count: n, repeatedValue: 0)
 }
 
-func zerosd(n: Int) -> [Double] {
+func zerosDouble(n: Int) -> [Double] {
     return [Double](count: n, repeatedValue: 0.0)
+}
+
+func zerosBool(n: Int) -> [Bool] {
+    return [Bool](count: n, repeatedValue: false)
 }
 
 func arrUnique(arr: [Int]) -> [Int] {

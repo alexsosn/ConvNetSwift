@@ -14,29 +14,29 @@ class MagicNet {
     
     var data: [Vol]
     var labels: [Int]
-    var train_ratio: Double
-    var num_folds: Int
-    var num_candidates: Int
-    var num_epochs: Int
-    var ensemble_size: Int
-    var batch_size_min: Int
-    var batch_size_max: Int
-    var l2_decay_min: Int
-    var l2_decay_max: Int
-    var learning_rate_min: Int
-    var learning_rate_max: Int
-    var momentum_min: Double
-    var momentum_max: Double
-    var neurons_min: Int
-    var neurons_max: Int
+    var trainRatio: Double
+    var numFolds: Int
+    var numCandidates: Int
+    var numEpochs: Int
+    var ensembleSize: Int
+    var batchSizeMin: Int
+    var batchSizeMax: Int
+    var l2DecayMin: Int
+    var l2DecayMax: Int
+    var learningRateMin: Int
+    var learningRateMax: Int
+    var momentumMin: Double
+    var momentumMax: Double
+    var neuronsMin: Int
+    var neuronsMax: Int
     var folds: [Fold]
     var candidates: [Candidate]
-    var evaluated_candidates: [Candidate]
-    var unique_labels: [AnyObject?]
+    var evaluatedCandidates: [Candidate]
+    var uniqueLabels: [AnyObject?]
     var iter: Int
     var foldix: Int
-    var finish_fold_callback: (()->())?
-    var finish_batch_callback: (()->())?
+    var finishFoldCallback: (()->())?
+    var finishBatchCallback: (()->())?
     
     struct Fold {
         var train_ix: [Int]
@@ -46,8 +46,8 @@ class MagicNet {
     struct Candidate {
         var acc: [AnyObject]
         var accv: Double
-        var layer_defs: [LayerOptTypeProtocol]
-        var trainer_def: TrainerOpt
+        var layerDefs: [LayerOptTypeProtocol]
+        var trainerDef: TrainerOpt
         var net: Net
         var trainer: Trainer
     }
@@ -59,38 +59,38 @@ class MagicNet {
         self.labels = labels
         
         // optional inputs
-        self.train_ratio = getopt(opt, "train_ratio", 0.7) as! Double
-        self.num_folds = getopt(opt, "num_folds", 10) as! Int
-        self.num_candidates = getopt(opt, "num_candidates", 50) as! Int // we evaluate several in parallel
+        self.trainRatio = getopt(opt, "trainRatio", 0.7) as! Double
+        self.numFolds = getopt(opt, "numFolds", 10) as! Int
+        self.numCandidates = getopt(opt, "numCandidates", 50) as! Int // we evaluate several in parallel
         // how many epochs of data to train every network? for every fold?
         // higher values mean higher accuracy in final results, but more expensive
-        self.num_epochs = getopt(opt, "num_epochs", 50) as! Int
+        self.numEpochs = getopt(opt, "numEpochs", 50) as! Int
         // number of best models to average during prediction. Usually higher = better
-        self.ensemble_size = getopt(opt, "ensemble_size", 10) as! Int
+        self.ensembleSize = getopt(opt, "ensembleSize", 10) as! Int
         
         // candidate parameters
-        self.batch_size_min = getopt(opt, "batch_size_min", 10) as! Int
-        self.batch_size_max = getopt(opt, "batch_size_max", 300) as! Int
-        self.l2_decay_min = getopt(opt, "l2_decay_min", -4) as! Int
-        self.l2_decay_max = getopt(opt, "l2_decay_max", 2) as! Int
-        self.learning_rate_min = getopt(opt, "learning_rate_min", -4) as! Int
-        self.learning_rate_max = getopt(opt, "learning_rate_max", 0) as! Int
-        self.momentum_min = getopt(opt, "momentum_min", 0.9) as! Double
-        self.momentum_max = getopt(opt, "momentum_max", 0.9) as! Double
-        self.neurons_min = getopt(opt, "neurons_min", 5) as! Int
-        self.neurons_max = getopt(opt, "neurons_max", 30) as! Int
+        self.batchSizeMin = getopt(opt, "batchSizeMin", 10) as! Int
+        self.batchSizeMax = getopt(opt, "batchSizeMax", 300) as! Int
+        self.l2DecayMin = getopt(opt, "l2DecayMin", -4) as! Int
+        self.l2DecayMax = getopt(opt, "l2DecayMax", 2) as! Int
+        self.learningRateMin = getopt(opt, "learningRateMin", -4) as! Int
+        self.learningRateMax = getopt(opt, "learningRateMax", 0) as! Int
+        self.momentumMin = getopt(opt, "momentumMin", 0.9) as! Double
+        self.momentumMax = getopt(opt, "momentumMax", 0.9) as! Double
+        self.neuronsMin = getopt(opt, "neuronsMin", 5) as! Int
+        self.neuronsMax = getopt(opt, "neuronsMax", 30) as! Int
         
         // computed
         self.folds = [] // data fold indices, gets filled by sampleFolds()
         self.candidates = [] // candidate networks that are being currently evaluated
-        self.evaluated_candidates = [] // history of all candidates that were fully evaluated on all folds
-        self.unique_labels = arrUnique(labels)
-        self.iter = 0 // iteration counter, goes from 0 -> num_epochs * num_training_data
+        self.evaluatedCandidates = [] // history of all candidates that were fully evaluated on all folds
+        self.uniqueLabels = arrUnique(labels)
+        self.iter = 0 // iteration counter, goes from 0 -> numEpochs * numTrainingData
         self.foldix = 0 // index of active fold
         
         // callbacks
-        self.finish_fold_callback = nil
-        self.finish_batch_callback = nil
+        self.finishFoldCallback = nil
+        self.finishBatchCallback = nil
         
         // initializations
         if(self.data.count > 0) {
@@ -99,100 +99,100 @@ class MagicNet {
         }
     }
     
-    // sets self.folds to a sampling of self.num_folds folds
+    // sets self.folds to a sampling of self.numFolds folds
     func sampleFolds() -> () {
         let N = self.data.count
-        let num_train = Int(floor(self.train_ratio * Double(N)))
+        let numTrain = Int(floor(self.trainRatio * Double(N)))
         self.folds = [] // flush folds, if any
-        for _ in 0 ..< self.num_folds {
+        for _ in 0 ..< self.numFolds {
             var p = randperm(N)
             let fold = Fold(
-                train_ix: Array(p[0 ..< num_train]),
-                test_ix: Array(p[num_train ..< N]))
+                train_ix: Array(p[0 ..< numTrain]),
+                test_ix: Array(p[numTrain ..< N]))
             self.folds.append(fold)
         }
     }
     
     // returns a random candidate network
     func sampleCandidate() -> Candidate {
-        let input_depth = self.data[0].w.count
-        let num_classes = self.unique_labels.count
+        let inputDepth = self.data[0].w.count
+        let numClasses = self.uniqueLabels.count
         
         // sample network topology and hyperparameters
-        var layer_defs: [LayerOptTypeProtocol] = []
-        let layer_input = InputLayerOpt(
+        var layerDefs: [LayerOptTypeProtocol] = []
+        let layerInput = InputLayerOpt(
             outSx: 1,
             outSy: 1,
-            outDepth: input_depth)
-        layer_defs.append(layer_input)
+            outDepth: inputDepth)
+        layerDefs.append(layerInput)
         let nl = Int(weightedSample([0,1,2,3], probs: [0.2, 0.3, 0.3, 0.2])!) // prefer nets with 1,2 hidden layers
         for _ in 0 ..< nl { // WARNING: iterator was q
 
-            let ni = RandUtils.randi(self.neurons_min, self.neurons_max)
+            let ni = RandUtils.randi(self.neuronsMin, self.neuronsMax)
             let actarr: [ActivationType] = [.Tanh, .Maxout, .ReLU]
             let act = actarr[RandUtils.randi(0,3)]
             if(RandUtils.randf(0,1) < 0.5) {
                 let dp = RandUtils.random_js()
-                let layer_fc = FullyConnLayerOpt(
-                    num_neurons: ni,
+                let layerFC = FullyConnLayerOpt(
+                    numNeurons: ni,
                     activation: act,
-                    drop_prob: dp)
-                layer_defs.append(layer_fc)
+                    dropProb: dp)
+                layerDefs.append(layerFC)
             } else {
-                let layer_fc = FullyConnLayerOpt(
-                    num_neurons: ni,
+                let layerFC = FullyConnLayerOpt(
+                    numNeurons: ni,
                     activation: act)
-                layer_defs.append(layer_fc
+                layerDefs.append(layerFC
                 )
             }
         }
         
-        let layer_softmax = SoftmaxLayerOpt(num_classes: num_classes)
+        let layerSoftmax = SoftmaxLayerOpt(numClasses: numClasses)
         
-        layer_defs.append(layer_softmax)
+        layerDefs.append(layerSoftmax)
         let net = Net()
-        net.makeLayers(layer_defs)
+        net.makeLayers(layerDefs)
         
         // sample training hyperparameters
-        let bs = RandUtils.randi(self.batch_size_min, self.batch_size_max) // batch size
-        let l2 = pow(10, RandUtils.randf(Double(self.l2_decay_min), Double(self.l2_decay_max))) // l2 weight decay
-        let lr = pow(10, RandUtils.randf(Double(self.learning_rate_min), Double(self.learning_rate_max))) // learning rate
-        let mom = RandUtils.randf(self.momentum_min, self.momentum_max) // momentum. Lets just use 0.9, works okay usually ;p
+        let bs = RandUtils.randi(self.batchSizeMin, self.batchSizeMax) // batch size
+        let l2 = pow(10, RandUtils.randf(Double(self.l2DecayMin), Double(self.l2DecayMax))) // l2 weight decay
+        let lr = pow(10, RandUtils.randf(Double(self.learningRateMin), Double(self.learningRateMax))) // learning rate
+        let mom = RandUtils.randf(self.momentumMin, self.momentumMax) // momentum. Lets just use 0.9, works okay usually ;p
         let tp = RandUtils.randf(0,1) // trainer type
-        var trainer_def = TrainerOpt()
+        var trainerDef = TrainerOpt()
         if(tp < 0.33) {
-            trainer_def.method = .adadelta
-            trainer_def.batch_size = bs
-            trainer_def.l2_decay = l2
+            trainerDef.method = .adadelta
+            trainerDef.batchSize = bs
+            trainerDef.l2Decay = l2
         } else if(tp < 0.66) {
-            trainer_def.method = .adagrad
-            trainer_def.batch_size = bs
-            trainer_def.l2_decay = l2
-            trainer_def.learning_rate = lr
+            trainerDef.method = .adagrad
+            trainerDef.batchSize = bs
+            trainerDef.l2Decay = l2
+            trainerDef.learningRate = lr
         } else {
-            trainer_def.method = .sgd
-            trainer_def.batch_size = bs
-            trainer_def.l2_decay = l2
-            trainer_def.learning_rate = lr
-            trainer_def.momentum = mom
+            trainerDef.method = .sgd
+            trainerDef.batchSize = bs
+            trainerDef.l2Decay = l2
+            trainerDef.learningRate = lr
+            trainerDef.momentum = mom
         }
         
-        let trainer = Trainer(net: net, options: trainer_def)
+        let trainer = Trainer(net: net, options: trainerDef)
         
 //        var cand = {}
 //        cand.acc = []
 //        cand.accv = 0 // this will maintained as sum(acc) for convenience
-//        cand.layer_defs = layer_defs
-//        cand.trainer_def = trainer_def
+//        cand.layerDefs = layerDefs
+//        cand.trainerDef = trainerDef
 //        cand.net = net
 //        cand.trainer = trainer
-        return Candidate(acc:[], accv: 0, layer_defs: layer_defs, trainer_def: trainer_def, net: net, trainer: trainer)
+        return Candidate(acc:[], accv: 0, layerDefs: layerDefs, trainerDef: trainerDef, net: net, trainer: trainer)
     }
     
-    // sets self.candidates with self.num_candidates candidate nets
+    // sets self.candidates with self.numCandidates candidate nets
     func sampleCandidates() -> () {
         self.candidates = [] // flush, if any
-        for _ in 0 ..< self.num_candidates {
+        for _ in 0 ..< self.numCandidates {
 
             let cand = self.sampleCandidate()
             self.candidates.append(cand)
@@ -215,22 +215,22 @@ class MagicNet {
         }
         
         // process consequences: sample new folds, or candidates
-        let lastiter = self.num_epochs * fold.train_ix.count
+        let lastiter = self.numEpochs * fold.train_ix.count
         if(self.iter >= lastiter) {
             // finished evaluation of this fold. Get final validation
             // accuracies, record them, and go on to next fold.
-            var val_acc = self.evalValErrors()
+            var valAcc = self.evalValErrors()
             for k in 0 ..< self.candidates.count {
 
                 var c = self.candidates[k]
-                c.acc.append(val_acc[k])
-                c.accv += val_acc[k]
+                c.acc.append(valAcc[k])
+                c.accv += valAcc[k]
             }
             self.iter = 0 // reset step number
             self.foldix++ // increment fold
             
-            if(self.finish_fold_callback != nil) {
-                self.finish_fold_callback!()
+            if(self.finishFoldCallback != nil) {
+                self.finishFoldCallback!()
             }
             
             if(self.foldix >= self.folds.count) {
@@ -238,22 +238,22 @@ class MagicNet {
                 // and sample new ones to evaluate.
                 for k in 0 ..< self.candidates.count {
 
-                    self.evaluated_candidates.append(self.candidates[k])
+                    self.evaluatedCandidates.append(self.candidates[k])
                 }
                 // sort evaluated candidates according to accuracy achieved
-                self.evaluated_candidates.sortInPlace({ (a, b) -> Bool in
+                self.evaluatedCandidates.sortInPlace({ (a, b) -> Bool in
                     return (a.accv / Double(a.acc.count)) < (b.accv / Double(b.acc.count))
                 }) // WARNING: not sure > or < ?
 
-                // and clip only to the top few ones (lets place limit at 3*ensemble_size)
+                // and clip only to the top few ones (lets place limit at 3*ensembleSize)
                 // otherwise there are concerns with keeping these all in memory
                 // if MagicNet is being evaluated for a very long time
-                if(self.evaluated_candidates.count > 3 * self.ensemble_size) {
-                    let clip = Array(self.evaluated_candidates[0 ..< 3*self.ensemble_size])
-                    self.evaluated_candidates = clip
+                if(self.evaluatedCandidates.count > 3 * self.ensembleSize) {
+                    let clip = Array(self.evaluatedCandidates[0 ..< 3*self.ensembleSize])
+                    self.evaluatedCandidates = clip
                 }
-                if(self.finish_batch_callback != nil) {
-                    self.finish_batch_callback!()
+                if(self.finishBatchCallback != nil) {
+                    self.finishBatchCallback!()
                 }
                 self.sampleCandidates() // begin with new candidates
                 self.foldix = 0 // reset this
@@ -263,8 +263,8 @@ class MagicNet {
 
                     var c = self.candidates[k]
                     let net = Net()
-                    net.makeLayers(c.layer_defs)
-                    let trainer = Trainer(net: net, options: c.trainer_def)
+                    net.makeLayers(c.layerDefs)
+                    let trainer = Trainer(net: net, options: c.trainerDef)
                     c.net = net
                     c.trainer = trainer
                 }
@@ -296,23 +296,23 @@ class MagicNet {
     }
     
     // returns prediction scores for given test data point, as Vol
-    // uses an averaged prediction from the best ensemble_size models
+    // uses an averaged prediction from the best ensembleSize models
     // x is a Vol.
-    func predict_soft(var data: Vol) -> Vol {
+    func predictSoft(var data: Vol) -> Vol {
         // forward prop the best networks
         // and accumulate probabilities at last layer into a an output Vol
         
-        var eval_candidates: [Candidate] = []
+        var evalCandidates: [Candidate] = []
         var nv = 0
-        if(self.evaluated_candidates.count == 0) {
+        if(self.evaluatedCandidates.count == 0) {
             // not sure what to do here, first batch of nets hasnt evaluated yet
             // lets just predict with current candidates.
             nv = self.candidates.count
-            eval_candidates = self.candidates
+            evalCandidates = self.candidates
         } else {
-            // forward prop the best networks from evaluated_candidates
-            nv = min(self.ensemble_size, self.evaluated_candidates.count)
-            eval_candidates = self.evaluated_candidates
+            // forward prop the best networks from evaluatedCandidates
+            nv = min(self.ensembleSize, self.evaluatedCandidates.count)
+            evalCandidates = self.evaluatedCandidates
         }
         
         // forward nets of all candidates and average the predictions
@@ -320,7 +320,7 @@ class MagicNet {
         var n: Int!
         for j in 0 ..< nv {
 
-            let net = eval_candidates[j].net
+            let net = evalCandidates[j].net
             let x = net.forward(&data)
             if(j==0) {
                 xout = x
@@ -342,49 +342,49 @@ class MagicNet {
     }
     
     func predict(data: Vol) -> Int {
-        let xout = self.predict_soft(data)
-        var predicted_label: Int
+        let xout = self.predictSoft(data)
+        var predictedLabel: Int
         if(xout.w.count != 0) {
             let stats = maxmin(xout.w)!
-            predicted_label = stats.maxi
+            predictedLabel = stats.maxi
         } else {
-            predicted_label = -1 // error out
+            predictedLabel = -1 // error out
         }
-        return predicted_label
+        return predictedLabel
         
     }
     
 //    func toJSON() -> [String: AnyObject] {
-//        // dump the top ensemble_size networks as a list
-//        let nv = min(self.ensemble_size, self.evaluated_candidates.count)
+//        // dump the top ensembleSize networks as a list
+//        let nv = min(self.ensembleSize, self.evaluatedCandidates.count)
 //        var json: [String: AnyObject] = [:]
-//        var j_nets: [[String: AnyObject]] = []
+//        var jNets: [[String: AnyObject]] = []
 //        for i in 0 ..< nv {
-//            j_nets.append(self.evaluated_candidates[i].net.toJSON())
+//            jNets.append(self.evaluatedCandidates[i].net.toJSON())
 //        }
-//        json["nets"] = j_nets
+//        json["nets"] = jNets
 //        return json
 //    }
 //    
 //    func fromJSON(json: [String: AnyObject]) -> () {
-//        let j_nets: [AnyObject] = json["nets"]
-//        self.ensemble_size = j_nets.count
-//        self.evaluated_candidates = []
-//        for i in 0 ..< self.ensemble_size {
+//        let jNets: [AnyObject] = json["nets"]
+//        self.ensembleSize = jNets.count
+//        self.evaluatedCandidates = []
+//        for i in 0 ..< self.ensembleSize {
 //
 //            var net = Net()
-//            net.fromJSON(j_nets[i])
-//            var dummy_candidate = [:]
-//            dummy_candidate.net = net
-//            self.evaluated_candidates.append(dummy_candidate)
+//            net.fromJSON(jNets[i])
+//            var dummyCandidate = [:]
+//            dummyCandidate.net = net
+//            self.evaluatedCandidates.append(dummyCandidate)
 //        }
 //    }
     
     // callback functions
     // called when a fold is finished, while evaluating a batch
-    func onFinishFold(f: (()->())?) -> () { self.finish_fold_callback = f; }
+    func onFinishFold(f: (()->())?) -> () { self.finishFoldCallback = f; }
     // called when a batch of candidates has finished evaluating
-    func onFinishBatch(f: (()->())?) -> () { self.finish_batch_callback = f; }
+    func onFinishBatch(f: (()->())?) -> () { self.finishBatchCallback = f; }
     
 }
 

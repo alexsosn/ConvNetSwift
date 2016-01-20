@@ -20,7 +20,7 @@ struct ConvLayerOpt: LayerInOptProtocol, LayerOptActivationProtocol {
     var pad: Int = 0
     var l1DecayMul: Double = 0.0
     var l2DecayMul: Double = 1.0
-    var bias_pref: Double = 0.0
+    var biasPref: Double = 0.0
     var activation: ActivationType = .Undefined
     
     init (sx: Int, filters: Int, stride: Int, pad: Int, activation: ActivationType) {
@@ -78,7 +78,7 @@ class ConvLayer: InnerLayer {
         layerType = .Conv
         
         // initializations
-        let bias = opt.bias_pref
+        let bias = opt.biasPref
         filters = []
         for _ in 0..<outDepth {
             filters.append(Vol(sx: sx, sy: sy, depth: inDepth))
@@ -141,7 +141,7 @@ class ConvLayer: InnerLayer {
             else {
                 return
         }
-        V.dw = zerosd(V.w.count) // zero out gradient wrt bottom data, we're about to fill it
+        V.dw = zerosDouble(V.w.count) // zero out gradient wrt bottom data, we're about to fill it
         
         let V_sx = V.sx|0
         let V_sy = V.sy|0
@@ -157,7 +157,7 @@ class ConvLayer: InnerLayer {
                 for(var ax=0; ax<outSx; x+=xy_stride,ax++) {  // xy_stride
                     
                     // convolve centered at this particular location
-                    let chain_grad = outAct.getGrad(x: ax, y: ay, d: d) // gradient from above, from chain rule
+                    let chainGrad = outAct.getGrad(x: ax, y: ay, d: d) // gradient from above, from chain rule
                     for fy in 0 ..< f.sy {
 
                         let oy = y+fy // coordinates in the original input array coordinates
@@ -170,13 +170,13 @@ class ConvLayer: InnerLayer {
                                     // avoid function call overhead (x2) for efficiency, compromise modularity :(
                                     let ix1 = ((V_sx * oy)+ox)*V.depth+fd
                                     let ix2 = ((f.sx * fy)+fx)*f.depth+fd
-                                    f.dw[ix2] += V.w[ix1]*chain_grad
-                                    V.dw[ix1] += f.w[ix2]*chain_grad
+                                    f.dw[ix2] += V.w[ix1]*chainGrad
+                                    V.dw[ix1] += f.w[ix2]*chainGrad
                                 }
                             }
                         }
                     }
-                    biases.dw[d] += chain_grad
+                    biases.dw[d] += chainGrad
                 }
             }
             filters[d] = f
@@ -227,11 +227,11 @@ class ConvLayer: InnerLayer {
         json["l2DecayMul"] = l2DecayMul
         json["pad"] = pad
         
-        var json_filters: [[String: AnyObject]] = []
+        var jsonFilters: [[String: AnyObject]] = []
         for i in 0 ..< filters.count {
-            json_filters.append(filters[i].toJSON())
+            jsonFilters.append(filters[i].toJSON())
         }
-        json["filters"] = json_filters
+        json["filters"] = jsonFilters
 
         json["biases"] = biases.toJSON()
         return json
@@ -251,10 +251,10 @@ class ConvLayer: InnerLayer {
 ////        l2DecayMul = json["l2DecayMul"] != nil ? json["l2DecayMul"] : 1.0
 ////        pad = json["pad"] != nil ? json["pad"] : 0
 //        
-//        var json_filters = json["filters"] as! [[String: AnyObject]]
-//        for i in 0 ..< json_filters.count {
+//        var jsonFilters = json["filters"] as! [[String: AnyObject]]
+//        for i in 0 ..< jsonFilters.count {
 //            let v = Vol(0,0,0,0)
-//            v.fromJSON(json_filters[i])
+//            v.fromJSON(jsonFilters[i])
 //            filters.append(v)
 //        }
 //        
@@ -266,29 +266,29 @@ class ConvLayer: InnerLayer {
 struct FullyConnLayerOpt: LayerInOptProtocol, LayerOptActivationProtocol, DropProbProtocol {
     var layerType: LayerType = .FC
 
-    var num_neurons: Int?
+    var numNeurons: Int?
     var filters: Int?
     var inSx: Int = 0
     var inSy: Int = 0
     var inDepth: Int = 0
     var l1DecayMul: Double = 0.0
     var l2DecayMul: Double = 1.0
-    var bias_pref: Double = 0.0
+    var biasPref: Double = 0.0
     var activation: ActivationType = .Undefined
-    var drop_prob: Double?
+    var dropProb: Double?
     
-    init(num_neurons: Int) {
-        self.num_neurons = num_neurons
+    init(numNeurons: Int) {
+        self.numNeurons = numNeurons
     }
     
-    init(num_neurons: Int, activation: ActivationType, drop_prob: Double) {
-        self.num_neurons = num_neurons
+    init(numNeurons: Int, activation: ActivationType, dropProb: Double) {
+        self.numNeurons = numNeurons
         self.activation = activation
-        self.drop_prob = drop_prob
+        self.dropProb = dropProb
     }
     
-    init(num_neurons: Int, activation: ActivationType) {
-        self.num_neurons = num_neurons
+    init(numNeurons: Int, activation: ActivationType) {
+        self.numNeurons = numNeurons
         self.activation = activation
     }
 }
@@ -303,7 +303,7 @@ class FullyConnLayer: InnerLayer {
         var outAct: Vol?
         var l1DecayMul: Double
         var l2DecayMul: Double
-        var num_inputs: Int
+        var numInputs: Int
         var filters: [Vol]
         var biases: Vol
     
@@ -313,23 +313,23 @@ class FullyConnLayer: InnerLayer {
         // required
         // ok fine we will allow 'filters' as the word as well
         
-        outDepth = opt.num_neurons ?? opt.filters ?? 0
+        outDepth = opt.numNeurons ?? opt.filters ?? 0
         
         // onal
         self.l1DecayMul = opt.l1DecayMul
         self.l2DecayMul = opt.l2DecayMul
         
         // computed
-        num_inputs = opt.inSx * opt.inSy * opt.inDepth
+        numInputs = opt.inSx * opt.inSy * opt.inDepth
         outSx = 1
         outSy = 1
         layerType = .FC
         
         // initializations
-        let bias = opt.bias_pref
+        let bias = opt.biasPref
         self.filters = []
         for _ in 0 ..< outDepth {
-            self.filters.append(Vol(sx: 1, sy: 1, depth: num_inputs)) // Volumes should be different!
+            self.filters.append(Vol(sx: 1, sy: 1, depth: numInputs)) // Volumes should be different!
         }
         biases = Vol(sx: 1, sy: 1, depth: outDepth, c: bias)
     }
@@ -342,7 +342,7 @@ class FullyConnLayer: InnerLayer {
 
             var a = 0.0
             var wi = filters[i].w
-            for d in 0 ..< num_inputs {
+            for d in 0 ..< numInputs {
                 a += Vw[d] * wi[d] // for efficiency use Vols directly for now
             }
             a += biases.w[i]
@@ -357,19 +357,19 @@ class FullyConnLayer: InnerLayer {
             let outAct = outAct else {
                 return
         }
-        V.dw = [Double](count: V.w.count, repeatedValue: 0.0) // zero out the gradient in input Vol
+        V.dw = zerosDouble(V.w.count) // zero out the gradient in input Vol
         
         // compute gradient wrt weights and data
         for i in 0 ..< outDepth {
 
             let tfi = filters[i]
-            let chain_grad = outAct.dw[i]
-            for d in 0 ..< num_inputs {
+            let chainGrad = outAct.dw[i]
+            for d in 0 ..< numInputs {
 
-                V.dw[d] += tfi.w[d]*chain_grad // grad wrt input data
-                tfi.dw[d] += V.w[d]*chain_grad // grad wrt params
+                V.dw[d] += tfi.w[d]*chainGrad // grad wrt input data
+                tfi.dw[d] += V.w[d]*chainGrad // grad wrt params
             }
-            biases.dw[i] += chain_grad
+            biases.dw[i] += chainGrad
             filters[i] = tfi
         }
 //        inAct = V
@@ -410,14 +410,14 @@ class FullyConnLayer: InnerLayer {
         json["outSx"] = outSx
         json["outSy"] = outSy
         json["layerType"] = layerType.rawValue
-        json["num_inputs"] = num_inputs
+        json["numInputs"] = numInputs
         json["l1DecayMul"] = l1DecayMul
         json["l2DecayMul"] = l2DecayMul
-        var json_filters: [[String: AnyObject]] = []
+        var jsonFilters: [[String: AnyObject]] = []
         for i in 0 ..< filters.count {
-            json_filters.append(filters[i].toJSON())
+            jsonFilters.append(filters[i].toJSON())
         }
-        json["filters"] = json_filters
+        json["filters"] = jsonFilters
         json["biases"] = biases.toJSON()
         return json
     }
@@ -427,14 +427,14 @@ class FullyConnLayer: InnerLayer {
 //        outSx = json["outSx"] as! Int
 //        outSy = json["outSy"] as! Int
 //        layerType = json["layerType"] as! String
-//        num_inputs = json["num_inputs"] as! Int
+//        numInputs = json["numInputs"] as! Int
 ////        l1DecayMul = json["l1DecayMul"] != nil ? json["l1DecayMul"] : 1.0
 ////        l2DecayMul = json["l2DecayMul"] != nil ? json["l2DecayMul"] : 1.0
 //        filters = []
-//        var json_filters = json["filters"] as! [[String: AnyObject]]
-//        for i in 0 ..< json_filters.count {
+//        var jsonFilters = json["filters"] as! [[String: AnyObject]]
+//        for i in 0 ..< jsonFilters.count {
 //            let v = Vol(0,0,0,0)
-//            v.fromJSON(json_filters[i])
+//            v.fromJSON(jsonFilters[i])
 //            filters.append(v)
 //        }
 //        biases = Vol(0,0,0,0)
