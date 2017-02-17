@@ -62,7 +62,7 @@ class PoolLayer: InnerLayer {
         
         let A = Vol(sx: self.outSx, sy: self.outSy, depth: self.outDepth, c: 0.0)
         
-        var n=0 // a counter for switches
+        var n = 0 // a counter for switches
         for d in 0 ..< self.outDepth {
 
             var x = -self.pad
@@ -83,12 +83,16 @@ class PoolLayer: InnerLayer {
 
                             let oy = y+fy
                             let ox = x+fx
-                            if(oy>=0 && oy<V.sy && ox>=0 && ox<V.sx) {
+                            if oy>=0 && oy<V.sy && ox>=0 && ox<V.sx {
                                 let v = V.get(x: ox, y: oy, d: d)
                                 // perform max pooling and store pointers to where
                                 // the max came from. This will speed up backprop
                                 // and can help make nice visualizations in future
-                                if(v > a) { a = v; winx=ox; winy=oy;}
+                                if v > a {
+                                    a = v;
+                                    winx = ox;
+                                    winy = oy;
+                                }
                             }
                         }
                     }

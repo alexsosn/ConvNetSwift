@@ -29,6 +29,8 @@
 		2B16E0D51BD93BB100E0A2AA /* LayersPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0CE1BD93BB100E0A2AA /* LayersPool.swift */; };
 		2B16E0D71BD93CA700E0A2AA /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0D61BD93CA700E0A2AA /* Layer.swift */; };
 		2B2905AC1C4F9E0C008CA36D /* FCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2905AB1C4F9E0C008CA36D /* FCTests.swift */; };
+		2B2905AE1C4FAD7F008CA36D /* Nyura_sq.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B2905AD1C4FAD7F008CA36D /* Nyura_sq.png */; };
+		2B2905AF1C4FAD7F008CA36D /* Nyura_sq.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B2905AD1C4FAD7F008CA36D /* Nyura_sq.png */; };
 		2B4064801BE8CABD00C0B618 /* SimpleNetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40647F1BE8CABD00C0B618 /* SimpleNetTests.swift */; };
 		2B4064811BE92EAC00C0B618 /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0D61BD93CA700E0A2AA /* Layer.swift */; };
 		2B4064821BE92EB000C0B618 /* LayersDotproducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C21BD93BB100E0A2AA /* LayersDotproducts.swift */; };
@@ -95,6 +97,7 @@
 		2B16E0CE1BD93BB100E0A2AA /* LayersPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersPool.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0D61BD93CA700E0A2AA /* Layer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layer.swift; sourceTree = "<group>"; };
 		2B2905AB1C4F9E0C008CA36D /* FCTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FCTests.swift; sourceTree = "<group>"; };
+		2B2905AD1C4FAD7F008CA36D /* Nyura_sq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Nyura_sq.png; sourceTree = "<group>"; };
 		2B40647F1BE8CABD00C0B618 /* SimpleNetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleNetTests.swift; sourceTree = "<group>"; };
 		2B480E5D1C048BA30056865A /* UtilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = UtilTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B480E651C0502DC0056865A /* VolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VolTests.swift; sourceTree = "<group>"; };
@@ -268,6 +271,7 @@
 		2B7E51831C119BE7006BE7F2 /* img */ = {
 			isa = PBXGroup;
 			children = (
+				2B2905AD1C4FAD7F008CA36D /* Nyura_sq.png */,
 				2B7E51871C119D59006BE7F2 /* Nyura.jpg */,
 				2B7E51881C119D59006BE7F2 /* Nyura.png */,
 				2B7E51841C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg */,
@@ -366,6 +370,7 @@
 				2B16E08C1BD93A3300E0A2AA /* LaunchScreen.storyboard in Resources */,
 				2B7E51851C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg in Resources */,
 				2B16E0891BD93A3300E0A2AA /* Assets.xcassets in Resources */,
+				2B2905AE1C4FAD7F008CA36D /* Nyura_sq.png in Resources */,
 				2B16E0871BD93A3300E0A2AA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -375,6 +380,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B7E51861C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg in Resources */,
+				2B2905AF1C4FAD7F008CA36D /* Nyura_sq.png in Resources */,
 				2B7E518A1C119D59006BE7F2 /* Nyura.jpg in Resources */,
 				2B7E518C1C119D59006BE7F2 /* Nyura.png in Resources */,
 			);
