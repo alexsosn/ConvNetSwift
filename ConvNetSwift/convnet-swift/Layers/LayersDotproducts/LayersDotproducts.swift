@@ -115,7 +115,7 @@ class ConvLayer: InnerLayer {
                         
                         for fx in 0 ..< f.sx {
                             let ox = x+fx
-                            if(oy>=0 && oy<V_sy && ox>=0 && ox<V_sx) {
+                            if oy>=0 && oy<V_sy && ox>=0 && ox<V_sx {
                                 
                                 for fd in 0 ..< f.depth {
                                     // avoid function call overhead (x2) for efficiency, compromise modularity :(
@@ -166,7 +166,7 @@ class ConvLayer: InnerLayer {
                         for fx in 0 ..< f.sx {
 
                             let ox = x+fx
-                            if(oy>=0 && oy<V_sy && ox>=0 && ox<V_sx) {
+                            if oy>=0 && oy<V_sy && ox>=0 && ox<V_sx {
                                 for fd in 0 ..< f.depth {
 
                                     // avoid function call overhead (x2) for efficiency, compromise modularity :(
@@ -318,8 +318,8 @@ class FullyConnectedLayer: InnerLayer {
         outDepth = opt.numNeurons ?? opt.filters ?? 0
         
         // onal
-        self.l1DecayMul = opt.l1DecayMul
-        self.l2DecayMul = opt.l2DecayMul
+        l1DecayMul = opt.l1DecayMul
+        l2DecayMul = opt.l2DecayMul
         
         // computed
         numInputs = opt.inSx * opt.inSy * opt.inDepth
@@ -329,9 +329,9 @@ class FullyConnectedLayer: InnerLayer {
         
         // initializations
         let bias = opt.biasPref
-        self.filters = []
+        filters = []
         for _ in 0 ..< outDepth {
-            self.filters.append(Vol(sx: 1, sy: 1, depth: numInputs)) // Volumes should be different!
+            filters.append(Vol(sx: 1, sy: 1, depth: numInputs)) // Volumes should be different!
         }
         biases = Vol(sx: 1, sy: 1, depth: outDepth, c: bias)
     }

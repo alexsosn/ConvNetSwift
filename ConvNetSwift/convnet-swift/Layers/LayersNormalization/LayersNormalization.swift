@@ -32,27 +32,27 @@ class LocalResponseNormalizationLayer: InnerLayer {
     init(opt: LocalResponseNormalizationLayerOpt) {
         
         // required
-        self.k = opt.k
-        self.n = opt.n
-        self.α = opt.α
-        self.β = opt.β
+        k = opt.k
+        n = opt.n
+        α = opt.α
+        β = opt.β
         
         // computed
-        self.outSx = opt.inSx
-        self.outSy = opt.inSy
-        self.outDepth = opt.inDepth
-        self.layerType = .LRN
+        outSx = opt.inSx
+        outSy = opt.inSy
+        outDepth = opt.inDepth
+        layerType = .LRN
         
         // checks
-        if self.n.truncatingRemainder(dividingBy: 2) == 0 { print("WARNING n should be odd for LRN layer"); }
+        if n.truncatingRemainder(dividingBy: 2) == 0 { print("WARNING n should be odd for LRN layer"); }
     }
     
     func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
-        self.inAct = V
+        inAct = V
         
         let A = V.cloneAndZero()
-        self.S_cache_ = V.cloneAndZero()
-        let n2 = Int(floor(self.n/2))
+        S_cache_ = V.cloneAndZero()
+        let n2 = Int(floor(n/2))
         for x in 0 ..< V.sx {
 
             for y in 0 ..< V.sy {
@@ -68,32 +68,32 @@ class LocalResponseNormalizationLayer: InnerLayer {
                         let aa = V.get(x: x, y: y, d: j)
                         den += aa*aa
                     }
-                    den *= self.α / self.n
-                    den += self.k
-                    self.S_cache_!.set(x: x, y: y, d: i, v: den) // will be useful for backprop
-                    den = pow(den, self.β)
+                    den *= α / n
+                    den += k
+                    S_cache_!.set(x: x, y: y, d: i, v: den) // will be useful for backprop
+                    den = pow(den, β)
                     A.set(x: x, y: y, d: i, v: ai/den)
                 }
             }
         }
         
-        self.outAct = A
-        return self.outAct! // dummy identity function for now
+        outAct = A
+        return outAct! // dummy identity function for now
     }
     
     func backward() -> () {
         // evaluate gradient wrt data
-        guard let V = self.inAct, // we need to set dw of this
-            let outAct = self.outAct,
-            let S_cache_ = self.S_cache_
+        guard let V = inAct, // we need to set dw of this
+            let outAct = outAct,
+            let S_cache_ = S_cache_
             else {
-                fatalError("self.inAct or self.outAct or S_cache_ is nil")
+                fatalError("inAct or outAct or S_cache_ is nil")
         }
         
         V.dw = ArrayUtils.zerosDouble(V.w.count) // zero out gradient wrt data
-//        let A = self.outAct // computed in forward pass
+//        let A = outAct // computed in forward pass
         
-        let n2 = Int(floor(self.n/2))
+        let n2 = Int(floor(n/2))
         for x in 0 ..< V.sx {
 
             for y in 0 ..< V.sy {
@@ -103,13 +103,13 @@ class LocalResponseNormalizationLayer: InnerLayer {
                     
                     let chainGrad = outAct.getGrad(x: x, y: y, d: i)
                     let S = S_cache_.get(x: x, y: y, d: i)
-                    let SB = pow(S, self.β)
+                    let SB = pow(S, β)
                     let SB2 = SB*SB
                     
                     // normalize in a window of size n
                     for j in max(0, i-n2) ... min(i+n2, V.depth-1) {
                         let aj = V.get(x: x, y: y, d: j)
-                        var g = -aj*self.β*pow(S, self.β-1)*self.α/self.n*2*aj
+                        var g = -aj*β*pow(S, β-1)*α/n*2*aj
                         if j==i {
                             g += SB
                         }
@@ -131,26 +131,26 @@ class LocalResponseNormalizationLayer: InnerLayer {
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["k"] = self.k as AnyObject?
-        json["n"] = self.n as AnyObject?
-        json["alpha"] = self.α as AnyObject? // normalize by size
-        json["beta"] = self.β as AnyObject?
-        json["outSx"] = self.outSx as AnyObject?
-        json["outSy"] = self.outSy as AnyObject?
-        json["outDepth"] = self.outDepth as AnyObject?
-        json["layerType"] = self.layerType.rawValue as AnyObject?
+        json["k"] = k as AnyObject?
+        json["n"] = n as AnyObject?
+        json["alpha"] = α as AnyObject? // normalize by size
+        json["beta"] = β as AnyObject?
+        json["outSx"] = outSx as AnyObject?
+        json["outSy"] = outSy as AnyObject?
+        json["outDepth"] = outDepth as AnyObject?
+        json["layerType"] = layerType.rawValue as AnyObject?
         return json
     }
 //
 //    func fromJSON(json: [String: AnyObject]) -> () {
-//        self.k = json["k"]
-//        self.n = json["n"]
-//        self.alpha = json["alpha"] // normalize by size
-//        self.beta = json["beta"]
-//        self.outSx = json["outSx"]; 
-//        self.outSy = json["outSy"]
-//        self.outDepth = json["outDepth"]
-//        self.layerType = json["layerType"]
+//        k = json["k"]
+//        n = json["n"]
+//        alpha = json["alpha"] // normalize by size
+//        beta = json["beta"]
+//        outSx = json["outSx"]; 
+//        outSy = json["outSy"]
+//        outDepth = json["outDepth"]
+//        layerType = json["layerType"]
 //    }
 }
 

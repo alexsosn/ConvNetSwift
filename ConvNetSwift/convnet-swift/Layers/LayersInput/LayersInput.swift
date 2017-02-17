@@ -29,20 +29,20 @@ class InputLayer: InnerLayer {
     init(opt: InputLayerOpt) {
         
         // required: depth
-        self.outDepth = opt.outDepth ?? 0
+        outDepth = opt.outDepth
         
         // optional: default these dimensions to 1
-        self.outSx = opt.outSx ?? 1
-        self.outSy = opt.outSy ?? 1
+        outSx = opt.outSx
+        outSy = opt.outSy
         
         // computed
-        self.layerType = .Input
+        layerType = .Input
     }
     
     func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
-        self.inAct = V
-        self.outAct = V
-        return self.outAct! // simply identity function for now
+        inAct = V
+        outAct = V
+        return outAct! // simply identity function for now
     }
     
     func backward() -> () {}
@@ -57,17 +57,17 @@ class InputLayer: InnerLayer {
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["outDepth"] = self.outDepth as AnyObject?
-        json["outSx"] = self.outSx as AnyObject?
-        json["outSy"] = self.outSy as AnyObject?
-        json["layerType"] = self.layerType.rawValue as AnyObject?
+        json["outDepth"] = outDepth as AnyObject?
+        json["outSx"] = outSx as AnyObject?
+        json["outSy"] = outSy as AnyObject?
+        json["layerType"] = layerType.rawValue as AnyObject?
         return json
     }
 
 //    func fromJSON(json: [String: AnyObject]) -> () {
-//        self.outDepth = json["outDepth"]
-//        self.outSx = json["outSx"]
-//        self.outSy = json["outSy"]
-//        self.layerType = json["layerType"]; 
+//        outDepth = json["outDepth"]
+//        outSx = json["outSx"]
+//        outSy = json["outSy"]
+//        layerType = json["layerType"]; 
 //    }
 }

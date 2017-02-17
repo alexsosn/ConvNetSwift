@@ -43,7 +43,7 @@ class ViewController: UIViewController {
         traindef.l2Decay = 0.001
         
         let trainer = Trainer(net: net, options: traindef)
-        trainer.train(x: &x, y: 0) // train the network, specifying that x is class zero
+        _ = trainer.train(x: &x, y: 0) // train the network, specifying that x is class zero
         
         let prob2 = net.forward(&x)
         print("probability that x is class 0: \(prob2.w[0])")

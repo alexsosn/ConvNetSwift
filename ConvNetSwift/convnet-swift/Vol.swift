@@ -19,15 +19,15 @@ class Vol {
         self.init()
 
         // we were given a list in sx, assume 1D volume and fill it up
-        self.sx = 1
-        self.sy = 1
-        self.depth = array.count
+        sx = 1
+        sy = 1
+        depth = array.count
         // we have to do the following copy because we want to use
         // fast typed arrays, not an ordinary javascript array
-        self.w = ArrayUtils.zerosDouble(self.depth)
-        self.dw = ArrayUtils.zerosDouble(self.depth)
-        for i in 0 ..< self.depth {
-            self.w[i] = array[i]
+        w = ArrayUtils.zerosDouble(depth)
+        dw = ArrayUtils.zerosDouble(depth)
+        for i in 0 ..< depth {
+            w[i] = array[i]
         }
     }
     
@@ -37,7 +37,7 @@ class Vol {
         self.sx = sx
         self.sy = sy
         self.depth = depth
-        self.w = array
+        w = array
     }
     
     convenience init(sx: Int, sy: Int, depth: Int) {
@@ -55,8 +55,8 @@ class Vol {
         self.sy = sy
         self.depth = depth
         let n = sx*sy*depth
-        self.w = ArrayUtils.zerosDouble(n)
-        self.dw = ArrayUtils.zerosDouble(n)
+        w = ArrayUtils.zerosDouble(n)
+        dw = ArrayUtils.zerosDouble(n)
         if c == nil {
             // weight normalization is done to equalize the output
             // variance of every neuron, otherwise neurons with a lot
@@ -64,101 +64,101 @@ class Vol {
             let scale = sqrt(1.0/Double(sx*sy*depth))
             for i in 0 ..< n {
 
-                self.w[i] = RandUtils.randn(0.0, std: scale)
+                w[i] = RandUtils.randn(0.0, std: scale)
             }
         } else {
             for i in 0 ..< n {
 
-                self.w[i] = c!
+                w[i] = c!
             }
         }
         
     }
     
     func get(x: Int, y: Int, d: Int) -> Double {
-        let ix=((self.sx * y)+x)*self.depth+d
-        return self.w[ix]
+        let ix=((sx * y)+x)*depth+d
+        return w[ix]
     }
     
     func set(x: Int, y: Int, d: Int, v: Double) -> () {
-        let ix=((self.sx * y)+x)*self.depth+d
-        self.w[ix] = v
+        let ix=((sx * y)+x)*depth+d
+        w[ix] = v
     }
     
     func add(x: Int, y: Int, d: Int, v: Double) -> () {
-        let ix=((self.sx * y)+x)*self.depth+d
-        self.w[ix] += v
+        let ix=((sx * y)+x)*depth+d
+        w[ix] += v
     }
     
     func getGrad(x: Int, y: Int, d: Int) -> Double {
-        let ix = ((self.sx * y)+x)*self.depth+d
-        return self.dw[ix]
+        let ix = ((sx * y)+x)*depth+d
+        return dw[ix]
     }
     
     func setGrad(x: Int, y: Int, d: Int, v: Double) -> () {
-        let ix = ((self.sx * y)+x)*self.depth+d
-        self.dw[ix] = v
+        let ix = ((sx * y)+x)*depth+d
+        dw[ix] = v
     }
     
     func addGrad(x: Int, y: Int, d: Int, v: Double) -> () {
-        let ix = ((self.sx * y)+x)*self.depth+d
-        self.dw[ix] += v
+        let ix = ((sx * y)+x)*depth+d
+        dw[ix] += v
     }
     
     func cloneAndZero() -> Vol {
-        return Vol(sx: self.sx, sy: self.sy, depth: self.depth, c: 0.0)
+        return Vol(sx: sx, sy: sy, depth: depth, c: 0.0)
     }
     
     func clone() -> Vol {
-        let V = Vol(sx: self.sx, sy: self.sy, depth: self.depth, c: 0.0)
-        let n = self.w.count
+        let V = Vol(sx: sx, sy: sy, depth: depth, c: 0.0)
+        let n = w.count
         for i in 0 ..< n {
-            V.w[i] = self.w[i]
+            V.w[i] = w[i]
         }
         return V
     }
     
     func addFrom(_ V: Vol) {
-        for k in 0 ..< self.w.count {
-            self.w[k] += V.w[k]
+        for k in 0 ..< w.count {
+            w[k] += V.w[k]
         }
     }
     
     func addFromScaled(_ V: Vol, a: Double) {
-        for k in 0 ..< self.w.count {
-            self.w[k] += a*V.w[k]
+        for k in 0 ..< w.count {
+            w[k] += a*V.w[k]
         }
     }
     
     func setConst(_ a: Double) {
-        for k in 0 ..< self.w.count {
-            self.w[k] = a
+        for k in 0 ..< w.count {
+            w[k] = a
         }
     }
     
     func toJSON() -> [String: AnyObject] {
         // TODO: we may want to only save d most significant digits to save space
         var json: [String: AnyObject] = [:]
-        json["sx"] = self.sx as AnyObject?
-        json["sy"] = self.sy as AnyObject?
-        json["depth"] = self.depth as AnyObject?
-        json["w"] = self.w as AnyObject?
+        json["sx"] = sx as AnyObject?
+        json["sy"] = sy as AnyObject?
+        json["depth"] = depth as AnyObject?
+        json["w"] = w as AnyObject?
         return json
         // we wont back up gradients to save space
     }
 
 //    func fromJSON(json: [String: AnyObject]) -> () {
-//        self.sx = json["sx"]
-//        self.sy = json["sy"]
-//        self.depth = json["depth"]
+//        sx = json["sx"]
+//        sy = json["sy"]
+//        depth = json["depth"]
 //        
-//        var n = self.sx*self.sy*self.depth
-//        self.w = zeros(n)
-//        self.dw = zeros(n)
+//        var n = sx*sy*depth
+//        w = zeros(n)
+//        dw = zeros(n)
 //        // copy over the elements.
 //        for i in 0 ..< n {
 //
-//            self.w[i] = json["w"][i]
+//            w[i] = json["w"][i]
 //        }
 //    }
     

@@ -48,7 +48,7 @@ class Net {
             
             new_defs.append(def)
             
-            if(def is LayerOptActivationProtocol) {
+            if def is LayerOptActivationProtocol {
                 var def = def as! LayerOptActivationProtocol
                 
                 switch def.activation {
@@ -89,14 +89,14 @@ class Net {
         defs = desugar(defs)
         
         // create the layers
-        self.layers = []
+        layers = []
         for i in 0 ..< defs.count {
 
             var def = defs[i]
             
-            if(i>0) {
+            if i>0 {
                 var in_def = def as! LayerInOptProtocol
-                var prev = self.layers[i-1]
+                var prev = layers[i-1]
                 in_def.inSx = prev.outSx
                 in_def.inSy = prev.outSy
                 in_def.inDepth = prev.outDepth
@@ -135,7 +135,7 @@ class Net {
                 print("ERROR: UNRECOGNIZED LAYER TYPE: \(def)")
             }
             if layer != nil {
-                self.layers.append(layer!)
+                layers.append(layer!)
             }
         }
     }
@@ -145,58 +145,58 @@ class Net {
     // called from outside (not from the trainer), it defaults to prediction mode
     func forward(_ V: inout Vol, isTraining: Bool = false) -> Vol {
 
-        var act = self.layers[0].forward(&V, isTraining: isTraining)
-        for i in 1 ..< self.layers.count {
-            act = self.layers[i].forward(&act, isTraining: isTraining)
+        var act = layers[0].forward(&V, isTraining: isTraining)
+        for i in 1 ..< layers.count {
+            act = layers[i].forward(&act, isTraining: isTraining)
         }
         return act
     }
     
     func getCostLoss(V: inout Vol, y: Int) -> Double {
-        self.forward(&V, isTraining: false)
-        let loss = (self.layers.last! as! LossLayer).backward(y)
+        forward(&V, isTraining: false)
+        let loss = (layers.last! as! LossLayer).backward(y)
         return loss
     }
     
     func getCostLoss(V: inout Vol, y: Double) -> Double {
-        self.forward(&V, isTraining: false)
-        let loss = (self.layers.last! as! RegressionLayer).backward(y)
+        forward(&V, isTraining: false)
+        let loss = (layers.last! as! RegressionLayer).backward(y)
         return loss
     }
     
     // backprop: compute gradients wrt all parameters
     func backward(_ y: Int) -> Double {
-        let loss = (self.layers.last! as! LossLayer).backward(y) // last layer assumed to be loss layer
-        let N = self.layers.count
-        for i in (N-2 ... 0).reversed() { // first layer assumed input
-            (self.layers[i] as! InnerLayer).backward()
+        let loss = (layers.last! as! LossLayer).backward(y) // last layer assumed to be loss layer
+        let N = layers.count
+        for i in stride(from: N-2, through: 0, by: -1) { // first layer assumed input
+            (layers[i] as! InnerLayer).backward()
         }
         return loss
     }
     
     func backward(_ y: [Double]) -> Double {
-        let loss = (self.layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
-        let N = self.layers.count
-        for i in (N-2 ... 0).reversed() { // first layer assumed input
-            (self.layers[i] as! InnerLayer).backward()
+        let loss = (layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
+        let N = layers.count
+        for i in stride(from: N-2, through: 0, by: -1) { // first layer assumed input
+            (layers[i] as! InnerLayer).backward()
         }
         return loss
     }
     
     func backward(_ y: Double) -> Double {
-        let loss = (self.layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
-        let N = self.layers.count
-        for i in (N-2 ... 0).reversed() { // first layer assumed input
-            (self.layers[i] as! InnerLayer).backward()
+        let loss = (layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
+        let N = layers.count
+        for i in stride(from: N-2, through: 0, by: -1) { // first layer assumed input
+            (layers[i] as! InnerLayer).backward()
         }
         return loss
     }
     
     func backward(_ y: RegressionLayer.Pair) -> Double {
-        let loss = (self.layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
-        let N = self.layers.count
-        for i in (N-2 ... 0).reversed() { // first layer assumed input
-            (self.layers[i] as! InnerLayer).backward()
+        let loss = (layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
+        let N = layers.count
+        for i in stride(from: N-2, through: 0, by: -1) { // first layer assumed input
+            (layers[i] as! InnerLayer).backward()
         }
         return loss
     }
@@ -204,13 +204,13 @@ class Net {
     func getParamsAndGrads() -> [ParamsAndGrads] {
         // accumulate parameters and gradients for the entire network
         var response: [ParamsAndGrads] = []
-        self.layerResponseLengths = []
+        layerResponseLengths = []
         
-        for i in 0 ..< self.layers.count {
+        for i in 0 ..< layers.count {
 
-            var layer_reponse = self.layers[i].getParamsAndGrads()
+            var layer_reponse = layers[i].getParamsAndGrads()
             let layerRespLen = layer_reponse.count
-            self.layerResponseLengths.append(layerRespLen)
+            layerResponseLengths.append(layerRespLen)
             
             for j in 0 ..< layerRespLen {
                 response.append(layer_reponse[j])
@@ -222,10 +222,10 @@ class Net {
     func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         var offset = 0
 
-        for i in 0 ..< self.layers.count {
-            let length = self.layerResponseLengths[i]
+        for i in 0 ..< layers.count {
+            let length = layerResponseLengths[i]
             let chunk = Array(paramsAndGrads[offset ..< offset+length])
-            self.layers[i].assignParamsAndGrads(chunk)
+            layers[i].assignParamsAndGrads(chunk)
             offset += length
         }
     }
@@ -233,7 +233,7 @@ class Net {
     func getPrediction() -> Int {
         // this is a convenience function for returning the argmax
         // prediction, assuming the last layer of the net is a softmax
-        var S = self.layers[self.layers.count-1]
+        var S = layers[layers.count-1]
         assert(S.layerType == .Softmax, "getPrediction function assumes softmax as last layer of the net!")
         
         guard let outAct = S.outAct else {
@@ -246,7 +246,7 @@ class Net {
         var maxi = 0
         for i in 1 ..< p.count {
 
-            if(p[i] > maxv) {
+            if p[i] > maxv {
                 maxv = p[i]
                 maxi = i
             }
@@ -257,35 +257,35 @@ class Net {
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
         var j_layers: [[String: AnyObject]] = []
-        for i in 0 ..< self.layers.count {
-            j_layers.append(self.layers[i].toJSON())
+        for i in 0 ..< layers.count {
+            j_layers.append(layers[i].toJSON())
         }
         json["layers"] = j_layers as AnyObject?
         return json
     }
 //
 //    func fromJSON(json: [String: AnyObject]) -> () {
-//        self.layers = []
+//        layers = []
 //        for i in 0 ..< json["layers"].count {
 //
 //            var Lj = json["layers"][i]
 //            var t = Lj.layerType
 //            var L
-//            if(t=="input") { L = InputLayer() }
-//            if(t=="relu") { L = ReluLayer() }
-//            if(t=="sigmoid") { L = SigmoidLayer() }
-//            if(t=="tanh") { L = TanhLayer() }
-//            if(t=="dropout") { L = DropoutLayer() }
-//            if(t=="conv") { L = ConvLayer() }
-//            if(t=="pool") { L = PoolLayer() }
-//            if(t=="lrn") { L = LocalResponseNormalizationLayer() }
-//            if(t=="softmax") { L = SoftmaxLayer() }
-//            if(t=="regression") { L = RegressionLayer() }
-//            if(t=="fc") { L = FullyConnectedLayer() }
-//            if(t=="maxout") { L = MaxoutLayer() }
-//            if(t=="svm") { L = SVMLayer() }
+//            if t=="input") { L = InputLayer( }
+//            if t=="relu") { L = ReluLayer( }
+//            if t=="sigmoid") { L = SigmoidLayer( }
+//            if t=="tanh") { L = TanhLayer( }
+//            if t=="dropout") { L = DropoutLayer( }
+//            if t=="conv") { L = ConvLayer( }
+//            if t=="pool") { L = PoolLayer( }
+//            if t=="lrn") { L = LocalResponseNormalizationLayer( }
+//            if t=="softmax") { L = SoftmaxLayer( }
+//            if t=="regression") { L = RegressionLayer( }
+//            if t=="fc") { L = FullyConnectedLayer( }
+//            if t=="maxout") { L = MaxoutLayer( }
+//            if t=="svm") { L = SVMLayer( }
 //            L.fromJSON(Lj)
-//            self.layers.append(L)
+//            layers.append(L)
 //        }
 //    }
 }

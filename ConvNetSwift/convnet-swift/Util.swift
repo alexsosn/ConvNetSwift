@@ -23,22 +23,6 @@ class RandUtils {
     static var return_v = false
     static var v_val = 0.0
     
-    static func gaussRandom() -> Double {
-        if(return_v) {
-            return_v = false
-            return v_val
-        }
-        
-        let u = 2*random_js()-1
-        let v = 2*random_js()-1
-        let r = u*u + v*v
-        if(r == 0 || r > 1) { return gaussRandom() }
-        let c = sqrt(-2*log(r)/r)
-        v_val = v*c // cache this
-        return_v = true
-        return u*c
-    }
-    
     static func random_js() -> Double {
         return drand48()
         // should be [0 .. 1)
@@ -114,25 +98,9 @@ func weightedSample(_ lst: [Double], probs: [Double]) -> Double? {
     let n=lst.count
     for k in 0 ..< n {
         cumprob += probs[k]
-        if(p < cumprob) { return lst[k] }
+        if p < cumprob { return lst[k] }
     }
     return nil
 }
 
-// syntactic sugar function for getting default parameter values
-func getopt(_ opt: [String: AnyObject], _ field_name: String, _ default_value: AnyObject) -> AnyObject {
-    // case of single string
-    return opt[field_name] ?? default_value
-}
-
-func getopt(_ opt: [String: AnyObject], _ field_names: [String], _ default_value: AnyObject) -> AnyObject {
-    // assume we are given a list of string instead
-    var ret = default_value
-    for i in 0 ..< field_names.count {
-        
-        let f = field_names[i]
-        ret = opt[f] ?? ret // overwrite return value
-    }
-    return ret
-}
 

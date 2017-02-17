@@ -22,7 +22,7 @@ class ConvNetSwiftTests: XCTestCase {
 
     func test2LayerNNPerformance() {
         // Here's a minimum example of defining a 2-layer neural network and training it on a single data point:
-        self.measure {
+        measure {
             // species a 2-layer neural network with one hidden layer of 20 neurons
             // input layer declares size of input. here: 2-D data
             // ConvNetJS works on 3-Dimensional volumes (sx, sy, depth), but if you're not dealing with images
@@ -50,7 +50,7 @@ class ConvNetSwiftTests: XCTestCase {
             traindef.l2Decay = 0.001
             
             let trainer = Trainer(net: net, options: traindef)
-            trainer.train(x: &x, y: 0) // train the network, specifying that x is class zero
+            _ = trainer.train(x: &x, y: 0) // train the network, specifying that x is class zero
             
             let prob2 = net.forward(&x)
             print("probability that x is class 0: \(prob2.w[0])")

@@ -54,40 +54,40 @@ class Trainer {
         
         self.net = net
         
-        self.learningRate = options.learningRate ?? 0.01
-        self.l1Decay = options.l1Decay ?? 0.0
-        self.l2Decay = options.l2Decay ?? 0.0
-        self.batchSize = options.batchSize ?? 1
-        self.method = options.method ?? .sgd // sgd/adam/adagrad/adadelta/windowgrad/netsterov
+        learningRate = options.learningRate 
+        l1Decay = options.l1Decay
+        l2Decay = options.l2Decay
+        batchSize = options.batchSize
+        method = options.method // sgd/adam/adagrad/adadelta/windowgrad/netsterov
         
-        self.momentum = options.momentum ?? 0.9
-        self.ρ = options.ρ ?? 0.95 // used in adadelta
-        self.ε = options.ε ?? 1e-8 // used in adam or adadelta
-        self.β1 = options.β1 ?? 0.9 // used in adam
-        self.β2 = options.β2 ?? 0.999 // used in adam
+        momentum = options.momentum
+        ρ = options.ρ // used in adadelta
+        ε = options.ε // used in adam or adadelta
+        β1 = options.β1 // used in adam
+        β2 = options.β2 // used in adam
         
-        self.k = 0 // iteration counter
-        self.gsum = [] // last iteration gradients (used for momentum calculations)
-        self.xsum = [] // used in adam or adadelta
+        k = 0 // iteration counter
+        gsum = [] // last iteration gradients (used for momentum calculations)
+        xsum = [] // used in adam or adadelta
         
         // check if regression is expected
-        if(self.net.layers[self.net.layers.count - 1].layerType == .Regression) {
-            self.regression = true
+        if net.layers[net.layers.count - 1].layerType == .Regression {
+            regression = true
         } else {
-            self.regression = false
+            regression = false
         }
     }
     
     func train(x: inout Vol, y: [Double]) -> TrainResult {
-        assert(self.regression)
+        assert(regression)
         
         let startf = Date()
-        self.net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
+        _ = net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
         let endf = Date()
         let forwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startf, to: endf, options: []).nanosecond
         
         let startb = Date()
-        let costLoss = self.net.backward(y)
+        let costLoss = net.backward(y)
         let endb = Date()
         let backwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startb, to: endb, options: []).nanosecond
         
@@ -108,15 +108,15 @@ class Trainer {
     }
     
     func train(x: inout Vol, y: RegressionLayer.Pair) -> TrainResult {
-        assert(self.regression)
+        assert(regression)
         
         let startf = Date()
-        self.net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
+        _ = net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
         let endf = Date()
         let forwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startf, to: endf, options: []).nanosecond
         
         let startb = Date()
-        let costLoss = self.net.backward(y)
+        let costLoss = net.backward(y)
         let endb = Date()
         let backwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startb, to: endb, options: []).nanosecond
         
@@ -133,23 +133,23 @@ class Trainer {
     }
     
     func train(x: inout Vol, y: Int) -> TrainResult {
-        assert(!self.regression, "y should be an array if you want to do a regression.")
+        assert(!regression, "y should be an array if you want to do a regression.")
         
         let startf = Date()
-        self.net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
+        _ = net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
         let endf = Date()
-        let forwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startf, to: endf, options: []).nanosecond
+        let forwardTime = Calendar.current.dateComponents([.nanosecond], from: startf, to: endf).nanosecond ?? 0
         
         let startb = Date()
-        let costLoss = self.net.backward(y)
+        let costLoss = net.backward(y)
         let endb = Date()
-        let backwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startb, to: endb, options: []).nanosecond
+        let backwardTime = Calendar.current.dateComponents([.nanosecond], from: startb, to: endb).nanosecond ?? 0
         
         let (l1DecayLoss, l2DecayLoss) = _perform_train()
         
         return TrainResult(
-            forwardTime: forwardTime!,
-            backwardTime: backwardTime!,
+            forwardTime: forwardTime,
+            backwardTime: backwardTime,
             l2DecayLoss: l2DecayLoss,
             l1DecayLoss: l1DecayLoss,
             costLoss: costLoss,
@@ -161,25 +161,25 @@ class Trainer {
         var l2DecayLoss = 0.0
         var l1DecayLoss = 0.0
         
-        self.k += 1
-        if(self.k % self.batchSize == 0) {
+        k += 1
+        if k % batchSize == 0 {
             
-            var pglist = self.net.getParamsAndGrads()
+            var pglist = net.getParamsAndGrads()
             var newParamsAndGradients: [ParamsAndGrads] = []
             
             // initialize lists for accumulators. Will only be done once on first iteration
-            if(self.gsum.count == 0 && (self.method != .sgd || self.momentum > 0.0)) {
+            if gsum.count == 0 && (method != .sgd || momentum > 0.0) {
                 // only vanilla sgd doesnt need either lists
                 // momentum needs gsum
                 // adagrad needs gsum
                 // adam and adadelta needs gsum and xsum
                 for i in 0 ..< pglist.count {
                     
-                    self.gsum.append(ArrayUtils.zerosDouble(pglist[i].params.count))
-                    if(self.method == TrainerType.adam || self.method == TrainerType.adadelta) {
-                        self.xsum.append(ArrayUtils.zerosDouble(pglist[i].params.count))
+                    gsum.append(ArrayUtils.zerosDouble(pglist[i].params.count))
+                    if method == TrainerType.adam || method == TrainerType.adadelta {
+                        xsum.append(ArrayUtils.zerosDouble(pglist[i].params.count))
                     } else {
-                        self.xsum.append([]) // conserve memory
+                        xsum.append([]) // conserve memory
                     }
                 }
             }
@@ -205,56 +205,56 @@ class Trainer {
                     let l1grad = l1Decay * (p[j] > 0 ? 1 : -1)
                     let l2grad = l2Decay * (p[j])
                     
-                    let gij = (l2grad + l1grad + g[j]) / Double(self.batchSize) // raw batch gradient
+                    let gij = (l2grad + l1grad + g[j]) / Double(batchSize) // raw batch gradient
                     
                     var gsumi: [Double] = []
                     var xsumi: [Double] = []
                     
-                    if self.method != .sgd || self.momentum > 0.0 {
-                        gsumi = self.gsum[i]
-                        xsumi = self.xsum[i]
+                    if method != .sgd || momentum > 0.0 {
+                        gsumi = gsum[i]
+                        xsumi = xsum[i]
                     }
                     
-                    if self.method == .adam {
+                    if method == .adam {
                         // adam update
-                        gsumi[j] = gsumi[j] * self.β1 + (1-self.β1) * gij // update biased first moment estimate
-                        xsumi[j] = xsumi[j] * self.β2 + (1-self.β2) * gij * gij // update biased second moment estimate
-                        let biasCorr1 = gsumi[j] * (1 - pow(self.β1, Double(self.k))) // correct bias first moment estimate
-                        let biasCorr2 = xsumi[j] * (1 - pow(self.β2, Double(self.k))) // correct bias second moment estimate
-                        let dx =  -self.learningRate * biasCorr1 / (sqrt(biasCorr2) + self.ε)
+                        gsumi[j] = gsumi[j] * β1 + (1-β1) * gij // update biased first moment estimate
+                        xsumi[j] = xsumi[j] * β2 + (1-β2) * gij * gij // update biased second moment estimate
+                        let biasCorr1 = gsumi[j] * (1 - pow(β1, Double(k))) // correct bias first moment estimate
+                        let biasCorr2 = xsumi[j] * (1 - pow(β2, Double(k))) // correct bias second moment estimate
+                        let dx =  -learningRate * biasCorr1 / (sqrt(biasCorr2) + ε)
                         p[j] += dx
-                    } else if(self.method == .adagrad) {
+                    } else if method == .adagrad {
                         // adagrad update
                         gsumi[j] = gsumi[j] + gij * gij
-                        let dx = -self.learningRate / sqrt(gsumi[j] + self.ε) * gij
+                        let dx = -learningRate / sqrt(gsumi[j] + ε) * gij
                         p[j] += dx
-                    } else if(self.method == .windowgrad) {
+                    } else if method == .windowgrad {
                         // this is adagrad but with a moving window weighted average
                         // so the gradient is not accumulated over the entire history of the run.
                         // it's also referred to as Idea #1 in Zeiler paper on Adadelta. Seems reasonable to me!
-                        gsumi[j] = self.ρ * gsumi[j] + (1-self.ρ) * gij * gij
-                        let dx = -self.learningRate / sqrt(gsumi[j] + self.ε) * gij // eps added for better conditioning
+                        gsumi[j] = ρ * gsumi[j] + (1-ρ) * gij * gij
+                        let dx = -learningRate / sqrt(gsumi[j] + ε) * gij // eps added for better conditioning
                         p[j] += dx
-                    } else if(self.method == .adadelta) {
-                        gsumi[j] = self.ρ * gsumi[j] + (1-self.ρ) * gij * gij
-                        let dx = -sqrt((xsumi[j] + self.ε)/(gsumi[j] + self.ε)) * gij
-                        xsumi[j] = self.ρ * xsumi[j] + (1-self.ρ) * dx * dx // yes, xsum lags behind gsum by 1.
+                    } else if method == .adadelta {
+                        gsumi[j] = ρ * gsumi[j] + (1-ρ) * gij * gij
+                        let dx = -sqrt((xsumi[j] + ε)/(gsumi[j] + ε)) * gij
+                        xsumi[j] = ρ * xsumi[j] + (1-ρ) * dx * dx // yes, xsum lags behind gsum by 1.
                         p[j] += dx
-                    } else if(self.method == .nesterov) {
+                    } else if method == .nesterov {
                         var dx = gsumi[j]
-                        gsumi[j] = gsumi[j] * self.momentum + self.learningRate * gij
-                        dx = self.momentum * dx - (1.0 + self.momentum) * gsumi[j]
+                        gsumi[j] = gsumi[j] * momentum + learningRate * gij
+                        dx = momentum * dx - (1.0 + momentum) * gsumi[j]
                         p[j] += dx
                     } else {
                         // assume SGD
-                        if(self.momentum > 0.0) {
+                        if momentum > 0.0 {
                             // momentum update
-                            let dx = self.momentum * gsumi[j] - self.learningRate * gij // step
+                            let dx = momentum * gsumi[j] - learningRate * gij // step
                             gsumi[j] = dx // back this up for next iteration of momentum
                             p[j] += dx // apply corrected gradient
                         } else {
                             // vanilla sgd
-                            p[j] +=  -self.learningRate * gij
+                            p[j] +=  -learningRate * gij
                         }
                     }
                     g[j] = 0.0 // zero out gradient so that we can begin accumulating anew
@@ -265,7 +265,7 @@ class Trainer {
                 )
             }
             
-            self.net.assignParamsAndGrads(newParamsAndGradients)
+            net.assignParamsAndGrads(newParamsAndGradients)
         }
         return (l1DecayLoss, l2DecayLoss)
     }
