@@ -65,7 +65,7 @@ class DropoutLayer: InnerLayer {
         } else {
             // scale the activations during prediction
             for i in 0 ..< N {
-                V2.w[i]*=dropProb
+                V2.w[i]*=(1-dropProb)
             }
         }
         outAct = V2
