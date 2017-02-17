@@ -9,7 +9,7 @@ class Net {
     var layerResponseLengths: [Int] = []
     
     // desugar layerDefs for adding activation, dropout layers etc
-    func desugar(defs: [LayerOptTypeProtocol]) -> [LayerOptTypeProtocol] {
+    func desugar(_ defs: [LayerOptTypeProtocol]) -> [LayerOptTypeProtocol] {
         var new_defs:[LayerOptTypeProtocol] = []
         for i in 0 ..< defs.count {
             
@@ -80,7 +80,8 @@ class Net {
     }
     
     // takes a list of layer definitions and creates the network layer objects
-    func makeLayers(var defs: [LayerOptTypeProtocol]) -> () {
+    func makeLayers(_ defs: [LayerOptTypeProtocol]) -> () {
+        var defs = defs
         // few checks
         assert(defs.count >= 2, "Error! At least one input layer and one loss layer are required.")
         assert(defs[0] is InputLayerOpt, "Error! First layer must be the input layer, to declare size of inputs")
@@ -142,7 +143,7 @@ class Net {
     // forward prop the network.
     // The trainer class passes isTraining = true, but when this function is
     // called from outside (not from the trainer), it defaults to prediction mode
-    func forward(inout V: Vol, isTraining: Bool = false) -> Vol {
+    func forward(_ V: inout Vol, isTraining: Bool = false) -> Vol {
 
         var act = self.layers[0].forward(&V, isTraining: isTraining)
         for i in 1 ..< self.layers.count {
@@ -151,50 +152,50 @@ class Net {
         return act
     }
     
-    func getCostLoss(inout V V: Vol, y: Int) -> Double {
+    func getCostLoss(V: inout Vol, y: Int) -> Double {
         self.forward(&V, isTraining: false)
         let loss = (self.layers.last! as! LossLayer).backward(y)
         return loss
     }
     
-    func getCostLoss(inout V V: Vol, y: Double) -> Double {
+    func getCostLoss(V: inout Vol, y: Double) -> Double {
         self.forward(&V, isTraining: false)
         let loss = (self.layers.last! as! RegressionLayer).backward(y)
         return loss
     }
     
     // backprop: compute gradients wrt all parameters
-    func backward(y: Int) -> Double {
+    func backward(_ y: Int) -> Double {
         let loss = (self.layers.last! as! LossLayer).backward(y) // last layer assumed to be loss layer
         let N = self.layers.count
-        for var i=N-2; i>=0; i-- { // first layer assumed input
+        for i in (N-2 ... 0).reversed() { // first layer assumed input
             (self.layers[i] as! InnerLayer).backward()
         }
         return loss
     }
     
-    func backward(y: [Double]) -> Double {
+    func backward(_ y: [Double]) -> Double {
         let loss = (self.layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
         let N = self.layers.count
-        for var i=N-2; i>=0; i-- { // first layer assumed input
+        for i in (N-2 ... 0).reversed() { // first layer assumed input
             (self.layers[i] as! InnerLayer).backward()
         }
         return loss
     }
     
-    func backward(y: Double) -> Double {
+    func backward(_ y: Double) -> Double {
         let loss = (self.layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
         let N = self.layers.count
-        for var i=N-2; i>=0; i-- { // first layer assumed input
+        for i in (N-2 ... 0).reversed() { // first layer assumed input
             (self.layers[i] as! InnerLayer).backward()
         }
         return loss
     }
     
-    func backward(y: RegressionLayer.Pair) -> Double {
+    func backward(_ y: RegressionLayer.Pair) -> Double {
         let loss = (self.layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
         let N = self.layers.count
-        for var i=N-2; i>=0; i-- { // first layer assumed input
+        for i in (N-2 ... 0).reversed() { // first layer assumed input
             (self.layers[i] as! InnerLayer).backward()
         }
         return loss
@@ -218,7 +219,7 @@ class Net {
         return response
     }
     
-    func assignParamsAndGrads(paramsAndGrads: [ParamsAndGrads]) {
+    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         var offset = 0
 
         for i in 0 ..< self.layers.count {
@@ -259,7 +260,7 @@ class Net {
         for i in 0 ..< self.layers.count {
             j_layers.append(self.layers[i].toJSON())
         }
-        json["layers"] = j_layers
+        json["layers"] = j_layers as AnyObject?
         return json
     }
 //

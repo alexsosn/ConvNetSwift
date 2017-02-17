@@ -86,7 +86,7 @@ class ConvLayer: InnerLayer {
         biases = Vol(sx: 1, sy: 1, depth: outDepth, c: bias)
     }
     
-    func forward(inout V: Vol, isTraining: Bool) -> Vol {
+    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         // optimized code by @mdda that achieves 2x speedup over previous version
         
         inAct = V
@@ -141,7 +141,7 @@ class ConvLayer: InnerLayer {
             else {
                 return
         }
-        V.dw = zerosDouble(V.w.count) // zero out gradient wrt bottom data, we're about to fill it
+        V.dw = ArrayUtils.zerosDouble(V.w.count) // zero out gradient wrt bottom data, we're about to fill it
         
         let V_sx = V.sx|0
         let V_sy = V.sy|0
@@ -152,9 +152,11 @@ class ConvLayer: InnerLayer {
             let f = filters[d]
             var x = -pad|0
             var y = -pad|0
-            for(var ay=0; ay<outSy; y+=xy_stride,ay++) {  // xy_stride
+            for ay in 0 ..< outSy {  // xy_stride
+                y+=xy_stride
                 x = -pad|0
-                for(var ax=0; ax<outSx; x+=xy_stride,ax++) {  // xy_stride
+                for ax in 0 ..< outSx {  // xy_stride
+                    x+=xy_stride
                     
                     // convolve centered at this particular location
                     let chainGrad = outAct.getGrad(x: ax, y: ay, d: d) // gradient from above, from chain rule
@@ -202,7 +204,7 @@ class ConvLayer: InnerLayer {
         return response
     }
     
-    func assignParamsAndGrads(paramsAndGrads: [ParamsAndGrads]) {
+    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         assert(filters.count + 1 == paramsAndGrads.count)
         
         for i in 0 ..< outDepth {
@@ -215,25 +217,25 @@ class ConvLayer: InnerLayer {
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["sx"] = sx // filter size in x, y dims
-        json["sy"] = sy
-        json["stride"] = stride
-        json["inDepth"] = inDepth
-        json["outDepth"] = outDepth
-        json["outSx"] = outSx
-        json["outSy"] = outSy
-        json["layerType"] = layerType.rawValue
-        json["l1DecayMul"] = l1DecayMul
-        json["l2DecayMul"] = l2DecayMul
-        json["pad"] = pad
+        json["sx"] = sx as AnyObject? // filter size in x, y dims
+        json["sy"] = sy as AnyObject?
+        json["stride"] = stride as AnyObject?
+        json["inDepth"] = inDepth as AnyObject?
+        json["outDepth"] = outDepth as AnyObject?
+        json["outSx"] = outSx as AnyObject?
+        json["outSy"] = outSy as AnyObject?
+        json["layerType"] = layerType.rawValue as AnyObject?
+        json["l1DecayMul"] = l1DecayMul as AnyObject?
+        json["l2DecayMul"] = l2DecayMul as AnyObject?
+        json["pad"] = pad as AnyObject?
         
         var jsonFilters: [[String: AnyObject]] = []
         for i in 0 ..< filters.count {
             jsonFilters.append(filters[i].toJSON())
         }
-        json["filters"] = jsonFilters
+        json["filters"] = jsonFilters as AnyObject?
 
-        json["biases"] = biases.toJSON()
+        json["biases"] = biases.toJSON() as AnyObject?
         return json
     }
 //
@@ -334,7 +336,7 @@ class FullyConnectedLayer: InnerLayer {
         biases = Vol(sx: 1, sy: 1, depth: outDepth, c: bias)
     }
     
-    func forward(inout V: Vol, isTraining: Bool) -> Vol {
+    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         inAct = V
         let A = Vol(sx: 1, sy: 1, depth: outDepth, c: 0.0)
         var Vw = V.w
@@ -357,7 +359,7 @@ class FullyConnectedLayer: InnerLayer {
             let outAct = outAct else {
                 return
         }
-        V.dw = zerosDouble(V.w.count) // zero out the gradient in input Vol
+        V.dw = ArrayUtils.zerosDouble(V.w.count) // zero out the gradient in input Vol
         
         // compute gradient wrt weights and data
         for i in 0 ..< outDepth {
@@ -393,7 +395,7 @@ class FullyConnectedLayer: InnerLayer {
         return response
     }
     
-    func assignParamsAndGrads(paramsAndGrads: [ParamsAndGrads]) {
+    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         assert(filters.count + 1 == paramsAndGrads.count)
 
         for i in 0 ..< outDepth {
@@ -406,19 +408,19 @@ class FullyConnectedLayer: InnerLayer {
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["outDepth"] = outDepth
-        json["outSx"] = outSx
-        json["outSy"] = outSy
-        json["layerType"] = layerType.rawValue
-        json["numInputs"] = numInputs
-        json["l1DecayMul"] = l1DecayMul
-        json["l2DecayMul"] = l2DecayMul
+        json["outDepth"] = outDepth as AnyObject?
+        json["outSx"] = outSx as AnyObject?
+        json["outSy"] = outSy as AnyObject?
+        json["layerType"] = layerType.rawValue as AnyObject?
+        json["numInputs"] = numInputs as AnyObject?
+        json["l1DecayMul"] = l1DecayMul as AnyObject?
+        json["l2DecayMul"] = l2DecayMul as AnyObject?
         var jsonFilters: [[String: AnyObject]] = []
         for i in 0 ..< filters.count {
             jsonFilters.append(filters[i].toJSON())
         }
-        json["filters"] = jsonFilters
-        json["biases"] = biases.toJSON()
+        json["filters"] = jsonFilters as AnyObject?
+        json["biases"] = biases.toJSON() as AnyObject?
         return json
     }
 //

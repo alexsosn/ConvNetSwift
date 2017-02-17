@@ -39,16 +39,16 @@ class DropoutLayer: InnerLayer {
         self.outDepth = opt.inDepth
         self.layerType = .Dropout
         self.dropProb = opt.dropProb ?? 0.0
-        self.dropped = zerosBool(self.outSx*self.outSy*self.outDepth)
+        self.dropped = ArrayUtils.zerosBool(self.outSx*self.outSy*self.outDepth)
     }
     
     // default is prediction mode
-    func forward(inout V: Vol, isTraining: Bool = false) -> Vol {
+    func forward(_ V: inout Vol, isTraining: Bool = false) -> Vol {
         self.inAct = V
         let V2 = V.clone()
         let N = V.w.count
         
-        self.dropped = zerosBool(N)
+        self.dropped = ArrayUtils.zerosBool(N)
         
         if(isTraining) {
             // do dropout
@@ -78,7 +78,7 @@ class DropoutLayer: InnerLayer {
             let chainGrad = self.outAct
             else { return }
         let N = V.w.count
-        V.dw = zerosDouble(N) // zero out gradient wrt data
+        V.dw = ArrayUtils.zerosDouble(N) // zero out gradient wrt data
         for i in 0 ..< N {
             
             if(!(self.dropped[i])) {
@@ -91,17 +91,17 @@ class DropoutLayer: InnerLayer {
         return []
     }
     
-    func assignParamsAndGrads(paramsAndGrads: [ParamsAndGrads]) {
+    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
         func toJSON() -> [String: AnyObject] {
             var json: [String: AnyObject] = [:]
-            json["outDepth"] = self.outDepth
-            json["outSx"] = self.outSx
-            json["outSy"] = self.outSy
-            json["layerType"] = self.layerType.rawValue
-            json["dropProb"] = self.dropProb
+            json["outDepth"] = self.outDepth as AnyObject?
+            json["outSx"] = self.outSx as AnyObject?
+            json["outSy"] = self.outSy as AnyObject?
+            json["layerType"] = self.layerType.rawValue as AnyObject?
+            json["dropProb"] = self.dropProb as AnyObject?
             return json
         }
     //

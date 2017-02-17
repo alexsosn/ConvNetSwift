@@ -22,7 +22,7 @@ class ConvNetSwiftTests: XCTestCase {
 
     func test2LayerNNPerformance() {
         // Here's a minimum example of defining a 2-layer neural network and training it on a single data point:
-        self.measureBlock {
+        self.measure {
             // species a 2-layer neural network with one hidden layer of 20 neurons
             // input layer declares size of input. here: 2-D data
             // ConvNetJS works on 3-Dimensional volumes (sx, sy, depth), but if you're not dealing with images
@@ -64,7 +64,7 @@ class ConvNetSwiftTests: XCTestCase {
     
     func testConvolutionalNN() {
         // Small Convolutional Neural Network if you wish to predict on images
-        self.measureBlock {
+        self.measure {
             let input = InputLayerOpt(outSx: 32, outSy: 32, outDepth: 3)// declare size of input
             // output Vol is of size 32x32x3 here
             let conv1 = ConvLayerOpt(sx: 5, filters: 16, stride: 1, pad: 2, activation: .ReLU)

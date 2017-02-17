@@ -32,7 +32,7 @@ class MagicNet {
     var folds: [Fold]
     var candidates: [Candidate]
     var evaluatedCandidates: [Candidate]
-    var uniqueLabels: [AnyObject?]
+    var uniqueLabels: [Int]
     var iter: Int
     var foldix: Int
     var finishFoldCallback: (()->())?
@@ -59,32 +59,33 @@ class MagicNet {
         self.labels = labels
         
         // optional inputs
-        self.trainRatio = getopt(opt, "trainRatio", 0.7) as! Double
-        self.numFolds = getopt(opt, "numFolds", 10) as! Int
-        self.numCandidates = getopt(opt, "numCandidates", 50) as! Int // we evaluate several in parallel
+        self.trainRatio = opt["trainRatio"] as? Double ?? 0.7
+        self.numFolds = opt["numFolds"] as? Int ?? 10
+        self.numCandidates = opt["numCandidates"] as? Int ?? 50
+        // we evaluate several in parallel
         // how many epochs of data to train every network? for every fold?
         // higher values mean higher accuracy in final results, but more expensive
-        self.numEpochs = getopt(opt, "numEpochs", 50) as! Int
+        self.numEpochs = opt["numEpochs"] as? Int ?? 50
         // number of best models to average during prediction. Usually higher = better
-        self.ensembleSize = getopt(opt, "ensembleSize", 10) as! Int
+        self.ensembleSize = opt["ensembleSize"] as? Int ?? 10
         
         // candidate parameters
-        self.batchSizeMin = getopt(opt, "batchSizeMin", 10) as! Int
-        self.batchSizeMax = getopt(opt, "batchSizeMax", 300) as! Int
-        self.l2DecayMin = getopt(opt, "l2DecayMin", -4) as! Int
-        self.l2DecayMax = getopt(opt, "l2DecayMax", 2) as! Int
-        self.learningRateMin = getopt(opt, "learningRateMin", -4) as! Int
-        self.learningRateMax = getopt(opt, "learningRateMax", 0) as! Int
-        self.momentumMin = getopt(opt, "momentumMin", 0.9) as! Double
-        self.momentumMax = getopt(opt, "momentumMax", 0.9) as! Double
-        self.neuronsMin = getopt(opt, "neuronsMin", 5) as! Int
-        self.neuronsMax = getopt(opt, "neuronsMax", 30) as! Int
+        self.batchSizeMin = opt["batchSizeMin"] as? Int ?? 10
+        self.batchSizeMax = opt["batchSizeMax"] as? Int ?? 300
+        self.l2DecayMin = opt["l2DecayMin"] as? Int ?? -4
+        self.l2DecayMax = opt["l2DecayMax"] as? Int ?? 2
+        self.learningRateMin = opt["learningRateMin"] as? Int ?? -4
+        self.learningRateMax = opt["learningRateMax"] as? Int ?? 0
+        self.momentumMin = opt["momentumMin"] as? Double ?? 0.9
+        self.momentumMax = opt["momentumMax"] as? Double ?? 0.9
+        self.neuronsMin = opt["neuronsMin"] as? Int ?? 5
+        self.neuronsMax = opt["neuronsMax"] as? Int ?? 30
         
         // computed
         self.folds = [] // data fold indices, gets filled by sampleFolds()
         self.candidates = [] // candidate networks that are being currently evaluated
         self.evaluatedCandidates = [] // history of all candidates that were fully evaluated on all folds
-        self.uniqueLabels = arrUnique(labels)
+        self.uniqueLabels = ArrayUtils.arrUnique(labels)
         self.iter = 0 // iteration counter, goes from 0 -> numEpochs * numTrainingData
         self.foldix = 0 // index of active fold
         
@@ -105,7 +106,7 @@ class MagicNet {
         let numTrain = Int(floor(self.trainRatio * Double(N)))
         self.folds = [] // flush folds, if any
         for _ in 0 ..< self.numFolds {
-            var p = randperm(N)
+            var p = randomPermutation(N)
             let fold = Fold(
                 train_ix: Array(p[0 ..< numTrain]),
                 test_ix: Array(p[numTrain ..< N]))
@@ -202,7 +203,7 @@ class MagicNet {
     func step() -> () {
         
         // run an example through current candidate
-        self.iter++
+        self.iter += 1
         
         // step all candidates on a random data point
         let fold = self.folds[self.foldix] // active fold
@@ -223,11 +224,11 @@ class MagicNet {
             for k in 0 ..< self.candidates.count {
 
                 var c = self.candidates[k]
-                c.acc.append(valAcc[k])
+                c.acc.append(valAcc[k] as AnyObject)
                 c.accv += valAcc[k]
             }
             self.iter = 0 // reset step number
-            self.foldix++ // increment fold
+            self.foldix += 1 // increment fold
             
             if(self.finishFoldCallback != nil) {
                 self.finishFoldCallback!()
@@ -241,7 +242,7 @@ class MagicNet {
                     self.evaluatedCandidates.append(self.candidates[k])
                 }
                 // sort evaluated candidates according to accuracy achieved
-                self.evaluatedCandidates.sortInPlace({ (a, b) -> Bool in
+                self.evaluatedCandidates.sort(by: { (a, b) -> Bool in
                     return (a.accv / Double(a.acc.count)) < (b.accv / Double(b.acc.count))
                 }) // WARNING: not sure > or < ?
 
@@ -298,7 +299,8 @@ class MagicNet {
     // returns prediction scores for given test data point, as Vol
     // uses an averaged prediction from the best ensembleSize models
     // x is a Vol.
-    func predictSoft(var data: Vol) -> Vol {
+    func predictSoft(_ data: Vol) -> Vol {
+        var data = data
         // forward prop the best networks
         // and accumulate probabilities at last layer into a an output Vol
         
@@ -341,7 +343,7 @@ class MagicNet {
         return xout
     }
     
-    func predict(data: Vol) -> Int {
+    func predict(_ data: Vol) -> Int {
         let xout = self.predictSoft(data)
         var predictedLabel: Int
         if(xout.w.count != 0) {
@@ -382,9 +384,9 @@ class MagicNet {
     
     // callback functions
     // called when a fold is finished, while evaluating a batch
-    func onFinishFold(f: (()->())?) -> () { self.finishFoldCallback = f; }
+    func onFinishFold(_ f: (()->())?) -> () { self.finishFoldCallback = f; }
     // called when a batch of candidates has finished evaluating
-    func onFinishBatch(f: (()->())?) -> () { self.finishBatchCallback = f; }
+    func onFinishBatch(_ f: (()->())?) -> () { self.finishBatchCallback = f; }
     
 }
 

@@ -1,4 +1,5 @@
 import Foundation
+import GameplayKit
 
 infix operator | { associativity left }
 
@@ -43,33 +44,39 @@ class RandUtils {
         // should be [0 .. 1)
     }
     
-    static func randf(a: Double, _ b: Double) -> Double {
+    static func randf(_ a: Double, _ b: Double) -> Double {
         return random_js()*(b-a)+a
     }
-    static func randi(a: Int, _ b: Int) -> Int {
+    
+    static func randi(_ a: Int, _ b: Int) -> Int {
         return Int(floor(random_js()))*(b-a)+a
     }
     
-    static func randn(mu: Double, std: Double) -> Double {
-        return mu+gaussRandom()*std
+    private static let gaussDistribution = GKGaussianDistribution(randomSource: GKRandomSource(), mean:0, deviation: 1)
+    
+    static func randn(_ mu: Double, std: Double) -> Double {
+        return (Double(gaussDistribution.nextUniform()) + mu) * std
     }
     
 }
 // Array utilities
-func zerosInt(n: Int) -> [Int] {
-    return [Int](count: n, repeatedValue: 0)
-}
 
-func zerosDouble(n: Int) -> [Double] {
-    return [Double](count: n, repeatedValue: 0.0)
-}
-
-func zerosBool(n: Int) -> [Bool] {
-    return [Bool](count: n, repeatedValue: false)
-}
-
-func arrUnique(arr: [Int]) -> [Int] {
-    return Array(Set(arr))
+struct ArrayUtils {
+    static func zerosInt(_ n: Int) -> [Int] {
+        return [Int](repeating: 0, count: n)
+    }
+    
+    static func zerosDouble(_ n: Int) -> [Double] {
+        return [Double](repeating: 0.0, count: n)
+    }
+    
+    static func zerosBool(_ n: Int) -> [Bool] {
+        return [Bool](repeating: false, count: n)
+    }
+    
+    static func arrUnique(_ arr: [Int]) -> [Int] {
+        return Array(Set(arr))
+    }
 }
 
 // return max and min of a given non-empty array.
@@ -81,12 +88,12 @@ struct Maxmin {
     var dv: Double
 }
 
-func maxmin(w: [Double]) -> Maxmin? {
+func maxmin(_ w: [Double]) -> Maxmin? {
     guard (w.count > 0),
-        let maxv = w.maxElement(),
-        let maxi = w.indexOf(maxv),
-        let minv = w.minElement(),
-        let mini = w.indexOf(minv)
+        let maxv = w.max(),
+        let maxi = w.index(of: maxv),
+        let minv = w.min(),
+        let mini = w.index(of: minv)
         else {
             return nil
     }
@@ -94,25 +101,14 @@ func maxmin(w: [Double]) -> Maxmin? {
 }
 
 // create random permutation of numbers, in range [0...n-1]
-func randperm(n: Int) -> [Int]{
-    var j = 0
-    var temp: Int = 0
-    var array: [Int] = []
-    for q in 0 ..< n {
-        array[q]=q
-    }
-    for (var i = n; i != 0; i--) {
-        j = Int(floor(RandUtils.random_js())) * (i+1)
-        temp = array[i]
-        array[i] = array[j]
-        array[j] = temp
-    }
-    return array
+func randomPermutation(_ n: Int) -> [Int]{
+    let dist = GKShuffledDistribution(lowestValue: 0, highestValue: n-1)
+    return (0..<n).map{_ in dist.nextInt()}
 }
 
 // sample from list lst according to probabilities in list probs
 // the two lists are of same size, and probs adds up to 1
-func weightedSample(lst: [Double], probs: [Double]) -> Double? {
+func weightedSample(_ lst: [Double], probs: [Double]) -> Double? {
     let p = RandUtils.randf(0, 1.0)
     var cumprob = 0.0
     let n=lst.count
@@ -124,12 +120,12 @@ func weightedSample(lst: [Double], probs: [Double]) -> Double? {
 }
 
 // syntactic sugar function for getting default parameter values
-func getopt(opt: [String: AnyObject], _ field_name: String, _ default_value: AnyObject) -> AnyObject {
+func getopt(_ opt: [String: AnyObject], _ field_name: String, _ default_value: AnyObject) -> AnyObject {
     // case of single string
     return opt[field_name] ?? default_value
 }
 
-func getopt(opt: [String: AnyObject], _ field_names: [String], _ default_value: AnyObject) -> AnyObject {
+func getopt(_ opt: [String: AnyObject], _ field_names: [String], _ default_value: AnyObject) -> AnyObject {
     // assume we are given a list of string instead
     var ret = default_value
     for i in 0 ..< field_names.count {

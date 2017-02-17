@@ -53,11 +53,11 @@ class PoolLayer: InnerLayer {
         self.outSy = (self.inSy + self.pad * 2 - self.sy) / self.stride + 1
         self.layerType = .Pool
         // store switches for x,y coordinates for where the max comes from, for each output neuron
-        self.switchx = zerosInt(self.outSx*self.outSy*self.outDepth)
-        self.switchy = zerosInt(self.outSx*self.outSy*self.outDepth)
+        self.switchx = ArrayUtils.zerosInt(self.outSx*self.outSy*self.outDepth)
+        self.switchy = ArrayUtils.zerosInt(self.outSx*self.outSy*self.outDepth)
     }
     
-    func forward(inout V: Vol, isTraining: Bool) -> Vol {
+    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         self.inAct = V
         
         let A = Vol(sx: self.outSx, sy: self.outSy, depth: self.outDepth, c: 0.0)
@@ -67,9 +67,12 @@ class PoolLayer: InnerLayer {
 
             var x = -self.pad
             var y = -self.pad
-            for(var ax=0; ax<self.outSx; x+=self.stride,ax++) {
+            for ax in 0 ..< self.outSx {
+                x+=self.stride
                 y = -self.pad
-                for(var ay=0; ay<self.outSy; y+=self.stride,ay++) {
+                
+                for ay in 0 ..< self.outSy {
+                    y+=self.stride
                     
                     // convolve centered at this particular location
                     var a = -99999.0 // hopefully small enough ;\
@@ -91,7 +94,7 @@ class PoolLayer: InnerLayer {
                     }
                     self.switchx[n] = winx
                     self.switchy[n] = winy
-                    n++
+                    n += 1
                     A.set(x: ax, y: ay, d: d, v: a)
                 }
             }
@@ -111,7 +114,7 @@ class PoolLayer: InnerLayer {
             fatalError("self.outAct is nil")
         }
         
-        V.dw = zerosDouble(V.w.count) // zero out gradient wrt data
+        V.dw = ArrayUtils.zerosDouble(V.w.count) // zero out gradient wrt data
 //        var A = self.outAct // computed in forward pass
         
         var n = 0
@@ -119,13 +122,16 @@ class PoolLayer: InnerLayer {
 
             var x = -self.pad
             var y = -self.pad
-            for(var ax=0; ax<self.outSx; x+=self.stride,ax++) {
+            for ax in 0 ..< self.outSx {
+                x+=self.stride
+                
                 y = -self.pad
-                for(var ay=0; ay<self.outSy; y+=self.stride,ay++) {
+                for ay in 0 ..< self.outSy {
+                    y+=self.stride
                     
                     let chainGrad = outAct.getGrad(x: ax, y: ay, d: d)
                     V.addGrad(x: self.switchx[n], y: self.switchy[n], d: d, v: chainGrad)
-                    n++
+                    n += 1
                     
                 }
             }
@@ -136,21 +142,21 @@ class PoolLayer: InnerLayer {
         return []
     }
     
-    func assignParamsAndGrads(paramsAndGrads: [ParamsAndGrads]) {
+    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["sx"] = self.sx
-        json["sy"] = self.sy
-        json["stride"] = self.stride
-        json["inDepth"] = self.inDepth
-        json["outDepth"] = self.outDepth
-        json["outSx"] = self.outSx
-        json["outSy"] = self.outSy
-        json["layerType"] = self.layerType.rawValue
-        json["pad"] = self.pad
+        json["sx"] = self.sx as AnyObject?
+        json["sy"] = self.sy as AnyObject?
+        json["stride"] = self.stride as AnyObject?
+        json["inDepth"] = self.inDepth as AnyObject?
+        json["outDepth"] = self.outDepth as AnyObject?
+        json["outSx"] = self.outSx as AnyObject?
+        json["outSy"] = self.outSy as AnyObject?
+        json["layerType"] = self.layerType.rawValue as AnyObject?
+        json["pad"] = self.pad as AnyObject?
         return json
     }
 //

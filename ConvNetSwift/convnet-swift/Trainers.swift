@@ -78,18 +78,18 @@ class Trainer {
         }
     }
     
-    func train(inout x x: Vol, y: [Double]) -> TrainResult {
+    func train(x: inout Vol, y: [Double]) -> TrainResult {
         assert(self.regression)
         
-        let startf = NSDate()
+        let startf = Date()
         self.net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
-        let endf = NSDate()
-        let forwardTime = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startf, toDate: endf, options: []).nanosecond
+        let endf = Date()
+        let forwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startf, to: endf, options: []).nanosecond
         
-        let startb = NSDate()
+        let startb = Date()
         let costLoss = self.net.backward(y)
-        let endb = NSDate()
-        let backwardTime = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startb, toDate: endb, options: []).nanosecond
+        let endb = Date()
+        let backwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startb, to: endb, options: []).nanosecond
         
         let (l1DecayLoss, l2DecayLoss) = _perform_train()
         
@@ -98,8 +98,8 @@ class Trainer {
         // loss is a bit of a hack. Ideally, user should specify arbitrary number of loss functions on any layer
         // and it should all be computed correctly and automatically.
         return TrainResult(
-            forwardTime: forwardTime,
-            backwardTime: backwardTime,
+            forwardTime: forwardTime!,
+            backwardTime: backwardTime!,
             l2DecayLoss: l2DecayLoss,
             l1DecayLoss: l1DecayLoss,
             costLoss: costLoss,
@@ -107,24 +107,24 @@ class Trainer {
             loss: costLoss + l1DecayLoss + l2DecayLoss)
     }
     
-    func train(inout x x: Vol, y: RegressionLayer.Pair) -> TrainResult {
+    func train(x: inout Vol, y: RegressionLayer.Pair) -> TrainResult {
         assert(self.regression)
         
-        let startf = NSDate()
+        let startf = Date()
         self.net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
-        let endf = NSDate()
-        let forwardTime = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startf, toDate: endf, options: []).nanosecond
+        let endf = Date()
+        let forwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startf, to: endf, options: []).nanosecond
         
-        let startb = NSDate()
+        let startb = Date()
         let costLoss = self.net.backward(y)
-        let endb = NSDate()
-        let backwardTime = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startb, toDate: endb, options: []).nanosecond
+        let endb = Date()
+        let backwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startb, to: endb, options: []).nanosecond
         
         let (l1DecayLoss, l2DecayLoss) = _perform_train()
         
         return TrainResult(
-            forwardTime: forwardTime,
-            backwardTime: backwardTime,
+            forwardTime: forwardTime!,
+            backwardTime: backwardTime!,
             l2DecayLoss: l2DecayLoss,
             l1DecayLoss: l1DecayLoss,
             costLoss: costLoss,
@@ -132,24 +132,24 @@ class Trainer {
             loss: costLoss + l1DecayLoss + l2DecayLoss)
     }
     
-    func train(inout x x: Vol, y: Int) -> TrainResult {
+    func train(x: inout Vol, y: Int) -> TrainResult {
         assert(!self.regression, "y should be an array if you want to do a regression.")
         
-        let startf = NSDate()
+        let startf = Date()
         self.net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
-        let endf = NSDate()
-        let forwardTime = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startf, toDate: endf, options: []).nanosecond
+        let endf = Date()
+        let forwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startf, to: endf, options: []).nanosecond
         
-        let startb = NSDate()
+        let startb = Date()
         let costLoss = self.net.backward(y)
-        let endb = NSDate()
-        let backwardTime = NSCalendar.currentCalendar().components(NSCalendarUnit.Second, fromDate: startb, toDate: endb, options: []).nanosecond
+        let endb = Date()
+        let backwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startb, to: endb, options: []).nanosecond
         
         let (l1DecayLoss, l2DecayLoss) = _perform_train()
         
         return TrainResult(
-            forwardTime: forwardTime,
-            backwardTime: backwardTime,
+            forwardTime: forwardTime!,
+            backwardTime: backwardTime!,
             l2DecayLoss: l2DecayLoss,
             l1DecayLoss: l1DecayLoss,
             costLoss: costLoss,
@@ -161,7 +161,7 @@ class Trainer {
         var l2DecayLoss = 0.0
         var l1DecayLoss = 0.0
         
-        self.k++
+        self.k += 1
         if(self.k % self.batchSize == 0) {
             
             var pglist = self.net.getParamsAndGrads()
@@ -175,9 +175,9 @@ class Trainer {
                 // adam and adadelta needs gsum and xsum
                 for i in 0 ..< pglist.count {
                     
-                    self.gsum.append(zerosDouble(pglist[i].params.count))
+                    self.gsum.append(ArrayUtils.zerosDouble(pglist[i].params.count))
                     if(self.method == TrainerType.adam || self.method == TrainerType.adadelta) {
-                        self.xsum.append(zerosDouble(pglist[i].params.count))
+                        self.xsum.append(ArrayUtils.zerosDouble(pglist[i].params.count))
                     } else {
                         self.xsum.append([]) // conserve memory
                     }

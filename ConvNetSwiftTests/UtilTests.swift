@@ -44,33 +44,33 @@ class UtilTests: XCTestCase {
             return
         }
         
-        let image = img.CGImage
-        let width = CGImageGetWidth(image)
-        let height = CGImageGetHeight(image)
+        let image = img.cgImage
+        let width = image?.width
+        let height = image?.height
         let components = 4
-        let bytesPerRow = (components * width)
+        let bytesPerRow = (components * width!)
         let bitsPerComponent: Int = 8
-        let pixels = calloc(height * width, sizeof(UInt32))
+        let pixels = calloc(height! * width!, MemoryLayout<UInt32>.size)
         
-        let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue | CGBitmapInfo.ByteOrder32Big.rawValue)
+        let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue)
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         
-        let context = CGBitmapContextCreate(
-            pixels,
-            width,
-            height,
-            bitsPerComponent,
-            bytesPerRow,
-            colorSpace,
-            bitmapInfo.rawValue)
+        let context = CGContext(
+            data: pixels,
+            width: width!,
+            height: height!,
+            bitsPerComponent: bitsPerComponent,
+            bytesPerRow: bytesPerRow,
+            space: colorSpace,
+            bitmapInfo: bitmapInfo.rawValue)
         
-        CGContextDrawImage(context, CGRectMake(0, 0, CGFloat(width), CGFloat(height)), image)
+        context?.draw(image!, in: CGRect(x: 0, y: 0, width: CGFloat(width!), height: CGFloat(height!)))
         
-        let dataCtxt = CGBitmapContextGetData(context)
-        let data = NSData(bytesNoCopy: dataCtxt, length: width*height*components, freeWhenDone: true)
+        let dataCtxt = context?.data
+        let data = Data(bytesNoCopy: UnsafeMutablePointer<UInt8>(dataCtxt), count: width*height*components, deallocator: .free)
         
-        var pixelMem = [UInt8](count: data.length, repeatedValue: 0)
-        data.getBytes(&pixelMem, length: data.length)
+        var pixelMem = [UInt8](repeating: 0, count: data.count)
+        (data as NSData).getBytes(&pixelMem, length: data.count)
         
         let doubleNormArray = pixelMem.map { (elem: UInt8) -> Double in
             return Double(elem)/255.0
@@ -103,25 +103,25 @@ class UtilTests: XCTestCase {
         
         let bitsPerPixel = bitsPerComponent * components
         
-        let providerRef = CGDataProviderCreateWithCFData(
-            NSData(bytes: intDenormArray, length: intDenormArray.count * components)
+        let providerRef = CGDataProvider(
+            data: Data(bytes: UnsafePointer<UInt8>(intDenormArray), count: intDenormArray.count * components) as CFData
         )
         
-        let cgim = CGImageCreate(
-            width,
-            height,
-            bitsPerComponent,
-            bitsPerPixel,
-            bytesPerRow,
-            colorSpace,
-            bitmapInfo,
-            providerRef,
-            nil,
-            false,
-            .RenderingIntentDefault
+        let cgim = CGImage(
+            width: width!,
+            height: height!,
+            bitsPerComponent: bitsPerComponent,
+            bitsPerPixel: bitsPerPixel,
+            bytesPerRow: bytesPerRow,
+            space: colorSpace,
+            bitmapInfo: bitmapInfo,
+            provider: providerRef!,
+            decode: nil,
+            shouldInterpolate: false,
+            intent: .defaultIntent
         )
         
-        let newImage = UIImage(CGImage: cgim!)
+        let newImage = UIImage(cgImage: cgim!)
         print(newImage)
     }
 }

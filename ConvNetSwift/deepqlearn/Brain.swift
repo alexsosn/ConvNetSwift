@@ -124,10 +124,10 @@ class Brain {
         self.numStates = numStates
         self.numActions = numActions
         self.windowSize = max(self.temporalWindow, 2) // must be at least 2, but if we want more context even more
-        self.stateWindow = zerosDouble(self.windowSize)
-        self.actionWindow = zerosInt(self.windowSize)
-        self.rewardWindow = zerosDouble(self.windowSize)
-        self.netWindow = zerosDouble(self.windowSize)
+        self.stateWindow = ArrayUtils.zerosDouble(self.windowSize)
+        self.actionWindow = ArrayUtils.zerosInt(self.windowSize)
+        self.rewardWindow = ArrayUtils.zerosDouble(self.windowSize)
+        self.netWindow = ArrayUtils.zerosDouble(self.windowSize)
         
         // create [state -> value of all possible actions] modeling net for the value function
         var layerDefs: [LayerOptTypeProtocol] = []
@@ -218,7 +218,7 @@ class Brain {
         var value: Double
     }
     
-    func policy(s: [Double]) -> Policy {
+    func policy(_ s: [Double]) -> Policy {
         // compute the value of doing any action in this state
         // and return the argmax action and its value
         var svol = Vol(sx: 1, sy: 1, depth: self.netInputs)
@@ -234,11 +234,11 @@ class Brain {
         return Policy(action: maxk, value: maxval)
     }
     
-    func getNetInput(xt: [Double]) -> [Double] {
+    func getNetInput(_ xt: [Double]) -> [Double] {
         // return s = (x,a,x,a,x,a,xt) state vector.
         // It's a concatenation of last windowSize (x,a) pairs and current state x
         var w: [Double] = []
-        w.appendContentsOf(xt) // start with current state
+        w.append(contentsOf: xt) // start with current state
         // and now go backwards and append states and actions from history temporalWindow times
         let n = self.windowSize
         for k: Int in 0 ..< self.temporalWindow {
@@ -246,14 +246,14 @@ class Brain {
             w.append(self.stateWindow[n-1-k])
             // action, encoded as 1-of-k indicator vector. We scale it up a bit because
             // we dont want weight regularization to undervalue this information, as it only exists once
-            var action1ofk = [Double](count: self.numActions, repeatedValue: 0)
+            var action1ofk = [Double](repeating: 0, count: self.numActions)
             action1ofk[self.actionWindow[n-1-k]] = Double(self.numStates)
-            w.appendContentsOf(action1ofk)
+            w.append(contentsOf: action1ofk)
         }
         return w
     }
     
-    func forward(inputArray: [Double]) -> Int {
+    func forward(_ inputArray: [Double]) -> Int {
         // compute forward (behavior) pass given the input neuron signals from body
         self.forwardPasses += 1
         self.lastInputArray = inputArray // back this up
@@ -288,16 +288,16 @@ class Brain {
         
         // remember the state and action we took for backward pass
         self.netWindow.removeFirst()
-        self.netWindow.appendContentsOf(netInput)
+        self.netWindow.append(contentsOf: netInput)
         self.stateWindow.removeFirst()
-        self.stateWindow.appendContentsOf(inputArray)
+        self.stateWindow.append(contentsOf: inputArray)
         self.actionWindow.removeFirst()
         self.actionWindow.append(action)
         
         return action
     }
     
-    func backward(reward: Double) {
+    func backward(_ reward: Double) {
         self.latestReward = reward
         self.averageRewardWindow.add(reward)
         self.rewardWindow.removeFirst()
@@ -380,7 +380,7 @@ class Window {
         self.sum = 0
     }
     
-    func add(x: Double) {
+    func add(_ x: Double) {
         self.v.append(x)
         self.sum += x
         if self.v.count>self.size {
@@ -405,7 +405,7 @@ class Window {
 
 // returns string representation of float
 // but truncated to length of d digits
-func f2t(x: Double, d: Int = 5) -> String{
+func f2t(_ x: Double, d: Int = 5) -> String{
     let dd = 1.0 * pow(10.0, Double(d))
     return  "\(floor(x*dd)/dd)"
 }

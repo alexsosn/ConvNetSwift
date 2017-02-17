@@ -39,7 +39,7 @@ class InputLayer: InnerLayer {
         self.layerType = .Input
     }
     
-    func forward(inout V: Vol, isTraining: Bool) -> Vol {
+    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         self.inAct = V
         self.outAct = V
         return self.outAct! // simply identity function for now
@@ -51,16 +51,16 @@ class InputLayer: InnerLayer {
         return []
     }
     
-    func assignParamsAndGrads(paramsAndGrads: [ParamsAndGrads]) {
+    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["outDepth"] = self.outDepth
-        json["outSx"] = self.outSx
-        json["outSy"] = self.outSy
-        json["layerType"] = self.layerType.rawValue
+        json["outDepth"] = self.outDepth as AnyObject?
+        json["outSx"] = self.outSx as AnyObject?
+        json["outSy"] = self.outSy as AnyObject?
+        json["layerType"] = self.layerType.rawValue as AnyObject?
         return json
     }
 

@@ -30,7 +30,7 @@ class ReluLayer: InnerLayer {
         self.layerType = .ReLU
     }
     
-    func forward(inout V: Vol, isTraining: Bool) -> Vol {
+    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         self.inAct = V
         let V2 = V.clone()
         let N = V.w.count
@@ -51,7 +51,7 @@ class ReluLayer: InnerLayer {
         }
 
         let N = V.w.count
-        V.dw = zerosDouble(N) // zero out gradient wrt data
+        V.dw = ArrayUtils.zerosDouble(N) // zero out gradient wrt data
         for i in 0 ..< N {
 
             if(V2.w[i] <= 0) {
@@ -66,16 +66,16 @@ class ReluLayer: InnerLayer {
         return []
     }
     
-    func assignParamsAndGrads(paramsAndGrads: [ParamsAndGrads]) {
+    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["outDepth"] = self.outDepth
-        json["outSx"] = self.outSx
-        json["outSy"] = self.outSy
-        json["layerType"] = self.layerType.rawValue
+        json["outDepth"] = self.outDepth as AnyObject?
+        json["outSx"] = self.outSx as AnyObject?
+        json["outSy"] = self.outSy as AnyObject?
+        json["layerType"] = self.layerType.rawValue as AnyObject?
         return json
     }
 //
@@ -117,7 +117,7 @@ class SigmoidLayer: InnerLayer {
         self.layerType = .Sigmoid
     }
     // http://memkite.com/blog/2014/12/15/data-parallel-programming-with-metal-and-swift-for-iphoneipad-gpu/
-    func forward(inout V: Vol, isTraining: Bool) -> Vol {
+    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         self.inAct = V
         let V2 = V.cloneAndZero()
         let N = V.w.count
@@ -138,7 +138,7 @@ class SigmoidLayer: InnerLayer {
                 fatalError("self.inAct or self.outAct is nil")
         }
         let N = V.w.count
-        V.dw = zerosDouble(N) // zero out gradient wrt data
+        V.dw = ArrayUtils.zerosDouble(N) // zero out gradient wrt data
         for i in 0 ..< N {
 
             let v2wi = V2.w[i]
@@ -150,16 +150,16 @@ class SigmoidLayer: InnerLayer {
         return []
     }
     
-    func assignParamsAndGrads(paramsAndGrads: [ParamsAndGrads]) {
+    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["outDepth"] = self.outDepth
-        json["outSx"] = self.outSx
-        json["outSy"] = self.outSy
-        json["layerType"] = self.layerType.rawValue
+        json["outDepth"] = self.outDepth as AnyObject?
+        json["outSx"] = self.outSx as AnyObject?
+        json["outSy"] = self.outSy as AnyObject?
+        json["layerType"] = self.layerType.rawValue as AnyObject?
         return json
     }
 //
@@ -210,10 +210,10 @@ class MaxoutLayer: InnerLayer {
         self.outDepth = opt.inDepth / self.group_size // WARNING: floor was here
         self.layerType = .Maxout
         
-        self.switches = zerosInt(self.outSx*self.outSy*self.outDepth) // useful for backprop
+        self.switches = ArrayUtils.zerosInt(self.outSx*self.outSy*self.outDepth) // useful for backprop
     }
     
-    func forward(inout V: Vol, isTraining: Bool) -> Vol {
+    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         self.inAct = V
         let N = self.outDepth
         let V2 = Vol(sx: self.outSx, sy: self.outSy, depth: self.outDepth, c: 0.0)
@@ -259,7 +259,7 @@ class MaxoutLayer: InnerLayer {
                         }
                         V2.set(x: x, y: y, d: i, v: a)
                         self.switches[n] = ix + ai
-                        n++
+                        n += 1
                     }
                 }
             }
@@ -276,7 +276,7 @@ class MaxoutLayer: InnerLayer {
                 fatalError("self.inAct or self.outAct is nil")
         }
         let N = self.outDepth
-        V.dw = zerosDouble(V.w.count) // zero out gradient wrt data
+        V.dw = ArrayUtils.zerosDouble(V.w.count) // zero out gradient wrt data
         
         // pass the gradient through the appropriate switch
         if(self.outSx == 1 && self.outSy == 1) {
@@ -296,7 +296,7 @@ class MaxoutLayer: InnerLayer {
 
                         let chainGrad = V2.getGrad(x: x, y: y, d: i)
                         V.setGrad(x: x, y: y, d: self.switches[n], v: chainGrad)
-                        n++
+                        n += 1
                     }
                 }
             }
@@ -307,21 +307,21 @@ class MaxoutLayer: InnerLayer {
         return []
     }
     
-    func assignParamsAndGrads(paramsAndGrads: [ParamsAndGrads]) {
+    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["outDepth"] = self.outDepth
-        json["outSx"] = self.outSx
-        json["outSy"] = self.outSy
-        json["layerType"] = self.layerType.rawValue
-        json["group_size"] = self.group_size
+        json["outDepth"] = self.outDepth as AnyObject?
+        json["outSx"] = self.outSx as AnyObject?
+        json["outSy"] = self.outSy as AnyObject?
+        json["layerType"] = self.layerType.rawValue as AnyObject?
+        json["group_size"] = self.group_size as AnyObject?
         return json
     }
 
-    func fromJSON(json: [String: AnyObject]) -> () {
+    func fromJSON(_ json: [String: AnyObject]) -> () {
         self.outDepth = json["outDepth"] as! Int
         self.outSx = json["outSx"] as! Int
         self.outSy = json["outSy"] as! Int
@@ -329,7 +329,7 @@ class MaxoutLayer: InnerLayer {
         if let group_size = json["group_size"] {
             self.group_size = group_size as! Int
         }
-        self.switches = zerosInt(self.group_size)
+        self.switches = ArrayUtils.zerosInt(self.group_size)
     }
 }
 
@@ -363,7 +363,7 @@ class TanhLayer: InnerLayer {
         self.layerType = .Tanh
     }
     
-    func forward(inout V: Vol, isTraining: Bool) -> Vol {
+    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         self.inAct = V
         let V2 = V.cloneAndZero()
         let N = V.w.count
@@ -382,7 +382,7 @@ class TanhLayer: InnerLayer {
                 fatalError("self.inAct or self.outAct is nil")
         }
         let N = V.w.count
-        V.dw = zerosDouble(N) // zero out gradient wrt data
+        V.dw = ArrayUtils.zerosDouble(N) // zero out gradient wrt data
         for i in 0 ..< N {
 
             let v2wi = V2.w[i]
@@ -394,20 +394,20 @@ class TanhLayer: InnerLayer {
         return []
     }
     
-    func assignParamsAndGrads(paramsAndGrads: [ParamsAndGrads]) {
+    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["outDepth"] = self.outDepth
-        json["outSx"] = self.outSx
-        json["outSy"] = self.outSy
-        json["layerType"] = self.layerType.rawValue
+        json["outDepth"] = self.outDepth as AnyObject?
+        json["outSx"] = self.outSx as AnyObject?
+        json["outSy"] = self.outSy as AnyObject?
+        json["layerType"] = self.layerType.rawValue as AnyObject?
         return json
     }
 
-    func fromJSON(json: [String: AnyObject]) -> () {
+    func fromJSON(_ json: [String: AnyObject]) -> () {
         self.outDepth = json["outDepth"] as! Int
         self.outSx = json["outSx"] as! Int
         self.outSy = json["outSy"] as! Int

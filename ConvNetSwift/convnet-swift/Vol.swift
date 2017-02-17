@@ -24,8 +24,8 @@ class Vol {
         self.depth = array.count
         // we have to do the following copy because we want to use
         // fast typed arrays, not an ordinary javascript array
-        self.w = zerosDouble(self.depth)
-        self.dw = zerosDouble(self.depth)
+        self.w = ArrayUtils.zerosDouble(self.depth)
+        self.dw = ArrayUtils.zerosDouble(self.depth)
         for i in 0 ..< self.depth {
             self.w[i] = array[i]
         }
@@ -55,8 +55,8 @@ class Vol {
         self.sy = sy
         self.depth = depth
         let n = sx*sy*depth
-        self.w = zerosDouble(n)
-        self.dw = zerosDouble(n)
+        self.w = ArrayUtils.zerosDouble(n)
+        self.dw = ArrayUtils.zerosDouble(n)
         if c == nil {
             // weight normalization is done to equalize the output
             // variance of every neuron, otherwise neurons with a lot
@@ -75,32 +75,32 @@ class Vol {
         
     }
     
-    func get(x x: Int, y: Int, d: Int) -> Double {
+    func get(x: Int, y: Int, d: Int) -> Double {
         let ix=((self.sx * y)+x)*self.depth+d
         return self.w[ix]
     }
     
-    func set(x x: Int, y: Int, d: Int, v: Double) -> () {
+    func set(x: Int, y: Int, d: Int, v: Double) -> () {
         let ix=((self.sx * y)+x)*self.depth+d
         self.w[ix] = v
     }
     
-    func add(x x: Int, y: Int, d: Int, v: Double) -> () {
+    func add(x: Int, y: Int, d: Int, v: Double) -> () {
         let ix=((self.sx * y)+x)*self.depth+d
         self.w[ix] += v
     }
     
-    func getGrad(x x: Int, y: Int, d: Int) -> Double {
+    func getGrad(x: Int, y: Int, d: Int) -> Double {
         let ix = ((self.sx * y)+x)*self.depth+d
         return self.dw[ix]
     }
     
-    func setGrad(x x: Int, y: Int, d: Int, v: Double) -> () {
+    func setGrad(x: Int, y: Int, d: Int, v: Double) -> () {
         let ix = ((self.sx * y)+x)*self.depth+d
         self.dw[ix] = v
     }
     
-    func addGrad(x x: Int, y: Int, d: Int, v: Double) -> () {
+    func addGrad(x: Int, y: Int, d: Int, v: Double) -> () {
         let ix = ((self.sx * y)+x)*self.depth+d
         self.dw[ix] += v
     }
@@ -118,20 +118,20 @@ class Vol {
         return V
     }
     
-    func addFrom(V: Vol) {
+    func addFrom(_ V: Vol) {
         for k in 0 ..< self.w.count {
             self.w[k] += V.w[k]
         }
     }
     
-    func addFromScaled(V: Vol, a: Double) {
+    func addFromScaled(_ V: Vol, a: Double) {
         for k in 0 ..< self.w.count {
             self.w[k] += a*V.w[k]
         }
     }
     
-    func setConst(a: Double) {
-        for var k=0; k<self.w.count; k++ {
+    func setConst(_ a: Double) {
+        for k in 0 ..< self.w.count {
             self.w[k] = a
         }
     }
@@ -139,10 +139,10 @@ class Vol {
     func toJSON() -> [String: AnyObject] {
         // TODO: we may want to only save d most significant digits to save space
         var json: [String: AnyObject] = [:]
-        json["sx"] = self.sx
-        json["sy"] = self.sy
-        json["depth"] = self.depth
-        json["w"] = self.w
+        json["sx"] = self.sx as AnyObject?
+        json["sy"] = self.sy as AnyObject?
+        json["depth"] = self.depth as AnyObject?
+        json["w"] = self.w as AnyObject?
         return json
         // we wont back up gradients to save space
     }

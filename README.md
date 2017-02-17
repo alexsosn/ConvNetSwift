@@ -1,6 +1,8 @@
 # ConvNetSwift
 Swift port of [ConvnetJS](http://cs.stanford.edu/people/karpathy/convnetjs/) - a library for training Deep Learning models (mainly Neural Networks).
 
+Updated to Swift 3.
+
 Available NN layer types:
 
 - [x] Fully Connected 
@@ -33,4 +35,4 @@ Acceleration:
 - [ ] Metal
 
 
-Work in progress.
+This is not a production-ready library. It is a personal research project and work in progress.

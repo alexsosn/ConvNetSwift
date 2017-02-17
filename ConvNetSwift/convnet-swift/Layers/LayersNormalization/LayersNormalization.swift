@@ -44,10 +44,10 @@ class LocalResponseNormalizationLayer: InnerLayer {
         self.layerType = .LRN
         
         // checks
-        if self.n%2 == 0 { print("WARNING n should be odd for LRN layer"); }
+        if self.n.truncatingRemainder(dividingBy: 2) == 0 { print("WARNING n should be odd for LRN layer"); }
     }
     
-    func forward(inout V: Vol, isTraining: Bool) -> Vol {
+    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         self.inAct = V
         
         let A = V.cloneAndZero()
@@ -64,7 +64,7 @@ class LocalResponseNormalizationLayer: InnerLayer {
                     
                     // normalize in a window of size n
                     var den = 0.0
-                    for(var j=max(0, i-n2);j<=min(i+n2,V.depth-1);j++) {
+                    for j in max(0, i-n2) ... min(i+n2, V.depth-1) {
                         let aa = V.get(x: x, y: y, d: j)
                         den += aa*aa
                     }
@@ -90,7 +90,7 @@ class LocalResponseNormalizationLayer: InnerLayer {
                 fatalError("self.inAct or self.outAct or S_cache_ is nil")
         }
         
-        V.dw = zerosDouble(V.w.count) // zero out gradient wrt data
+        V.dw = ArrayUtils.zerosDouble(V.w.count) // zero out gradient wrt data
 //        let A = self.outAct // computed in forward pass
         
         let n2 = Int(floor(self.n/2))
@@ -107,7 +107,7 @@ class LocalResponseNormalizationLayer: InnerLayer {
                     let SB2 = SB*SB
                     
                     // normalize in a window of size n
-                    for var j=max(0,i-n2); j<=min(i+n2,V.depth-1); j++ {
+                    for j in max(0, i-n2) ... min(i+n2, V.depth-1) {
                         let aj = V.get(x: x, y: y, d: j)
                         var g = -aj*self.β*pow(S, self.β-1)*self.α/self.n*2*aj
                         if j==i {
@@ -125,20 +125,20 @@ class LocalResponseNormalizationLayer: InnerLayer {
     
     func getParamsAndGrads() -> [ParamsAndGrads] { return [] }
     
-    func assignParamsAndGrads(paramsAndGrads: [ParamsAndGrads]) {
+    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
     func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
-        json["k"] = self.k
-        json["n"] = self.n
-        json["alpha"] = self.α // normalize by size
-        json["beta"] = self.β
-        json["outSx"] = self.outSx
-        json["outSy"] = self.outSy
-        json["outDepth"] = self.outDepth
-        json["layerType"] = self.layerType.rawValue
+        json["k"] = self.k as AnyObject?
+        json["n"] = self.n as AnyObject?
+        json["alpha"] = self.α as AnyObject? // normalize by size
+        json["beta"] = self.β as AnyObject?
+        json["outSx"] = self.outSx as AnyObject?
+        json["outSy"] = self.outSy as AnyObject?
+        json["outDepth"] = self.outDepth as AnyObject?
+        json["layerType"] = self.layerType.rawValue as AnyObject?
         return json
     }
 //

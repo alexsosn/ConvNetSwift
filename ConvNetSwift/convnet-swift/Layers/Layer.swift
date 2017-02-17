@@ -11,8 +11,8 @@ struct ParamsAndGrads {
     var l2DecayMul: Double?
 
     init (
-        inout params: [Double],
-        inout grads: [Double],
+        params: inout [Double],
+        grads: inout [Double],
         l1DecayMul: Double,
         l2DecayMul: Double) {
             self.params = params
@@ -29,8 +29,8 @@ protocol Layer {
     var layerType: LayerType {get set}
     var outAct: Vol? {get set}
     func getParamsAndGrads() -> [ParamsAndGrads]
-    func assignParamsAndGrads(paramsAndGrads: [ParamsAndGrads])
-    func forward(inout vol: Vol, isTraining: Bool) -> Vol
+    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads])
+    func forward(_ vol: inout Vol, isTraining: Bool) -> Vol
     func toJSON() -> [String: AnyObject]
 }
 

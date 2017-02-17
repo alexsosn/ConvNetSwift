@@ -6,7 +6,7 @@ import Foundation
 // crop is the size of output
 // dx,dy are offset wrt incoming volume, of the shift
 // fliplr is boolean on whether we also want to flip left<->right
-func augment(V: Vol, crop: Int, dx: Int?, dy: Int?, fliplr: Bool = false) -> Vol {
+func augment(_ V: Vol, crop: Int, dx: Int?, dy: Int?, fliplr: Bool = false) -> Vol {
     // note assumes square outputs of size crop x crop
     let dx = dx ?? RandUtils.randi(0, V.sx - crop)
     let dy = dy ?? RandUtils.randi(0, V.sy - crop)
@@ -124,7 +124,7 @@ import CoreGraphics
 
 extension Vol {
     
-    func denormalize(pixelChannel: Double) -> UInt8{
+    func denormalize(_ pixelChannel: Double) -> UInt8{
         return UInt8(pixelChannel * 255.0)
     }
     
@@ -140,67 +140,70 @@ extension Vol {
         let bitsPerComponent: Int = 8
         let bitsPerPixel = bitsPerComponent * components
         let bytesPerRow = (components * width)
-        let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue | CGBitmapInfo.ByteOrder32Big.rawValue)
+        let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue)
         let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let providerRef = CGDataProviderCreateWithCFData(
-            NSData(bytes: intDenormArray, length: intDenormArray.count * components)
+        let providerRef = CGDataProvider(
+            data: Data(bytes: UnsafePointer<UInt8>(intDenormArray), count: intDenormArray.count * components) as CFData
         )
         
-        guard let cgim = CGImageCreate(
-            width,
-            height,
-            bitsPerComponent,
-            bitsPerPixel,
-            bytesPerRow,
-            colorSpace,
-            bitmapInfo,
-            providerRef,
-            nil,
-            false,
-            .RenderingIntentDefault
+        guard let cgim = CGImage(
+            width: width,
+            height: height,
+            bitsPerComponent: bitsPerComponent,
+            bitsPerPixel: bitsPerPixel,
+            bytesPerRow: bytesPerRow,
+            space: colorSpace,
+            bitmapInfo: bitmapInfo,
+            provider: providerRef!,
+            decode: nil,
+            shouldInterpolate: false,
+            intent: .defaultIntent
             )  else {
                 return nil
         }
         
-        let newImage = UIImage(CGImage: cgim)
+        let newImage = UIImage(cgImage: cgim)
         return newImage
     }
 }
 
 extension UIImage {
-    func toVol(convert_grayscale convert_grayscale: Bool = false) -> Vol {
+    func toVol(convert_grayscale: Bool = false) -> Vol? {
         
         if convert_grayscale {
             // TODO: implement
         }
         
-        let image = self.CGImage
-        let width = CGImageGetWidth(image)
-        let height = CGImageGetHeight(image)
+        guard let image = self.cgImage else {
+            return nil
+        }
+        
+        let width = image.width
+        let height = image.height
         let components = 4
         let bytesPerRow = (components * width)
         let bitsPerComponent: Int = 8
-        let pixels = calloc(height * width, sizeof(UInt32))
+        let pixels = calloc(height * width, MemoryLayout<UInt32>.size)
         
-        let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue | CGBitmapInfo.ByteOrder32Big.rawValue)
+        let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue)
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         
-        let context = CGBitmapContextCreate(
-            pixels,
-            width,
-            height,
-            bitsPerComponent,
-            bytesPerRow,
-            colorSpace,
-            bitmapInfo.rawValue)
+        let context = CGContext(
+            data: pixels,
+            width: width,
+            height: height,
+            bitsPerComponent: bitsPerComponent,
+            bytesPerRow: bytesPerRow,
+            space: colorSpace,
+            bitmapInfo: bitmapInfo.rawValue)
         
-        CGContextDrawImage(context, CGRectMake(0, 0, CGFloat(width), CGFloat(height)), image)
+        context?.draw(image, in: CGRect(x: 0, y: 0, width: CGFloat(width), height: CGFloat(height)))
         
-        let dataCtxt = CGBitmapContextGetData(context)
-        let data = NSData(bytesNoCopy: dataCtxt, length: width*height*components, freeWhenDone: true)
+        let dataCtxt = context?.data!
+        let data = Data(bytesNoCopy: UnsafeMutableRawPointer(dataCtxt)!, count: width*height*components, deallocator: .free)
         
-        var pixelMem = [UInt8](count: data.length, repeatedValue: 0)
-        data.getBytes(&pixelMem, length: data.length)
+        var pixelMem = [UInt8](repeating: 0, count: data.count)
+        (data as NSData).getBytes(&pixelMem, length: data.count)
         
         let doubleNormArray = pixelMem.map { (elem: UInt8) -> Double in
             return normalize(elem)
@@ -211,7 +214,7 @@ extension UIImage {
         return vol
     }
     
-    private func normalize(pixelChannel: UInt8) -> Double{
+    fileprivate func normalize(_ pixelChannel: UInt8) -> Double{
         return Double(pixelChannel)/255.0
     }
 }

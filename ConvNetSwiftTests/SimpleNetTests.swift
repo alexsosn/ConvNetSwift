@@ -57,7 +57,7 @@ class SimpleNetTests: XCTestCase {
         
         XCTAssertEqual(probabilityVolume.w.count, 3)  // 3 classes output
         var w = probabilityVolume.w
-        for var i=0; i<3; i++ {
+        for i in 0 ..< 3 {
             XCTAssertGreaterThan(w[i], 0.0)
             XCTAssertLessThan(w[i], 1.0)
         }
@@ -71,7 +71,7 @@ class SimpleNetTests: XCTestCase {
         // lets test 100 random point and label settings
         // note that this should work since l2 and l1 regularization are off
         // an issue is that if step size is too high, this could technically fail...
-        for var k=0; k<100; k++ {
+        for k in 0 ..< 100 {
             var x = Vol(array: [RandUtils.random_js() * 2 - 1, RandUtils.random_js() * 2 - 1])
             let pv = net!.forward(&x)
             let gti = Int(RandUtils.random_js() * 3)
