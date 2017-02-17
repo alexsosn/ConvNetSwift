@@ -153,13 +153,13 @@ class Net {
     }
     
     func getCostLoss(V: inout Vol, y: Int) -> Double {
-        forward(&V, isTraining: false)
+        _ = forward(&V, isTraining: false)
         let loss = (layers.last! as! LossLayer).backward(y)
         return loss
     }
     
     func getCostLoss(V: inout Vol, y: Double) -> Double {
-        forward(&V, isTraining: false)
+        _ = forward(&V, isTraining: false)
         let loss = (layers.last! as! RegressionLayer).backward(y)
         return loss
     }

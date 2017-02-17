@@ -20,7 +20,7 @@
 		2B16E0BD1BD93A5A00E0A2AA /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AE1BD93A5A00E0A2AA /* Util.swift */; };
 		2B16E0BE1BD93A5A00E0A2AA /* Vol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AF1BD93A5A00E0A2AA /* Vol.swift */; };
 		2B16E0BF1BD93A5A00E0A2AA /* VolUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0B01BD93A5A00E0A2AA /* VolUtil.swift */; };
-		2B16E0CF1BD93BB100E0A2AA /* LayersDotproducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C21BD93BB100E0A2AA /* LayersDotproducts.swift */; };
+		2B16E0CF1BD93BB100E0A2AA /* FullyConnectedLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C21BD93BB100E0A2AA /* FullyConnectedLayer.swift */; };
 		2B16E0D01BD93BB100E0A2AA /* LayersDropout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C41BD93BB100E0A2AA /* LayersDropout.swift */; };
 		2B16E0D11BD93BB100E0A2AA /* LayersInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C61BD93BB100E0A2AA /* LayersInput.swift */; };
 		2B16E0D21BD93BB100E0A2AA /* LayersLoss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C81BD93BB100E0A2AA /* LayersLoss.swift */; };
@@ -33,7 +33,7 @@
 		2B2905AF1C4FAD7F008CA36D /* Nyura_sq.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B2905AD1C4FAD7F008CA36D /* Nyura_sq.png */; };
 		2B4064801BE8CABD00C0B618 /* SimpleNetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40647F1BE8CABD00C0B618 /* SimpleNetTests.swift */; };
 		2B4064811BE92EAC00C0B618 /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0D61BD93CA700E0A2AA /* Layer.swift */; };
-		2B4064821BE92EB000C0B618 /* LayersDotproducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C21BD93BB100E0A2AA /* LayersDotproducts.swift */; };
+		2B4064821BE92EB000C0B618 /* FullyConnectedLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C21BD93BB100E0A2AA /* FullyConnectedLayer.swift */; };
 		2B4064831BE92EB600C0B618 /* Net.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AA1BD93A5A00E0A2AA /* Net.swift */; };
 		2B4064841BE92EBF00C0B618 /* LayersDropout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C41BD93BB100E0A2AA /* LayersDropout.swift */; };
 		2B4064851BE92EC100C0B618 /* LayersInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C61BD93BB100E0A2AA /* LayersInput.swift */; };
@@ -57,6 +57,7 @@
 		2B7E518A1C119D59006BE7F2 /* Nyura.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2B7E51871C119D59006BE7F2 /* Nyura.jpg */; };
 		2B7E518B1C119D59006BE7F2 /* Nyura.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7E51881C119D59006BE7F2 /* Nyura.png */; };
 		2B7E518C1C119D59006BE7F2 /* Nyura.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7E51881C119D59006BE7F2 /* Nyura.png */; };
+		2B83B9FA1E57A975006C7BCF /* ConvolutionLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83B9F91E57A975006C7BCF /* ConvolutionLayer.swift */; };
 		2B872B5D1C12043700654CB9 /* AutoencoderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B872B5C1C12043700654CB9 /* AutoencoderTest.swift */; };
 /* End PBXBuildFile section */
 
@@ -88,7 +89,7 @@
 		2B16E0AE1BD93A5A00E0A2AA /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Util.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0AF1BD93A5A00E0A2AA /* Vol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Vol.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0B01BD93A5A00E0A2AA /* VolUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = VolUtil.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		2B16E0C21BD93BB100E0A2AA /* LayersDotproducts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersDotproducts.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2B16E0C21BD93BB100E0A2AA /* FullyConnectedLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FullyConnectedLayer.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0C41BD93BB100E0A2AA /* LayersDropout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersDropout.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0C61BD93BB100E0A2AA /* LayersInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersInput.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0C81BD93BB100E0A2AA /* LayersLoss.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersLoss.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -105,6 +106,7 @@
 		2B7E51841C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg"; sourceTree = "<group>"; };
 		2B7E51871C119D59006BE7F2 /* Nyura.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Nyura.jpg; sourceTree = "<group>"; };
 		2B7E51881C119D59006BE7F2 /* Nyura.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Nyura.png; sourceTree = "<group>"; };
+		2B83B9F91E57A975006C7BCF /* ConvolutionLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvolutionLayer.swift; sourceTree = "<group>"; };
 		2B872B5C1C12043700654CB9 /* AutoencoderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoencoderTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -207,7 +209,8 @@
 		2B16E0C11BD93BB100E0A2AA /* LayersDotproducts */ = {
 			isa = PBXGroup;
 			children = (
-				2B16E0C21BD93BB100E0A2AA /* LayersDotproducts.swift */,
+				2B16E0C21BD93BB100E0A2AA /* FullyConnectedLayer.swift */,
+				2B83B9F91E57A975006C7BCF /* ConvolutionLayer.swift */,
 			);
 			path = LayersDotproducts;
 			sourceTree = "<group>";
@@ -413,11 +416,12 @@
 				2B16E0BF1BD93A5A00E0A2AA /* VolUtil.swift in Sources */,
 				2B16E0BA1BD93A5A00E0A2AA /* Trainers.swift in Sources */,
 				2B16E0B81BD93A5A00E0A2AA /* Magicnet.swift in Sources */,
+				2B83B9FA1E57A975006C7BCF /* ConvolutionLayer.swift in Sources */,
 				2B16E0BE1BD93A5A00E0A2AA /* Vol.swift in Sources */,
 				2B16E0D71BD93CA700E0A2AA /* Layer.swift in Sources */,
 				2B16E0D41BD93BB100E0A2AA /* LayersNormalization.swift in Sources */,
 				2B16E0D01BD93BB100E0A2AA /* LayersDropout.swift in Sources */,
-				2B16E0CF1BD93BB100E0A2AA /* LayersDotproducts.swift in Sources */,
+				2B16E0CF1BD93BB100E0A2AA /* FullyConnectedLayer.swift in Sources */,
 				2B16E0BC1BD93A5A00E0A2AA /* Options.swift in Sources */,
 				2B16E0BD1BD93A5A00E0A2AA /* Util.swift in Sources */,
 				2B16E0D51BD93BB100E0A2AA /* LayersPool.swift in Sources */,
@@ -442,7 +446,7 @@
 				2B480E5E1C048BA30056865A /* UtilTests.swift in Sources */,
 				2B6625211BF00F5E00D59B65 /* Brain.swift in Sources */,
 				2B4064831BE92EB600C0B618 /* Net.swift in Sources */,
-				2B4064821BE92EB000C0B618 /* LayersDotproducts.swift in Sources */,
+				2B4064821BE92EB000C0B618 /* FullyConnectedLayer.swift in Sources */,
 				2B2905AC1C4F9E0C008CA36D /* FCTests.swift in Sources */,
 				2B4064871BE92EC700C0B618 /* LayersNonlinearities.swift in Sources */,
 				2B40648E1BE92F1500C0B618 /* Vol.swift in Sources */,

@@ -219,8 +219,8 @@ class Trainer {
                         // adam update
                         gsumi[j] = gsumi[j] * β1 + (1-β1) * gij // update biased first moment estimate
                         xsumi[j] = xsumi[j] * β2 + (1-β2) * gij * gij // update biased second moment estimate
-                        let biasCorr1 = gsumi[j] * (1 - pow(β1, Double(k))) // correct bias first moment estimate
-                        let biasCorr2 = xsumi[j] * (1 - pow(β2, Double(k))) // correct bias second moment estimate
+                        let biasCorr1 = gsumi[j] / (1 - pow(β1, Double(k))) // correct bias first moment estimate
+                        let biasCorr2 = xsumi[j] / (1 - pow(β2, Double(k))) // correct bias second moment estimate
                         let dx =  -learningRate * biasCorr1 / (sqrt(biasCorr2) + ε)
                         p[j] += dx
                     } else if method == .adagrad {
