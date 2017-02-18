@@ -29,10 +29,8 @@ class AutoencoderTest: XCTestCase {
         let fc4 = FullyConnectedLayerOpt(numNeurons: 50, activation: .Tanh)
         let fc5 = FullyConnectedLayerOpt(numNeurons: 50, activation: .Tanh)
         let regression = RegressionLayerOpt(numNeurons: 423*273)
-        let layerDefs: [LayerOptTypeProtocol] = [input, fc1, fc2, fc3, fc4, fc5, regression]
 
-        let net = Net()
-        net.makeLayers(layerDefs)
+        let net = Net([input, fc1, fc2, fc3, fc4, fc5, regression])
         
         var trainerOpts = TrainerOpt()
         trainerOpts.learningRate = 1
@@ -43,7 +41,7 @@ class AutoencoderTest: XCTestCase {
 
         let trainer = Trainer(net: net, options: trainerOpts)
         let image = UIImage(named: "Nyura.png")!
-        var v = image.toVol()
+        var v = image.toVol()!
         let res = trainer.train(x: &v, y: v.w)
         print(res)
     }

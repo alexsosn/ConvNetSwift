@@ -103,4 +103,9 @@ func weightedSample(_ lst: [Double], probs: [Double]) -> Double? {
     return nil
 }
 
+struct TimeUtils {
+    static func getNanoseconds() {
+        
+    }
+}
 

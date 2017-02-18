@@ -68,11 +68,9 @@ class PoolLayer: InnerLayer {
             var x = -pad
             var y = -pad
             for ax in 0 ..< outSx {
-                x+=stride
                 y = -pad
                 
                 for ay in 0 ..< outSy {
-                    y+=stride
                     
                     // convolve centered at this particular location
                     var a = -99999.0 // hopefully small enough ;\
@@ -99,8 +97,11 @@ class PoolLayer: InnerLayer {
                     switchx[n] = winx
                     switchy[n] = winy
                     n += 1
+                    y+=stride
                     A.set(x: ax, y: ay, d: d, v: a)
                 }
+
+                x+=stride
             }
         }
         outAct = A
@@ -123,21 +124,20 @@ class PoolLayer: InnerLayer {
         
         var n = 0
         for d in 0 ..< outDepth {
-
+            
             var x = -pad
-            var y = -pad
             for ax in 0 ..< outSx {
-                x+=stride
                 
-                y = -pad
+                var y = -pad
                 for ay in 0 ..< outSy {
-                    y+=stride
                     
                     let chainGrad = outAct.getGrad(x: ax, y: ay, d: d)
                     V.addGrad(x: switchx[n], y: switchy[n], d: d, v: chainGrad)
                     n += 1
-                    
+                    y += stride
                 }
+                
+                x += stride
             }
         }
     }

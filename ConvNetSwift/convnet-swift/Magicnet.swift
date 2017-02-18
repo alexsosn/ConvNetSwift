@@ -151,8 +151,7 @@ class MagicNet {
         let layerSoftmax = SoftmaxLayerOpt(numClasses: numClasses)
         
         layerDefs.append(layerSoftmax)
-        let net = Net()
-        net.makeLayers(layerDefs)
+        let net = Net(layerDefs)
         
         // sample training hyperparameters
         let bs = RandUtils.randi(batchSizeMin, batchSizeMax) // batch size
@@ -263,8 +262,7 @@ class MagicNet {
                 for k in 0 ..< candidates.count {
 
                     var c = candidates[k]
-                    let net = Net()
-                    net.makeLayers(c.layerDefs)
+                    let net = Net(c.layerDefs)
                     let trainer = Trainer(net: net, options: c.trainerDef)
                     c.net = net
                     c.trainer = trainer

@@ -27,9 +27,7 @@ class ViewController: UIViewController {
         // declare the linear classifier on top of the previous hidden layer
         let softmax = SoftmaxLayerOpt(numClasses: 2)
         
-        let layerDefs: [LayerOptTypeProtocol] = [input, fc, softmax]
-        let net = Net()
-        net.makeLayers(layerDefs)
+        let net = Net([input, fc, softmax])
         
         // forward a random data point through the network
         var x = Vol(array: [0.3, -0.5])

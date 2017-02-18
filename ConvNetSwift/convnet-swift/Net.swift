@@ -80,8 +80,8 @@ class Net {
     }
     
     // takes a list of layer definitions and creates the network layer objects
-    func makeLayers(_ defs: [LayerOptTypeProtocol]) -> () {
-        var defs = defs
+    init(_ layerPrototypes: [LayerOptTypeProtocol]) {        
+        var defs = layerPrototypes
         // few checks
         assert(defs.count >= 2, "Error! At least one input layer and one loss layer are required.")
         assert(defs[0] is InputLayerOpt, "Error! First layer must be the input layer, to declare size of inputs")

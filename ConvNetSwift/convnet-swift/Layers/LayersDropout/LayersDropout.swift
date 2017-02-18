@@ -58,9 +58,6 @@ class DropoutLayer: InnerLayer {
                     V2.w[i]=0
                     dropped[i] = true
                 } // drop!
-//                else {
-//                    dropped[i] = false
-//                }
             }
         } else {
             // scale the activations during prediction

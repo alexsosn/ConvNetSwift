@@ -33,9 +33,7 @@ class ConvNetSwiftTests: XCTestCase {
             // declare the linear classifier on top of the previous hidden layer
             let softmax = SoftmaxLayerOpt(numClasses: 10)
             
-            let layerDefs: [LayerOptTypeProtocol] = [input, fc, softmax]
-            let net = Net()
-            net.makeLayers(layerDefs)
+            let net = Net([input, fc, softmax])
             
             // forward a random data point through the network
             var x = Vol(array: [0.3, -0.5])
@@ -89,10 +87,7 @@ class ConvNetSwiftTests: XCTestCase {
         let softmax = SoftmaxLayerOpt(numClasses: 10)
         // output Vol is of size 1x1x10 here
         
-        let layerDefs: [LayerOptTypeProtocol] = [input, conv1, pool1, conv2, pool2, conv3, pool3, softmax]
-        
-        let net = Net()
-        net.makeLayers(layerDefs)
+        let net = Net([input, conv1, pool1, conv2, pool2, conv3, pool3, softmax])
         
         // helpful utility for converting images into Vols is included
         var x = img.toVol(convert_grayscale: false)!

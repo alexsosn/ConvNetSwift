@@ -16,15 +16,13 @@ class SimpleNetTests: XCTestCase {
         super.setUp()
         srand48(time(nil))
 
-        net = Net()
         
         let input = InputLayerOpt(outSx: 1, outSy: 1, outDepth: 2)
         let fc1 = FullyConnectedLayerOpt(numNeurons: 50, activation: .Tanh)
         let fc2 = FullyConnectedLayerOpt(numNeurons: 40, activation: .Tanh)
         let softmax = SoftmaxLayerOpt(numClasses: 3)
-        let layerDefs: [LayerOptTypeProtocol] = [input, fc1, fc2, softmax]
         
-        net!.makeLayers(layerDefs)
+        net = Net([input, fc1, fc2, softmax])
         
         var trainerOpts = TrainerOpt()
         trainerOpts.learningRate = 0.0001
@@ -69,7 +67,7 @@ class SimpleNetTests: XCTestCase {
         // lets test 100 random point and label settings
         // note that this should work since l2 and l1 regularization are off
         // an issue is that if step size is too high, this could technically fail...
-        for k in 0 ..< 100 {
+        for _ in 0 ..< 100 {
             var x = Vol(array: [RandUtils.random_js() * 2 - 1, RandUtils.random_js() * 2 - 1])
             let pv = net!.forward(&x)
             let gti = Int(RandUtils.random_js() * 3)

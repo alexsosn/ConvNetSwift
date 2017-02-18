@@ -164,8 +164,7 @@ class Brain {
                 }
             layerDefs.append(RegressionLayerOpt(numNeurons: numActions)) // value function output
         }
-        valueNet = Net()
-        valueNet.makeLayers(layerDefs)
+        valueNet = Net(layerDefs)
         
         // and finally we need a Temporal Difference Learning trainer!
         var tdtrainerOptions = TrainerOpt()

@@ -13,7 +13,6 @@ protocol LayerInOptProtocol: LayerOptTypeProtocol {
     var inSx: Int {get set}
     var inSy: Int {get set}
     var inDepth: Int {get set}
-
 }
 
 protocol LayerOptActivationProtocol {

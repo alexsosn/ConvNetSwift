@@ -84,12 +84,12 @@ class Trainer {
         let startf = Date()
         _ = net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
         let endf = Date()
-        let forwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startf, to: endf, options: []).nanosecond
+        let forwardTime = endf.nanoseconds(from: startf)
         
         let startb = Date()
         let costLoss = net.backward(y)
         let endb = Date()
-        let backwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startb, to: endb, options: []).nanosecond
+        let backwardTime = endb.nanoseconds(from: startb)
         
         let (l1DecayLoss, l2DecayLoss) = _perform_train()
         
@@ -98,8 +98,8 @@ class Trainer {
         // loss is a bit of a hack. Ideally, user should specify arbitrary number of loss functions on any layer
         // and it should all be computed correctly and automatically.
         return TrainResult(
-            forwardTime: forwardTime!,
-            backwardTime: backwardTime!,
+            forwardTime: forwardTime,
+            backwardTime: backwardTime,
             l2DecayLoss: l2DecayLoss,
             l1DecayLoss: l1DecayLoss,
             costLoss: costLoss,
@@ -113,18 +113,18 @@ class Trainer {
         let startf = Date()
         _ = net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
         let endf = Date()
-        let forwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startf, to: endf, options: []).nanosecond
+        let forwardTime = endf.nanoseconds(from: startf)
         
         let startb = Date()
         let costLoss = net.backward(y)
         let endb = Date()
-        let backwardTime = (Calendar.current as NSCalendar).components(NSCalendar.Unit.second, from: startb, to: endb, options: []).nanosecond
+        let backwardTime = endb.nanoseconds(from: startb)
         
         let (l1DecayLoss, l2DecayLoss) = _perform_train()
         
         return TrainResult(
-            forwardTime: forwardTime!,
-            backwardTime: backwardTime!,
+            forwardTime: forwardTime,
+            backwardTime: backwardTime,
             l2DecayLoss: l2DecayLoss,
             l1DecayLoss: l1DecayLoss,
             costLoss: costLoss,
@@ -138,12 +138,12 @@ class Trainer {
         let startf = Date()
         _ = net.forward(&x, isTraining: true) // also set the flag that lets the net know we're just training
         let endf = Date()
-        let forwardTime = Calendar.current.dateComponents([.nanosecond], from: startf, to: endf).nanosecond ?? 0
+        let forwardTime = endf.nanoseconds(from: startf)
         
         let startb = Date()
         let costLoss = net.backward(y)
         let endb = Date()
-        let backwardTime = Calendar.current.dateComponents([.nanosecond], from: startb, to: endb).nanosecond ?? 0
+        let backwardTime = endb.nanoseconds(from: startb)
         
         let (l1DecayLoss, l2DecayLoss) = _perform_train()
         
