@@ -9,12 +9,11 @@ struct ParamsAndGrads {
     var grads: [Double]
     var l1DecayMul: Double?
     var l2DecayMul: Double?
-
-    init (
-        params: inout [Double],
-        grads: inout [Double],
-        l1DecayMul: Double,
-        l2DecayMul: Double) {
+    
+    init(params: inout [Double],
+         grads: inout [Double],
+         l1DecayMul: Double,
+         l2DecayMul: Double) {
             self.params = params
             self.grads = grads
             self.l1DecayMul = l1DecayMul

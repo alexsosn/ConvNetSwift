@@ -11,19 +11,16 @@ import XCTest
 class FCTests: XCTestCase {
 
     func testRandomInitialisation() {
-        let net = Net()
         
         let input = InputLayerOpt(outSx: 1, outSy: 1, outDepth: 2)
         let softmax = SoftmaxLayerOpt(numClasses: 10)
-        let layerDefs: [LayerOptTypeProtocol] = [input, softmax]
-        
-        net.makeLayers(layerDefs)
+        let net = Net([input, softmax])
         
         XCTAssertEqual(net.layers.count, 3, "Additional layer should be added between input and softmax.")
         XCTAssert(net.layers[1] is FullyConnectedLayer, "FC layer should be added between input and softmax.")
         let fc0 = net.layers[1] as! FullyConnectedLayer
         
-        let filters = fc0.filters.flatMap({ (filter: Vol) -> [Double] in return filter.w })
+        let filters = fc0.filters.flatMap{ $0.w }
         
         print(filters)
         

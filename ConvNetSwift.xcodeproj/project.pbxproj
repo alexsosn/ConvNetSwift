@@ -20,7 +20,7 @@
 		2B16E0BD1BD93A5A00E0A2AA /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AE1BD93A5A00E0A2AA /* Util.swift */; };
 		2B16E0BE1BD93A5A00E0A2AA /* Vol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AF1BD93A5A00E0A2AA /* Vol.swift */; };
 		2B16E0BF1BD93A5A00E0A2AA /* VolUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0B01BD93A5A00E0A2AA /* VolUtil.swift */; };
-		2B16E0CF1BD93BB100E0A2AA /* LayersDotproducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C21BD93BB100E0A2AA /* LayersDotproducts.swift */; };
+		2B16E0CF1BD93BB100E0A2AA /* FullyConnectedLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C21BD93BB100E0A2AA /* FullyConnectedLayer.swift */; };
 		2B16E0D01BD93BB100E0A2AA /* LayersDropout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C41BD93BB100E0A2AA /* LayersDropout.swift */; };
 		2B16E0D11BD93BB100E0A2AA /* LayersInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C61BD93BB100E0A2AA /* LayersInput.swift */; };
 		2B16E0D21BD93BB100E0A2AA /* LayersLoss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C81BD93BB100E0A2AA /* LayersLoss.swift */; };
@@ -29,9 +29,11 @@
 		2B16E0D51BD93BB100E0A2AA /* LayersPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0CE1BD93BB100E0A2AA /* LayersPool.swift */; };
 		2B16E0D71BD93CA700E0A2AA /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0D61BD93CA700E0A2AA /* Layer.swift */; };
 		2B2905AC1C4F9E0C008CA36D /* FCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2905AB1C4F9E0C008CA36D /* FCTests.swift */; };
+		2B2905AE1C4FAD7F008CA36D /* Nyura_sq.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B2905AD1C4FAD7F008CA36D /* Nyura_sq.png */; };
+		2B2905AF1C4FAD7F008CA36D /* Nyura_sq.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B2905AD1C4FAD7F008CA36D /* Nyura_sq.png */; };
 		2B4064801BE8CABD00C0B618 /* SimpleNetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40647F1BE8CABD00C0B618 /* SimpleNetTests.swift */; };
 		2B4064811BE92EAC00C0B618 /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0D61BD93CA700E0A2AA /* Layer.swift */; };
-		2B4064821BE92EB000C0B618 /* LayersDotproducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C21BD93BB100E0A2AA /* LayersDotproducts.swift */; };
+		2B4064821BE92EB000C0B618 /* FullyConnectedLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C21BD93BB100E0A2AA /* FullyConnectedLayer.swift */; };
 		2B4064831BE92EB600C0B618 /* Net.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0AA1BD93A5A00E0A2AA /* Net.swift */; };
 		2B4064841BE92EBF00C0B618 /* LayersDropout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C41BD93BB100E0A2AA /* LayersDropout.swift */; };
 		2B4064851BE92EC100C0B618 /* LayersInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B16E0C61BD93BB100E0A2AA /* LayersInput.swift */; };
@@ -55,6 +57,10 @@
 		2B7E518A1C119D59006BE7F2 /* Nyura.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2B7E51871C119D59006BE7F2 /* Nyura.jpg */; };
 		2B7E518B1C119D59006BE7F2 /* Nyura.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7E51881C119D59006BE7F2 /* Nyura.png */; };
 		2B7E518C1C119D59006BE7F2 /* Nyura.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7E51881C119D59006BE7F2 /* Nyura.png */; };
+		2B83B9FA1E57A975006C7BCF /* ConvolutionLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83B9F91E57A975006C7BCF /* ConvolutionLayer.swift */; };
+		2B83B9FB1E58213F006C7BCF /* ConvolutionLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83B9F91E57A975006C7BCF /* ConvolutionLayer.swift */; };
+		2B83B9FE1E582483006C7BCF /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83B9FD1E582483006C7BCF /* Date.swift */; };
+		2B83B9FF1E582483006C7BCF /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83B9FD1E582483006C7BCF /* Date.swift */; };
 		2B872B5D1C12043700654CB9 /* AutoencoderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B872B5C1C12043700654CB9 /* AutoencoderTest.swift */; };
 /* End PBXBuildFile section */
 
@@ -83,10 +89,10 @@
 		2B16E0AA1BD93A5A00E0A2AA /* Net.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Net.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0AB1BD93A5A00E0A2AA /* Trainers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Trainers.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0AD1BD93A5A00E0A2AA /* Options.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Options.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		2B16E0AE1BD93A5A00E0A2AA /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Util.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2B16E0AE1BD93A5A00E0A2AA /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = Util.swift; path = ../Util.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0AF1BD93A5A00E0A2AA /* Vol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Vol.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0B01BD93A5A00E0A2AA /* VolUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = VolUtil.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		2B16E0C21BD93BB100E0A2AA /* LayersDotproducts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersDotproducts.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2B16E0C21BD93BB100E0A2AA /* FullyConnectedLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FullyConnectedLayer.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0C41BD93BB100E0A2AA /* LayersDropout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersDropout.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0C61BD93BB100E0A2AA /* LayersInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersInput.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0C81BD93BB100E0A2AA /* LayersLoss.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersLoss.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -95,6 +101,7 @@
 		2B16E0CE1BD93BB100E0A2AA /* LayersPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LayersPool.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B16E0D61BD93CA700E0A2AA /* Layer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layer.swift; sourceTree = "<group>"; };
 		2B2905AB1C4F9E0C008CA36D /* FCTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FCTests.swift; sourceTree = "<group>"; };
+		2B2905AD1C4FAD7F008CA36D /* Nyura_sq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Nyura_sq.png; sourceTree = "<group>"; };
 		2B40647F1BE8CABD00C0B618 /* SimpleNetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleNetTests.swift; sourceTree = "<group>"; };
 		2B480E5D1C048BA30056865A /* UtilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = UtilTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2B480E651C0502DC0056865A /* VolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VolTests.swift; sourceTree = "<group>"; };
@@ -102,6 +109,8 @@
 		2B7E51841C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg"; sourceTree = "<group>"; };
 		2B7E51871C119D59006BE7F2 /* Nyura.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Nyura.jpg; sourceTree = "<group>"; };
 		2B7E51881C119D59006BE7F2 /* Nyura.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Nyura.png; sourceTree = "<group>"; };
+		2B83B9F91E57A975006C7BCF /* ConvolutionLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvolutionLayer.swift; sourceTree = "<group>"; };
+		2B83B9FD1E582483006C7BCF /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		2B872B5C1C12043700654CB9 /* AutoencoderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoencoderTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -175,11 +184,11 @@
 			isa = PBXGroup;
 			children = (
 				2B16E0C01BD93BB000E0A2AA /* Layers */,
+				2B83B9FC1E58245D006C7BCF /* Utils */,
 				2B16E0A91BD93A5A00E0A2AA /* Magicnet.swift */,
 				2B16E0AA1BD93A5A00E0A2AA /* Net.swift */,
 				2B16E0AB1BD93A5A00E0A2AA /* Trainers.swift */,
 				2B16E0AD1BD93A5A00E0A2AA /* Options.swift */,
-				2B16E0AE1BD93A5A00E0A2AA /* Util.swift */,
 				2B16E0AF1BD93A5A00E0A2AA /* Vol.swift */,
 				2B16E0B01BD93A5A00E0A2AA /* VolUtil.swift */,
 			);
@@ -204,7 +213,8 @@
 		2B16E0C11BD93BB100E0A2AA /* LayersDotproducts */ = {
 			isa = PBXGroup;
 			children = (
-				2B16E0C21BD93BB100E0A2AA /* LayersDotproducts.swift */,
+				2B16E0C21BD93BB100E0A2AA /* FullyConnectedLayer.swift */,
+				2B83B9F91E57A975006C7BCF /* ConvolutionLayer.swift */,
 			);
 			path = LayersDotproducts;
 			sourceTree = "<group>";
@@ -268,12 +278,22 @@
 		2B7E51831C119BE7006BE7F2 /* img */ = {
 			isa = PBXGroup;
 			children = (
+				2B2905AD1C4FAD7F008CA36D /* Nyura_sq.png */,
 				2B7E51871C119D59006BE7F2 /* Nyura.jpg */,
 				2B7E51881C119D59006BE7F2 /* Nyura.png */,
 				2B7E51841C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg */,
 			);
 			name = img;
 			path = ConvNetSwift/img;
+			sourceTree = "<group>";
+		};
+		2B83B9FC1E58245D006C7BCF /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				2B16E0AE1BD93A5A00E0A2AA /* Util.swift */,
+				2B83B9FD1E582483006C7BCF /* Date.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -322,7 +342,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = OWL;
 				TargetAttributes = {
 					2B16E07D1BD93A3300E0A2AA = {
@@ -366,6 +386,7 @@
 				2B16E08C1BD93A3300E0A2AA /* LaunchScreen.storyboard in Resources */,
 				2B7E51851C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg in Resources */,
 				2B16E0891BD93A3300E0A2AA /* Assets.xcassets in Resources */,
+				2B2905AE1C4FAD7F008CA36D /* Nyura_sq.png in Resources */,
 				2B16E0871BD93A3300E0A2AA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -375,6 +396,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B7E51861C119BE7006BE7F2 /* Albert_Bierstadt_-_The_Rocky_Mountains,_Lander's_Peak.jpg in Resources */,
+				2B2905AF1C4FAD7F008CA36D /* Nyura_sq.png in Resources */,
 				2B7E518A1C119D59006BE7F2 /* Nyura.jpg in Resources */,
 				2B7E518C1C119D59006BE7F2 /* Nyura.png in Resources */,
 			);
@@ -407,13 +429,15 @@
 				2B16E0BF1BD93A5A00E0A2AA /* VolUtil.swift in Sources */,
 				2B16E0BA1BD93A5A00E0A2AA /* Trainers.swift in Sources */,
 				2B16E0B81BD93A5A00E0A2AA /* Magicnet.swift in Sources */,
+				2B83B9FA1E57A975006C7BCF /* ConvolutionLayer.swift in Sources */,
 				2B16E0BE1BD93A5A00E0A2AA /* Vol.swift in Sources */,
 				2B16E0D71BD93CA700E0A2AA /* Layer.swift in Sources */,
 				2B16E0D41BD93BB100E0A2AA /* LayersNormalization.swift in Sources */,
 				2B16E0D01BD93BB100E0A2AA /* LayersDropout.swift in Sources */,
-				2B16E0CF1BD93BB100E0A2AA /* LayersDotproducts.swift in Sources */,
+				2B16E0CF1BD93BB100E0A2AA /* FullyConnectedLayer.swift in Sources */,
 				2B16E0BC1BD93A5A00E0A2AA /* Options.swift in Sources */,
 				2B16E0BD1BD93A5A00E0A2AA /* Util.swift in Sources */,
+				2B83B9FE1E582483006C7BCF /* Date.swift in Sources */,
 				2B16E0D51BD93BB100E0A2AA /* LayersPool.swift in Sources */,
 				2B16E0D21BD93BB100E0A2AA /* LayersLoss.swift in Sources */,
 				2B16E0D11BD93BB100E0A2AA /* LayersInput.swift in Sources */,
@@ -436,7 +460,8 @@
 				2B480E5E1C048BA30056865A /* UtilTests.swift in Sources */,
 				2B6625211BF00F5E00D59B65 /* Brain.swift in Sources */,
 				2B4064831BE92EB600C0B618 /* Net.swift in Sources */,
-				2B4064821BE92EB000C0B618 /* LayersDotproducts.swift in Sources */,
+				2B4064821BE92EB000C0B618 /* FullyConnectedLayer.swift in Sources */,
+				2B83B9FB1E58213F006C7BCF /* ConvolutionLayer.swift in Sources */,
 				2B2905AC1C4F9E0C008CA36D /* FCTests.swift in Sources */,
 				2B4064871BE92EC700C0B618 /* LayersNonlinearities.swift in Sources */,
 				2B40648E1BE92F1500C0B618 /* Vol.swift in Sources */,
@@ -447,6 +472,7 @@
 				2B4064861BE92EC400C0B618 /* LayersLoss.swift in Sources */,
 				2B4064801BE8CABD00C0B618 /* SimpleNetTests.swift in Sources */,
 				2B4064881BE92ECA00C0B618 /* LayersNormalization.swift in Sources */,
+				2B83B9FF1E582483006C7BCF /* Date.swift in Sources */,
 				2B4064841BE92EBF00C0B618 /* LayersDropout.swift in Sources */,
 				2B40648B1BE92ED600C0B618 /* Trainers.swift in Sources */,
 				2B4064891BE92ECD00C0B618 /* LayersPool.swift in Sources */,
@@ -497,8 +523,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -541,8 +569,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -561,6 +591,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

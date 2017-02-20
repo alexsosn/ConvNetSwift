@@ -18,11 +18,11 @@ class UtilTests: XCTestCase {
             return
         }
         
-        let vol = image.toVol()
+        let vol = image.toVol()!
         let newImage = vol.toImage()
         XCTAssertNotNil(newImage)
         
-        let newVol = newImage!.toVol()
+        let newVol = newImage!.toVol()!
         
         XCTAssertEqual(vol.w.count, newVol.w.count)
         
@@ -44,30 +44,35 @@ class UtilTests: XCTestCase {
             return
         }
         
-        let image = img.cgImage
-        let width = image?.width
-        let height = image?.height
+        guard let image = img.cgImage else {
+            print("error: no image found")
+            XCTAssert(false)
+            return
+        }
+        
+        let width = image.width
+        let height = image.height
         let components = 4
-        let bytesPerRow = (components * width!)
+        let bytesPerRow = (components * width)
         let bitsPerComponent: Int = 8
-        let pixels = calloc(height! * width!, MemoryLayout<UInt32>.size)
+        let pixels = calloc(height * width, MemoryLayout<UInt32>.size)
         
         let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue)
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         
         let context = CGContext(
             data: pixels,
-            width: width!,
-            height: height!,
+            width: width,
+            height: height,
             bitsPerComponent: bitsPerComponent,
             bytesPerRow: bytesPerRow,
             space: colorSpace,
             bitmapInfo: bitmapInfo.rawValue)
         
-        context?.draw(image!, in: CGRect(x: 0, y: 0, width: CGFloat(width!), height: CGFloat(height!)))
+        context?.draw(image, in: CGRect(x: 0, y: 0, width: CGFloat(width), height: CGFloat(height)))
         
         let dataCtxt = context?.data
-        let data = Data(bytesNoCopy: UnsafeMutablePointer<UInt8>(dataCtxt), count: width*height*components, deallocator: .free)
+        let data = Data(bytesNoCopy: UnsafeMutableRawPointer(dataCtxt)!, count: width*height*components, deallocator: .free)
         
         var pixelMem = [UInt8](repeating: 0, count: data.count)
         (data as NSData).getBytes(&pixelMem, length: data.count)
@@ -108,8 +113,8 @@ class UtilTests: XCTestCase {
         )
         
         let cgim = CGImage(
-            width: width!,
-            height: height!,
+            width: width,
+            height: height,
             bitsPerComponent: bitsPerComponent,
             bitsPerPixel: bitsPerPixel,
             bytesPerRow: bytesPerRow,

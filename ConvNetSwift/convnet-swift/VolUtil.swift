@@ -13,13 +13,13 @@ func augment(_ V: Vol, crop: Int, dx: Int?, dy: Int?, fliplr: Bool = false) -> V
     
     // randomly sample a crop in the input volume
     var W: Vol
-    if(crop != V.sx || dx != 0 || dy != 0) {
+    if crop != V.sx || dx != 0 || dy != 0 {
         W = Vol(sx: crop, sy: crop, depth: V.depth, c: 0.0)
         for x in 0 ..< crop {
 
             for y in 0 ..< crop {
 
-                if(x+dx<0 || x+dx>=V.sx || y+dy<0 || y+dy>=V.sy) {
+                if x+dx<0 || x+dx>=V.sx || y+dy<0 || y+dy>=V.sy {
                     continue // oob
                 }
                 for d in 0 ..< V.depth {
@@ -32,7 +32,7 @@ func augment(_ V: Vol, crop: Int, dx: Int?, dy: Int?, fliplr: Bool = false) -> V
         W = V
     }
     
-    if(fliplr) {
+    if fliplr {
         // flip volume horizontally
         let W2 = W.cloneAndZero()
         for x in 0 ..< W.sx {
@@ -105,7 +105,7 @@ import CoreGraphics
 //    var x = Vol(W, H, 4, 0.0) //input volume (image)
 //    x.w = pv
 //    
-//    if(convert_grayscale) {
+//    if convert_grayscale {
 //        // flatten into depth=1 array
 //        var x1 = Vol(width, height, 1, 0.0)
 //        for i in 0 ..< width {
@@ -130,13 +130,13 @@ extension Vol {
     
     func toImage() -> UIImage? {
         
-        let intDenormArray: [UInt8] = self.w.map { (elem: Double) -> UInt8 in
+        let intDenormArray: [UInt8] = w.map { (elem: Double) -> UInt8 in
             return denormalize(elem)
         }
         
-        let width = self.sx
-        let height = self.sy
-        let components = self.depth
+        let width = sx
+        let height = sy
+        let components = depth
         let bitsPerComponent: Int = 8
         let bitsPerPixel = bitsPerComponent * components
         let bytesPerRow = (components * width)
@@ -174,7 +174,7 @@ extension UIImage {
             // TODO: implement
         }
         
-        guard let image = self.cgImage else {
+        guard let image = cgImage else {
             return nil
         }
         

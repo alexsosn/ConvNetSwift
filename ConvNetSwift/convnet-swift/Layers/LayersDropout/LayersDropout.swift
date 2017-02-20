@@ -34,54 +34,51 @@ class DropoutLayer: InnerLayer {
     init(opt: DropoutLayerOpt) {
         
         // computed
-        self.outSx = opt.inSx
-        self.outSy = opt.inSy
-        self.outDepth = opt.inDepth
-        self.layerType = .Dropout
-        self.dropProb = opt.dropProb ?? 0.0
-        self.dropped = ArrayUtils.zerosBool(self.outSx*self.outSy*self.outDepth)
+        outSx = opt.inSx
+        outSy = opt.inSy
+        outDepth = opt.inDepth
+        layerType = .Dropout
+        dropProb = opt.dropProb ?? 0.0
+        dropped = ArrayUtils.zerosBool(outSx*outSy*outDepth)
     }
     
     // default is prediction mode
     func forward(_ V: inout Vol, isTraining: Bool = false) -> Vol {
-        self.inAct = V
+        inAct = V
         let V2 = V.clone()
         let N = V.w.count
         
-        self.dropped = ArrayUtils.zerosBool(N)
+        dropped = ArrayUtils.zerosBool(N)
         
-        if(isTraining) {
+        if isTraining {
             // do dropout
             for i in 0 ..< N {
                 
-                if(RandUtils.random_js()<self.dropProb) {
+                if RandUtils.random_js()<dropProb {
                     V2.w[i]=0
-                    self.dropped[i] = true
+                    dropped[i] = true
                 } // drop!
-//                else {
-//                    self.dropped[i] = false
-//                }
             }
         } else {
             // scale the activations during prediction
             for i in 0 ..< N {
-                V2.w[i]*=self.dropProb
+                V2.w[i]*=(1-dropProb)
             }
         }
-        self.outAct = V2
-        return self.outAct! // dummy identity function for now
+        outAct = V2
+        return outAct! // dummy identity function for now
     }
     
     func backward() -> () {
         
-        guard let V = self.inAct, // we need to set dw of this
-            let chainGrad = self.outAct
+        guard let V = inAct, // we need to set dw of this
+            let chainGrad = outAct
             else { return }
         let N = V.w.count
         V.dw = ArrayUtils.zerosDouble(N) // zero out gradient wrt data
         for i in 0 ..< N {
             
-            if(!(self.dropped[i])) {
+            if !(dropped[i]) {
                 V.dw[i] = chainGrad.dw[i] // copy over the gradient
             }
         }
@@ -97,19 +94,19 @@ class DropoutLayer: InnerLayer {
     
         func toJSON() -> [String: AnyObject] {
             var json: [String: AnyObject] = [:]
-            json["outDepth"] = self.outDepth as AnyObject?
-            json["outSx"] = self.outSx as AnyObject?
-            json["outSy"] = self.outSy as AnyObject?
-            json["layerType"] = self.layerType.rawValue as AnyObject?
-            json["dropProb"] = self.dropProb as AnyObject?
+            json["outDepth"] = outDepth as AnyObject?
+            json["outSx"] = outSx as AnyObject?
+            json["outSy"] = outSy as AnyObject?
+            json["layerType"] = layerType.rawValue as AnyObject?
+            json["dropProb"] = dropProb as AnyObject?
             return json
         }
     //
     //    func fromJSON(json) -> () {
-    //        self.outDepth = json["outDepth"]
-    //        self.outSx = json["outSx"]
-    //        self.outSy = json["outSy"]
-    //        self.layerType = json["layerType"];
-    //        self.dropProb = json["dropProb"]
+    //        outDepth = json["outDepth"]
+    //        outSx = json["outSx"]
+    //        outSy = json["outSy"]
+    //        layerType = json["layerType"];
+    //        dropProb = json["dropProb"]
     //    }
 }
