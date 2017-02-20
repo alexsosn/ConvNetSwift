@@ -1,20 +1,6 @@
 import Foundation
 import GameplayKit
 
-infix operator | { associativity left }
-
-func | (x: Double, y: Double) -> Int {
-    if Int(x) != 0 {
-        return Int(x)
-    } else {
-        return Int(y)
-    }
-}
-
-func | (x: Int, y: Int) -> Int {
-    return x != 0 ? x : y
-}
-
 
 // Random number utilities
 

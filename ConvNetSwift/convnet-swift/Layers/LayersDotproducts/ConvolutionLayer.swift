@@ -94,20 +94,20 @@ class ConvLayer: InnerLayer {
         // optimized code by @mdda that achieves 2x speedup over previous version
         
         inAct = V
-        let A = Vol(sx: outSx|0, sy: outSy|0, depth: outDepth|0, c: 0.0)
+        let A = Vol(sx: outSx, sy: outSy, depth: outDepth, c: 0.0)
         
-        let V_sx = V.sx|0
-        let V_sy = V.sy|0
-        let xy_stride = stride|0
+        let V_sx = V.sx
+        let V_sy = V.sy
+        let xy_stride = stride
         
         for d in 0 ..< outDepth {
             let f = filters[d]
-            var x = -pad|0
-            var y = -pad|0
+            var x = -pad
+            var y = -pad
             
             for ay in 0 ..< outSy {
                 y+=xy_stride // xy_stride
-                x = -pad|0
+                x = -pad
                 
                 for ax in 0 ..< outSx {  // xy_stride
                     x+=xy_stride
@@ -147,18 +147,18 @@ class ConvLayer: InnerLayer {
         }
         V.dw = ArrayUtils.zerosDouble(V.w.count) // zero out gradient wrt bottom data, we're about to fill it
         
-        let V_sx = V.sx|0
-        let V_sy = V.sy|0
-        let xy_stride = stride|0
+        let V_sx = V.sx
+        let V_sy = V.sy
+        let xy_stride = stride
         
         for d in 0 ..< outDepth {
             
             let f = filters[d]
-            var x = -pad|0
-            var y = -pad|0
+            var x = -pad
+            var y = -pad
             for ay in 0 ..< outSy {  // xy_stride
                 y+=xy_stride
-                x = -pad|0
+                x = -pad
                 for ax in 0 ..< outSx {  // xy_stride
                     x+=xy_stride
                     
