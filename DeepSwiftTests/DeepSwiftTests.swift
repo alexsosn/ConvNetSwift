@@ -1,20 +1,27 @@
 //
-//  ViewController.swift
-//  ConvNetSwift
+//  DeepSwiftTests.swift
+//  DeepSwiftTests
 //
-//  Created by Alex Sosnovshchenko on 10/22/15.
-//  Copyright © 2015 OWL. All rights reserved.
+//  Created by Oleksandr on 3/9/17.
+//  Copyright © 2017 OWL. All rights reserved.
 //
 
-import UIKit
+import XCTest
+@testable import DeepSwift
 
-class ViewController: UIViewController {
-    var net: Net?
-    var trainer: Trainer?
+class DeepSwiftTests: XCTestCase {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+    override func setUp() {
+        super.setUp()
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+    
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+    }
+    
+    func testExample() {
         // Here's a minimum example of defining a 2-layer neural network and training it on a single data point:
         
         // species a 2-layer neural network with one hidden layer of 20 neurons
@@ -48,12 +55,14 @@ class ViewController: UIViewController {
         // now prints (for example) 0.609982755733715, slightly higher than previous 0.602521202165062: the networks
         // weights have been adjusted by the Trainer to give a higher probability to
         // the class we trained the network with (zero)
+
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func testPerformanceExample() {
+        // This is an example of a performance test case.
+        self.measure {
+            // Put the code you want to measure the time of here.
+        }
     }
-    
     
 }

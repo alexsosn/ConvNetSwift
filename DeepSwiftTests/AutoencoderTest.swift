@@ -40,7 +40,7 @@ class AutoencoderTest: XCTestCase {
         trainerOpts.l1Decay = 0.001
 
         let trainer = Trainer(net: net, options: trainerOpts)
-        let image = UIImage(named: "Nyura.png")!
+        let image = UIImage(named: "Nüra", in: Bundle(for: AutoencoderTest.self), compatibleWith: nil)!
         var v = image.toVol()!
         let res = trainer.train(x: &v, y: v.w)
         print(res)

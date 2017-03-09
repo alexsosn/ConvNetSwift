@@ -61,7 +61,7 @@ class ConvNetSwiftTests: XCTestCase {
     }
     
     func testConvolutionalNN() {
-        let img = UIImage(named: "Nyura_sq")!
+        let img = UIImage(named: "Nüra", in: Bundle(for: AutoencoderTest.self), compatibleWith: nil)!
         let image = img.cgImage
         let width = image!.width
         let height = image!.height
