@@ -3,7 +3,7 @@
 // For now constraints: Simple linear order of layers, first layer input last layer a cost layer
 import Foundation
 
-class Net {
+public class Net {
 
     var layers: [Layer] = []
     var layerResponseLengths: [Int] = []
@@ -143,7 +143,7 @@ class Net {
     // forward prop the network.
     // The trainer class passes isTraining = true, but when this function is
     // called from outside (not from the trainer), it defaults to prediction mode
-    func forward(_ V: inout Vol, isTraining: Bool = false) -> Vol {
+    public func forward(_ V: inout Vol, isTraining: Bool = false) -> Vol {
 
         var act = layers[0].forward(&V, isTraining: isTraining)
         for i in 1 ..< layers.count {
@@ -165,7 +165,7 @@ class Net {
     }
     
     // backprop: compute gradients wrt all parameters
-    func backward(_ y: Int) -> Double {
+    public func backward(_ y: Int) -> Double {
         let loss = (layers.last! as! LossLayer).backward(y) // last layer assumed to be loss layer
         let N = layers.count
         for i in stride(from: N-2, through: 0, by: -1) { // first layer assumed input
@@ -174,7 +174,7 @@ class Net {
         return loss
     }
     
-    func backward(_ y: [Double]) -> Double {
+    public func backward(_ y: [Double]) -> Double {
         let loss = (layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
         let N = layers.count
         for i in stride(from: N-2, through: 0, by: -1) { // first layer assumed input
@@ -183,7 +183,7 @@ class Net {
         return loss
     }
     
-    func backward(_ y: Double) -> Double {
+    public func backward(_ y: Double) -> Double {
         let loss = (layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
         let N = layers.count
         for i in stride(from: N-2, through: 0, by: -1) { // first layer assumed input
@@ -192,7 +192,7 @@ class Net {
         return loss
     }
     
-    func backward(_ y: RegressionLayer.Pair) -> Double {
+    public func backward(_ y: RegressionLayer.Pair) -> Double {
         let loss = (layers.last! as! RegressionLayer).backward(y) // last layer assumed to be regression layer
         let N = layers.count
         for i in stride(from: N-2, through: 0, by: -1) { // first layer assumed input
@@ -201,7 +201,7 @@ class Net {
         return loss
     }
     
-    func getParamsAndGrads() -> [ParamsAndGrads] {
+    public func getParamsAndGrads() -> [ParamsAndGrads] {
         // accumulate parameters and gradients for the entire network
         var response: [ParamsAndGrads] = []
         layerResponseLengths = []
@@ -219,7 +219,7 @@ class Net {
         return response
     }
     
-    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
+    public func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         var offset = 0
 
         for i in 0 ..< layers.count {
@@ -254,7 +254,7 @@ class Net {
         return maxi // return index of the class with highest class probability
     }
     
-    func toJSON() -> [String: AnyObject] {
+    public func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
         var j_layers: [[String: AnyObject]] = []
         for i in 0 ..< layers.count {

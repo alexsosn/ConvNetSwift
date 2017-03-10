@@ -8,7 +8,7 @@
 
 import XCTest
 
-class AutoencoderTest: XCTestCase {
+public class AutoencoderTest: XCTestCase {
 
     override func setUp() {
         super.setUp()

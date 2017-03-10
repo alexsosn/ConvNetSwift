@@ -5,7 +5,7 @@ import Foundation
 // Experience nodes store all this information, which is used in the
 // Q-learning update step
 
-class Experience {
+public class Experience {
     var state0: Double
     var action0: Int
     var reward0: Double
@@ -25,7 +25,7 @@ class Experience {
 // A Brain object does all the magic.
 // over time it receives some inputs and some rewards
 // and its job is to set the outputs to maximize the expected reward
-struct BrainOpt {
+public struct BrainOpt {
     var temporalWindow: Int = 1
     var experienceSize: Int = 30000
     var startLearnThreshold: Int = 1000
@@ -47,7 +47,7 @@ struct BrainOpt {
     }
 }
 
-class Brain {
+public class Brain {
     var temporalWindow: Int
     var experienceSize: Int
     var startLearnThreshold: Int
@@ -252,7 +252,7 @@ class Brain {
         return w
     }
     
-    func forward(_ inputArray: [Double]) -> Int {
+    public func forward(_ inputArray: [Double]) -> Int {
         // compute forward (behavior) pass given the input neuron signals from body
         forwardPasses += 1
         lastInputArray = inputArray // back this up
@@ -296,7 +296,7 @@ class Brain {
         return action
     }
     
-    func backward(_ reward: Double) {
+    public func backward(_ reward: Double) {
         latestReward = reward
         averageRewardWindow.add(reward)
         rewardWindow.removeFirst()
@@ -366,7 +366,7 @@ class Brain {
 // a window stores _size_ number of values
 // and returns averages. Useful for keeping running
 // track of validation or training accuracy during SGD
-class Window {
+public class Window {
     var v: [Double] = []
     var size = 100
     var minsize = 20

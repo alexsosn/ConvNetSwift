@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DeepSwift-Swift.h"
 
 //! Project version number for DeepSwift.
 FOUNDATION_EXPORT double DeepSwiftVersionNumber;

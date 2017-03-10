@@ -1,24 +1,24 @@
 
-protocol LayerOptTypeProtocol {
+public protocol LayerOptTypeProtocol {
     var layerType: LayerType {get}
 }
 
-protocol LayerOutOptProtocol: LayerOptTypeProtocol {
+public protocol LayerOutOptProtocol: LayerOptTypeProtocol {
     var outSx: Int {get set}
     var outSy: Int {get set}
     var outDepth: Int {get set}
 }
 
-protocol LayerInOptProtocol: LayerOptTypeProtocol {
+public protocol LayerInOptProtocol: LayerOptTypeProtocol {
     var inSx: Int {get set}
     var inSy: Int {get set}
     var inDepth: Int {get set}
 }
 
-protocol LayerOptActivationProtocol {
+public protocol LayerOptActivationProtocol {
     var activation: ActivationType {get set}
 }
 
-protocol DropProbProtocol {
+public protocol DropProbProtocol {
     var dropProb: Double? {get set}
 }

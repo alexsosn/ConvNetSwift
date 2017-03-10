@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Vol {
+public class Vol {
     var sx: Int = 1
     var sy: Int = 1
     var depth: Int = 0
@@ -136,7 +136,7 @@ class Vol {
         }
     }
     
-    func toJSON() -> [String: AnyObject] {
+    public func toJSON() -> [String: AnyObject] {
         // TODO: we may want to only save d most significant digits to save space
         var json: [String: AnyObject] = [:]
         json["sx"] = sx as AnyObject?

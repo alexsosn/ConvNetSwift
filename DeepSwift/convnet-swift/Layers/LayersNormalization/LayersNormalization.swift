@@ -3,30 +3,30 @@
 // Local Response Normalization in window, along depths of volumes
 import Foundation
 
-struct LocalResponseNormalizationLayerOpt: LayerInOptProtocol {
-    var layerType: LayerType = .LRN
+public struct LocalResponseNormalizationLayerOpt: LayerInOptProtocol {
+    public var layerType: LayerType = .LRN
 
     var k: Double
     var n: Double
     var α: Double
     var β: Double
-    var inSx: Int
-    var inSy: Int
-    var inDepth: Int
+    public var inSx: Int
+    public var inSy: Int
+    public var inDepth: Int
 }
 
-class LocalResponseNormalizationLayer: InnerLayer {
+public class LocalResponseNormalizationLayer: InnerLayer {
     
     var k: Double = 0.0
     var n: Double = 0
     var α: Double = 0.0
     var β: Double = 0.0
-    var outSx: Int = 0
-    var outSy: Int = 0
-    var outDepth: Int = 0
-    var layerType: LayerType
+    public var outSx: Int = 0
+    public var outSy: Int = 0
+    public var outDepth: Int = 0
+    public var layerType: LayerType
     var inAct: Vol?
-    var outAct: Vol?
+    public var outAct: Vol?
     var S_cache_: Vol?
     
     init(opt: LocalResponseNormalizationLayerOpt) {
@@ -47,7 +47,7 @@ class LocalResponseNormalizationLayer: InnerLayer {
         if n.truncatingRemainder(dividingBy: 2) == 0 { print("WARNING n should be odd for LRN layer"); }
     }
     
-    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
+    public func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         inAct = V
         
         let A = V.cloneAndZero()
@@ -81,7 +81,7 @@ class LocalResponseNormalizationLayer: InnerLayer {
         return outAct! // dummy identity function for now
     }
     
-    func backward() -> () {
+    public func backward() -> () {
         // evaluate gradient wrt data
         guard let V = inAct, // we need to set dw of this
             let outAct = outAct,
@@ -123,13 +123,13 @@ class LocalResponseNormalizationLayer: InnerLayer {
         }
     }
     
-    func getParamsAndGrads() -> [ParamsAndGrads] { return [] }
+    public func getParamsAndGrads() -> [ParamsAndGrads] { return [] }
     
-    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
+    public func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
-    func toJSON() -> [String: AnyObject] {
+    public func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
         json["k"] = k as AnyObject?
         json["n"] = n as AnyObject?

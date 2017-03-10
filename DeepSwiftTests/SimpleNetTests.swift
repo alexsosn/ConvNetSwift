@@ -8,7 +8,7 @@
 
 import XCTest
 
-class SimpleNetTests: XCTestCase {
+public class SimpleNetTests: XCTestCase {
     var net: Net?
     var trainer: Trainer?
     

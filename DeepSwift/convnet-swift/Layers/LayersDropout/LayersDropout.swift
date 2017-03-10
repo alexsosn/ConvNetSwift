@@ -7,29 +7,29 @@
 // todo: make more efficient.
 import Foundation
 
-struct DropoutLayerOpt: LayerInOptProtocol, DropProbProtocol {
-    var layerType: LayerType = .Dropout
-
-    var inDepth: Int = 0
-    var inSx: Int = 0
-    var inSy: Int = 0
-    var dropProb: Double? = 0.5
+public struct DropoutLayerOpt: LayerInOptProtocol, DropProbProtocol {
+    public var layerType: LayerType = .Dropout
+    
+    public var inDepth: Int = 0
+    public var inSx: Int = 0
+    public var inSy: Int = 0
+    public var dropProb: Double? = 0.5
     init(dropProb: Double) {
         self.dropProb = dropProb
     }
 }
 
-class DropoutLayer: InnerLayer {
-    var outSx: Int = 0
-    var outSy: Int = 0
-    var outDepth: Int = 0
-    var layerType: LayerType
+public class DropoutLayer: InnerLayer {
+    public var outSx: Int = 0
+    public var outSy: Int = 0
+    public var outDepth: Int = 0
+    public var layerType: LayerType
     
     var dropped: [Bool] = []
     var dropProb: Double = 0.0
     
     var inAct: Vol?
-    var outAct: Vol?
+    public var outAct: Vol?
     
     init(opt: DropoutLayerOpt) {
         
@@ -43,7 +43,7 @@ class DropoutLayer: InnerLayer {
     }
     
     // default is prediction mode
-    func forward(_ V: inout Vol, isTraining: Bool = false) -> Vol {
+    public func forward(_ V: inout Vol, isTraining: Bool = false) -> Vol {
         inAct = V
         let V2 = V.clone()
         let N = V.w.count
@@ -69,7 +69,7 @@ class DropoutLayer: InnerLayer {
         return outAct! // dummy identity function for now
     }
     
-    func backward() -> () {
+    public func backward() -> () {
         
         guard let V = inAct, // we need to set dw of this
             let chainGrad = outAct
@@ -84,23 +84,23 @@ class DropoutLayer: InnerLayer {
         }
     }
     
-    func getParamsAndGrads() -> [ParamsAndGrads] {
+    public func getParamsAndGrads() -> [ParamsAndGrads] {
         return []
     }
     
-    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
+    public func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
-        func toJSON() -> [String: AnyObject] {
-            var json: [String: AnyObject] = [:]
-            json["outDepth"] = outDepth as AnyObject?
-            json["outSx"] = outSx as AnyObject?
-            json["outSy"] = outSy as AnyObject?
-            json["layerType"] = layerType.rawValue as AnyObject?
-            json["dropProb"] = dropProb as AnyObject?
-            return json
-        }
+    public func toJSON() -> [String: AnyObject] {
+        var json: [String: AnyObject] = [:]
+        json["outDepth"] = outDepth as AnyObject?
+        json["outSx"] = outSx as AnyObject?
+        json["outSy"] = outSy as AnyObject?
+        json["layerType"] = layerType.rawValue as AnyObject?
+        json["dropProb"] = dropProb as AnyObject?
+        return json
+    }
     //
     //    func fromJSON(json) -> () {
     //        outDepth = json["outDepth"]

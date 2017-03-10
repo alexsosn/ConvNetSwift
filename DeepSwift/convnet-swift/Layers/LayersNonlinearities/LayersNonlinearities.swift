@@ -5,21 +5,21 @@
 import Foundation
 import Accelerate
 
-struct ReluLayerOpt: LayerInOptProtocol {
-    var layerType: LayerType = .ReLU
+public struct ReluLayerOpt: LayerInOptProtocol {
+    public var layerType: LayerType = .ReLU
 
-    var inSx: Int = 0
-    var inSy: Int = 0
-    var inDepth: Int = 0
+    public var inSx: Int = 0
+    public var inSy: Int = 0
+    public var inDepth: Int = 0
 }
 
-class ReluLayer: InnerLayer {
-    var layerType: LayerType
-    var outSx: Int
-    var outSy: Int
-    var outDepth: Int
+public class ReluLayer: InnerLayer {
+    public var layerType: LayerType
+    public var outSx: Int
+    public var outSy: Int
+    public var outDepth: Int
     var inAct: Vol?
-    var outAct: Vol?
+    public var outAct: Vol?
     
     init(opt: ReluLayerOpt) {
         
@@ -30,7 +30,7 @@ class ReluLayer: InnerLayer {
         layerType = .ReLU
     }
     
-    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
+    public func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         inAct = V
         let V2 = V.clone()
         let N = V.w.count
@@ -43,7 +43,7 @@ class ReluLayer: InnerLayer {
         return outAct!
     }
     
-    func backward() -> () {
+    public func backward() -> () {
         guard let V = inAct,
         let V2 = outAct
         else { // we need to set dw of this
@@ -62,15 +62,15 @@ class ReluLayer: InnerLayer {
         }
     }
     
-    func getParamsAndGrads() -> [ParamsAndGrads] {
+    public func getParamsAndGrads() -> [ParamsAndGrads] {
         return []
     }
     
-    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
+    public func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
-    func toJSON() -> [String: AnyObject] {
+    public func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
         json["outDepth"] = outDepth as AnyObject?
         json["outSx"] = outSx as AnyObject?
@@ -91,22 +91,22 @@ class ReluLayer: InnerLayer {
 // x -> 1/(1+e^(-x))
 // so the output is between 0 and 1.
 
-struct SigmoidLayerOpt: LayerInOptProtocol {
-    var layerType: LayerType = .Sigmoid
+public struct SigmoidLayerOpt: LayerInOptProtocol {
+    public var layerType: LayerType = .Sigmoid
 
-    var inSx: Int = 0
-    var inSy: Int = 0
-    var inDepth: Int = 0
+    public var inSx: Int = 0
+    public var inSy: Int = 0
+    public var inDepth: Int = 0
 }
 
-class SigmoidLayer: InnerLayer {
+public class SigmoidLayer: InnerLayer {
     
-    var layerType: LayerType
-    var outSx: Int
-    var outSy: Int
-    var outDepth: Int
+    public var layerType: LayerType
+    public var outSx: Int
+    public var outSy: Int
+    public var outDepth: Int
     var inAct: Vol?
-    var outAct: Vol?
+    public var outAct: Vol?
     
     init(opt: SigmoidLayerOpt){
         
@@ -117,7 +117,7 @@ class SigmoidLayer: InnerLayer {
         layerType = .Sigmoid
     }
     // http://memkite.com/blog/2014/12/15/data-parallel-programming-with-metal-and-swift-for-iphoneipad-gpu/
-    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
+    public func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         inAct = V
         let V2 = V.cloneAndZero()
         let N = V.w.count
@@ -131,7 +131,7 @@ class SigmoidLayer: InnerLayer {
         return outAct!
     }
     
-    func backward() -> () {
+    public func backward() -> () {
         guard let V = inAct,
             let V2 = outAct
             else { // we need to set dw of this
@@ -146,15 +146,15 @@ class SigmoidLayer: InnerLayer {
         }
     }
     
-    func getParamsAndGrads() -> [ParamsAndGrads] {
+    public func getParamsAndGrads() -> [ParamsAndGrads] {
         return []
     }
     
-    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
+    public func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
-    func toJSON() -> [String: AnyObject] {
+    public func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
         json["outDepth"] = outDepth as AnyObject?
         json["outSx"] = outSx as AnyObject?
@@ -176,27 +176,27 @@ class SigmoidLayer: InnerLayer {
 // where x is a vector of size group_size. Ideally of course,
 // the input size should be exactly divisible by group_size
 
-struct MaxoutLayerOpt: LayerInOptProtocol {
-    var layerType: LayerType = .Maxout
+public struct MaxoutLayerOpt: LayerInOptProtocol {
+    public var layerType: LayerType = .Maxout
 
-    var inSx: Int = 1
-    var inSy: Int = 1
-    var inDepth: Int = 1
-    var group_size: Int?
+    public var inSx: Int = 1
+    public var inSy: Int = 1
+    public var inDepth: Int = 1
+    public var group_size: Int?
     
     init (group_size: Int) {
         self.group_size = group_size
     }
 }
 
-class MaxoutLayer: InnerLayer {
+public class MaxoutLayer: InnerLayer {
     var group_size: Int
-    var layerType: LayerType
-    var outSx: Int
-    var outSy: Int
-    var outDepth: Int
+    public var layerType: LayerType
+    public var outSx: Int
+    public var outSy: Int
+    public var outDepth: Int
     var inAct: Vol?
-    var outAct: Vol?
+    public var outAct: Vol?
     var switches: [Int]
     
     init(opt: MaxoutLayerOpt){
@@ -213,7 +213,7 @@ class MaxoutLayer: InnerLayer {
         switches = ArrayUtils.zerosInt(outSx*outSy*outDepth) // useful for backprop
     }
     
-    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
+    public func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         inAct = V
         let N = outDepth
         let V2 = Vol(sx: outSx, sy: outSy, depth: outDepth, c: 0.0)
@@ -269,7 +269,7 @@ class MaxoutLayer: InnerLayer {
         return outAct!
     }
     
-    func backward() -> () {
+    public func backward() -> () {
         guard let V = inAct,
             let V2 = outAct
             else { // we need to set dw of this
@@ -303,15 +303,15 @@ class MaxoutLayer: InnerLayer {
         }
     }
     
-    func getParamsAndGrads() -> [ParamsAndGrads] {
+    public func getParamsAndGrads() -> [ParamsAndGrads] {
         return []
     }
     
-    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
+    public func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
-    func toJSON() -> [String: AnyObject] {
+    public func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
         json["outDepth"] = outDepth as AnyObject?
         json["outSx"] = outSx as AnyObject?
@@ -337,22 +337,22 @@ class MaxoutLayer: InnerLayer {
 // x -> tanh(x)
 // so the output is between -1 and 1.
 
-struct TanhLayerOpt: LayerInOptProtocol {
-    var layerType: LayerType = .Tanh
+public struct TanhLayerOpt: LayerInOptProtocol {
+    public var layerType: LayerType = .Tanh
 
-    var inSx: Int = 0
-    var inSy: Int = 0
-    var inDepth: Int = 0
+    public var inSx: Int = 0
+    public var inSy: Int = 0
+    public var inDepth: Int = 0
 }
 
-class TanhLayer: InnerLayer {
+public class TanhLayer: InnerLayer {
     
-    var layerType: LayerType
-    var outSx: Int
-    var outSy: Int
-    var outDepth: Int
+    public var layerType: LayerType
+    public var outSx: Int
+    public var outSy: Int
+    public var outDepth: Int
     var inAct: Vol?
-    var outAct: Vol?
+    public var outAct: Vol?
     
     init(opt: TanhLayerOpt) {
         
@@ -363,7 +363,7 @@ class TanhLayer: InnerLayer {
         layerType = .Tanh
     }
     
-    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
+    public func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         inAct = V
         let V2 = V.cloneAndZero()
         let N = V.w.count
@@ -375,7 +375,7 @@ class TanhLayer: InnerLayer {
         return outAct!
     }
     
-    func backward() -> () {
+    public func backward() -> () {
         guard let V = inAct,
             let V2 = outAct
             else { // we need to set dw of this
@@ -390,15 +390,15 @@ class TanhLayer: InnerLayer {
         }
     }
     
-    func getParamsAndGrads() -> [ParamsAndGrads] {
+    public func getParamsAndGrads() -> [ParamsAndGrads] {
         return []
     }
     
-    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
+    public func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
-    func toJSON() -> [String: AnyObject] {
+    public func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
         json["outDepth"] = outDepth as AnyObject?
         json["outSx"] = outSx as AnyObject?

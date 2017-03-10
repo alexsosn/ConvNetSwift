@@ -2,19 +2,19 @@ import Foundation
 
 // - FullyConn is fully connected dot products
 
-struct FullyConnectedLayerOpt: LayerInOptProtocol, LayerOptActivationProtocol, DropProbProtocol {
-    var layerType: LayerType = .FC
+public struct FullyConnectedLayerOpt: LayerInOptProtocol, LayerOptActivationProtocol, DropProbProtocol {
+    public var layerType: LayerType = .FC
 
     var numNeurons: Int?
     var filters: Int?
-    var inSx: Int = 0
-    var inSy: Int = 0
-    var inDepth: Int = 0
+    public var inSx: Int = 0
+    public var inSy: Int = 0
+    public var inDepth: Int = 0
     var l1DecayMul: Double = 0.0
     var l2DecayMul: Double = 1.0
     var biasPref: Double = 0.0
-    var activation: ActivationType = .Undefined
-    var dropProb: Double?
+    public var activation: ActivationType = .Undefined
+    public var dropProb: Double?
     
     init(numNeurons: Int) {
         self.numNeurons = numNeurons
@@ -32,14 +32,14 @@ struct FullyConnectedLayerOpt: LayerInOptProtocol, LayerOptActivationProtocol, D
     }
 }
 
-class FullyConnectedLayer: InnerLayer {
+public class FullyConnectedLayer: InnerLayer {
     
-        var outDepth: Int
-        var outSx: Int
-        var outSy: Int
-        var layerType: LayerType
+        public var outDepth: Int
+        public var outSx: Int
+        public var outSy: Int
+        public var layerType: LayerType
         var inAct: Vol?
-        var outAct: Vol?
+        public var outAct: Vol?
         var l1DecayMul: Double
         var l2DecayMul: Double
         var numInputs: Int
@@ -73,7 +73,7 @@ class FullyConnectedLayer: InnerLayer {
         biases = Vol(sx: 1, sy: 1, depth: outDepth, c: bias)
     }
     
-    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
+    public func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         inAct = V
         let A = Vol(sx: 1, sy: 1, depth: outDepth, c: 0.0)
         var Vw = V.w
@@ -91,7 +91,7 @@ class FullyConnectedLayer: InnerLayer {
         return outAct!
     }
     
-    func backward() -> () {
+    public func backward() -> () {
         guard let V = inAct,
             let outAct = outAct else {
                 return
@@ -114,7 +114,7 @@ class FullyConnectedLayer: InnerLayer {
 //        inAct = V
     }
     
-    func getParamsAndGrads() -> [ParamsAndGrads] {
+    public func getParamsAndGrads() -> [ParamsAndGrads] {
         var response: [ParamsAndGrads] = []
         for i in 0 ..< outDepth {
 
@@ -132,7 +132,7 @@ class FullyConnectedLayer: InnerLayer {
         return response
     }
     
-    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
+    public func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         assert(filters.count + 1 == paramsAndGrads.count)
 
         for i in 0 ..< outDepth {
@@ -143,7 +143,7 @@ class FullyConnectedLayer: InnerLayer {
         biases.dw = paramsAndGrads.last!.grads
     }
     
-    func toJSON() -> [String: AnyObject] {
+    public func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
         json["outDepth"] = outDepth as AnyObject?
         json["outSx"] = outSx as AnyObject?

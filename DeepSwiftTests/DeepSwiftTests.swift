@@ -9,7 +9,7 @@
 import XCTest
 @testable import DeepSwift
 
-class DeepSwiftTests: XCTestCase {
+public class DeepSwiftTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

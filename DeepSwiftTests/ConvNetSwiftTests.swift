@@ -8,7 +8,7 @@
 
 import XCTest
 
-class ConvNetSwiftTests: XCTestCase {
+public class ConvNetSwiftTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

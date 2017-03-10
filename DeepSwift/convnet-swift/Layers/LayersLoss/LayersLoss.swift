@@ -10,16 +10,16 @@
 // function (exponentiate and normalize to sum to 1 as probabilities should)
 import Foundation
 
-protocol LossLayer: Layer {
+public protocol LossLayer: Layer {
     func backward(_ y: Int) -> Double
 }
 
-struct SoftmaxLayerOpt: LayerInOptProtocol {
-    var layerType: LayerType = .Softmax
+public struct SoftmaxLayerOpt: LayerInOptProtocol {
+    public var layerType: LayerType = .Softmax
     
-    var inSx: Int = 0
-    var inSy: Int = 0
-    var inDepth: Int = 0
+    public var inSx: Int = 0
+    public var inSy: Int = 0
+    public var inDepth: Int = 0
     var numClasses: Int
     
     init (numClasses: Int) {
@@ -27,15 +27,15 @@ struct SoftmaxLayerOpt: LayerInOptProtocol {
     }
 }
 
-class SoftmaxLayer: LossLayer {
+public class SoftmaxLayer: LossLayer {
     
     var numInputs: Int
-    var outDepth: Int
-    var outSx: Int
-    var outSy: Int
-    var layerType: LayerType
+    public var outDepth: Int
+    public var outSx: Int
+    public var outSy: Int
+    public var layerType: LayerType
     var inAct: Vol?
-    var outAct: Vol?
+    public var outAct: Vol?
     
     var es: [Double] = []
     
@@ -48,7 +48,7 @@ class SoftmaxLayer: LossLayer {
         layerType = .Softmax
     }
     
-    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
+    public func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         inAct = V
         
         let A = Vol(sx: 1, sy: 1, depth: outDepth, c: 0.0)
@@ -79,7 +79,7 @@ class SoftmaxLayer: LossLayer {
         return outAct!
     }
     
-    func backward(_ y: Int) -> Double {
+    public func backward(_ y: Int) -> Double {
         
         // compute and accumulate gradient wrt weights and bias of this layer
         guard let x = inAct else {
@@ -97,15 +97,15 @@ class SoftmaxLayer: LossLayer {
         return -log(es[y])
     }
     
-    func getParamsAndGrads() -> [ParamsAndGrads] {
+    public func getParamsAndGrads() -> [ParamsAndGrads] {
         return []
     }
     
-    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
+    public func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
-    func toJSON() -> [String: AnyObject] {
+    public func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
         
         json["outDepth"] = outDepth as AnyObject?
@@ -129,12 +129,12 @@ class SoftmaxLayer: LossLayer {
 // so penalizes \sum_i(||x_i - y_i||^2), where x is its input
 // and y is the user-provided array of "correct" values.
 
-struct RegressionLayerOpt: LayerInOptProtocol {
-    var layerType: LayerType = .Regression
+public struct RegressionLayerOpt: LayerInOptProtocol {
+    public var layerType: LayerType = .Regression
     
-    var inSx: Int
-    var inSy: Int
-    var inDepth: Int
+    public var inSx: Int
+    public var inSy: Int
+    public var inDepth: Int
     var numNeurons: Int
     
     init(numNeurons: Int) {
@@ -147,15 +147,15 @@ struct RegressionLayerOpt: LayerInOptProtocol {
     }
 }
 
-class RegressionLayer: LossLayer {
+public class RegressionLayer: LossLayer {
     
     var numInputs: Int
-    var outDepth: Int
-    var outSx: Int
-    var outSy: Int
-    var layerType: LayerType
+    public var outDepth: Int
+    public var outSx: Int
+    public var outSy: Int
+    public var layerType: LayerType
     var inAct: Vol?
-    var outAct: Vol?
+    public var outAct: Vol?
     
     init(opt: RegressionLayerOpt) {
         
@@ -167,7 +167,7 @@ class RegressionLayer: LossLayer {
         layerType = .Regression
     }
 
-    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
+    public func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         inAct = V
         outAct = V
         return V // identity function
@@ -178,7 +178,7 @@ class RegressionLayer: LossLayer {
     // or it can be a struct {dim: i, val: x} where we only want to
     // regress on dimension i and asking it to have value x
     
-    func backward(_ y: [Double]) -> Double {
+    public func backward(_ y: [Double]) -> Double {
         
         // compute and accumulate gradient wrt weights and bias of this layer
         guard let x = inAct else {
@@ -195,7 +195,7 @@ class RegressionLayer: LossLayer {
         return loss
     }
     
-    func backward(_ y: Double) -> Double {
+    public func backward(_ y: Double) -> Double {
         // compute and accumulate gradient wrt weights and bias of this layer
         guard let x = inAct else {
             fatalError("inAct is nil")
@@ -209,16 +209,16 @@ class RegressionLayer: LossLayer {
         return loss
     }
     
-    func backward(_ y: Int) -> Double {
+    public func backward(_ y: Int) -> Double {
         return backward(Double(y))
     }
     
-    struct Pair {
+    public struct Pair {
         var dim: Int
         var val: Double
     }
     
-    func backward(_ y: Pair) -> Double {
+    public func backward(_ y: Pair) -> Double {
         // compute and accumulate gradient wrt weights and bias of this layer
         guard let x = inAct else {
             fatalError("inAct is nil")
@@ -235,15 +235,15 @@ class RegressionLayer: LossLayer {
         return loss
     }
     
-    func getParamsAndGrads() -> [ParamsAndGrads] {
+    public func getParamsAndGrads() -> [ParamsAndGrads] {
         return []
     }
     
-    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
+    public func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
-    func toJSON() -> [String: AnyObject] {
+    public func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
         json["outDepth"] = outDepth as AnyObject?
         json["outSx"] = outSx as AnyObject?
@@ -262,24 +262,24 @@ class RegressionLayer: LossLayer {
     //    }
 }
 
-struct SVMLayerOpt: LayerInOptProtocol {
-    var layerType: LayerType = .SVM
+public struct SVMLayerOpt: LayerInOptProtocol {
+    public var layerType: LayerType = .SVM
     
-    var inSx: Int
-    var inSy: Int
-    var inDepth: Int
+    public var inSx: Int
+    public var inSy: Int
+    public var inDepth: Int
     var numClasses: Int
 }
 
-class SVMLayer: LossLayer {
+public class SVMLayer: LossLayer {
     
     var numInputs: Int
-    var outDepth: Int
-    var outSx: Int
-    var outSy: Int
-    var layerType: LayerType
+    public var outDepth: Int
+    public var outSx: Int
+    public var outSy: Int
+    public var layerType: LayerType
     var inAct: Vol?
-    var outAct: Vol?
+    public var outAct: Vol?
     
     init(opt: SVMLayerOpt){
         // computed
@@ -290,13 +290,13 @@ class SVMLayer: LossLayer {
         layerType = .SVM
     }
     
-    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
+    public func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         inAct = V
         outAct = V // nothing to do, output raw scores
         return V
     }
     
-    func backward(_ y: Int) -> Double {
+    public func backward(_ y: Int) -> Double {
         
         // compute and accumulate gradient wrt weights and bias of this layer
         guard let x = inAct else {
@@ -326,15 +326,15 @@ class SVMLayer: LossLayer {
         return loss
     }
     
-    func getParamsAndGrads() -> [ParamsAndGrads] {
+    public func getParamsAndGrads() -> [ParamsAndGrads] {
         return []
     }
     
-    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
+    public func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
-    func toJSON() -> [String: AnyObject] {
+    public func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
         json["outDepth"] = outDepth as AnyObject?
         json["outSx"] = outSx as AnyObject?

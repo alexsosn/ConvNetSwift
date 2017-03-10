@@ -4,7 +4,7 @@
 //
 import Foundation
 
-struct ParamsAndGrads {
+public struct ParamsAndGrads {
     var params: [Double]
     var grads: [Double]
     var l1DecayMul: Double?
@@ -21,7 +21,7 @@ struct ParamsAndGrads {
     }
 }
 
-protocol Layer {
+public protocol Layer {
     var outSx: Int {get set}
     var outSy: Int {get set}
     var outDepth: Int {get set}
@@ -33,11 +33,11 @@ protocol Layer {
     func toJSON() -> [String: AnyObject]
 }
 
-protocol InnerLayer: Layer {
+public protocol InnerLayer: Layer {
     func backward()
 }
 
-enum LayerType: String {
+public enum  LayerType: String {
     case Input = "input"
     case SVM = "svm"
     case FC = "fc"
@@ -53,7 +53,7 @@ enum LayerType: String {
     case LRN = "lrn"
 }
 
-enum ActivationType: String {
+public enum  ActivationType: String {
     case Undefined = "undefined"
     case ReLU = "relu"
     case Sigmoid = "sigmoid"

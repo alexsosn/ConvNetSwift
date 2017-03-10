@@ -8,7 +8,7 @@
 
 import XCTest
 
-class UtilTests: XCTestCase {
+public class UtilTests: XCTestCase {
 
     func testImageConversion() {
         

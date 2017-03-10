@@ -4,7 +4,7 @@ import GameplayKit
 
 // Random number utilities
 
-class RandUtils {
+public class RandUtils {
     
     static var return_v = false
     static var v_val = 0.0
@@ -31,7 +31,7 @@ class RandUtils {
 }
 // Array utilities
 
-struct ArrayUtils {
+public struct ArrayUtils {
     static func zerosInt(_ n: Int) -> [Int] {
         return [Int](repeating: 0, count: n)
     }
@@ -50,7 +50,7 @@ struct ArrayUtils {
 }
 
 // return max and min of a given non-empty array.
-struct Maxmin {
+public struct Maxmin {
     var maxi: Int
     var maxv: Double
     var mini: Int
@@ -89,7 +89,7 @@ func weightedSample(_ lst: [Double], probs: [Double]) -> Double? {
     return nil
 }
 
-struct TimeUtils {
+public struct TimeUtils {
     static func getNanoseconds() {
         
     }

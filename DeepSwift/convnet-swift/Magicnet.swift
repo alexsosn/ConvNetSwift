@@ -10,7 +10,7 @@ which for now are assumed to be class indeces 0..K. MagicNet then:
 
 import Foundation
 
-class MagicNet {
+public class MagicNet {
     
     var data: [Vol]
     var labels: [Int]

@@ -11,21 +11,21 @@
 // putting them together in one file because they are very similar
 import Foundation
 
-struct ConvLayerOpt: LayerInOptProtocol, LayerOptActivationProtocol {
-    var layerType: LayerType = .Conv
+public struct ConvLayerOpt: LayerInOptProtocol, LayerOptActivationProtocol {
+    public var layerType: LayerType = .Conv
     
     var filters: Int
     var sx: Int
     var sy: Int?
-    var inDepth: Int = 0
-    var inSx: Int = 0
-    var inSy: Int = 0
+    public var inDepth: Int = 0
+    public var inSx: Int = 0
+    public var inSy: Int = 0
     var stride: Int = 1
     var pad: Int = 0
     var l1DecayMul: Double = 0.0
     var l2DecayMul: Double = 1.0
     var biasPref: Double = 0.0
-    var activation: ActivationType = .Undefined
+    public var activation: ActivationType = .Undefined
     
     init (sx: Int, filters: Int, stride: Int, pad: Int, activation: ActivationType) {
         self.sx = sx
@@ -37,8 +37,8 @@ struct ConvLayerOpt: LayerInOptProtocol, LayerOptActivationProtocol {
     
 }
 
-class ConvLayer: InnerLayer {
-    var outDepth: Int
+public class ConvLayer: InnerLayer {
+    public var outDepth: Int
     var sx: Int
     var sy: Int
     var inDepth: Int
@@ -48,13 +48,13 @@ class ConvLayer: InnerLayer {
     var pad: Int = 0
     var l1DecayMul: Double = 0.0
     var l2DecayMul: Double = 1.0
-    var outSx: Int
-    var outSy: Int
-    var layerType: LayerType
+    public var outSx: Int
+    public var outSy: Int
+    public var layerType: LayerType
     var filters: [Vol]
     var biases: Vol
     var inAct: Vol?
-    var outAct: Vol?
+    public var outAct: Vol?
     
     init(opt: ConvLayerOpt) {
         
@@ -90,7 +90,7 @@ class ConvLayer: InnerLayer {
         biases = Vol(sx: 1, sy: 1, depth: outDepth, c: bias)
     }
     
-    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
+    public func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         // optimized code by @mdda that achieves 2x speedup over previous version
         
         inAct = V
@@ -137,7 +137,7 @@ class ConvLayer: InnerLayer {
         return outAct!
     }
     
-    func backward() -> () {
+    public func backward() -> () {
         
         guard
             let V = inAct,
@@ -190,7 +190,7 @@ class ConvLayer: InnerLayer {
         //        inAct = V
     }
     
-    func getParamsAndGrads() -> [ParamsAndGrads] {
+    public func getParamsAndGrads() -> [ParamsAndGrads] {
         var response: [ParamsAndGrads] = []
         for i in 0 ..< outDepth {
             
@@ -208,7 +208,7 @@ class ConvLayer: InnerLayer {
         return response
     }
     
-    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
+    public func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         assert(filters.count + 1 == paramsAndGrads.count)
         
         for i in 0 ..< outDepth {
@@ -219,7 +219,7 @@ class ConvLayer: InnerLayer {
         biases.dw = paramsAndGrads.last!.grads
     }
     
-    func toJSON() -> [String: AnyObject] {
+    public func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
         json["sx"] = sx as AnyObject? // filter size in x, y dims
         json["sy"] = sy as AnyObject?

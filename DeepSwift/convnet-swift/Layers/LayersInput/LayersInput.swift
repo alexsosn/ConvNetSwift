@@ -1,11 +1,11 @@
 import Foundation
 
-struct InputLayerOpt: LayerOutOptProtocol {
-    var layerType: LayerType = .Input
+public struct InputLayerOpt: LayerOutOptProtocol {
+    public var layerType: LayerType = .Input
     
-    var outSx: Int
-    var outSy: Int
-    var outDepth: Int
+    public var outSx: Int
+    public var outSy: Int
+    public var outDepth: Int
     
     init(outSx: Int,
         outSy: Int,
@@ -16,15 +16,15 @@ struct InputLayerOpt: LayerOutOptProtocol {
     }
 }
 
-class InputLayer: InnerLayer {
+public class InputLayer: InnerLayer {
     
-    var outDepth: Int
-    var outSx: Int
-    var outSy: Int
-    var layerType: LayerType
+    public var outDepth: Int
+    public var outSx: Int
+    public var outSy: Int
+    public var layerType: LayerType
     
     var inAct: Vol?
-    var outAct: Vol?
+    public var outAct: Vol?
     
     init(opt: InputLayerOpt) {
         
@@ -39,23 +39,23 @@ class InputLayer: InnerLayer {
         layerType = .Input
     }
     
-    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
+    public func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         inAct = V
         outAct = V
         return outAct! // simply identity function for now
     }
     
-    func backward() -> () {}
+    public func backward() -> () {}
     
-    func getParamsAndGrads() -> [ParamsAndGrads] {
+    public func getParamsAndGrads() -> [ParamsAndGrads] {
         return []
     }
     
-    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
+    public func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
-    func toJSON() -> [String: AnyObject] {
+    public func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
         json["outDepth"] = outDepth as AnyObject?
         json["outSx"] = outSx as AnyObject?

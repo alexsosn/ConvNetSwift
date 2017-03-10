@@ -1,13 +1,13 @@
 import Foundation
 
-struct PoolLayerOpt: LayerInOptProtocol {
-    var layerType: LayerType = .Pool
+public struct PoolLayerOpt: LayerInOptProtocol {
+    public var layerType: LayerType = .Pool
 
     var sx: Int
     var sy: Int = 0
-    var inDepth: Int = 0
-    var inSx: Int = 0
-    var inSy: Int = 0
+    public var inDepth: Int = 0
+    public var inSx: Int = 0
+    public var inSy: Int = 0
     var stride: Int? = nil
     var pad: Int? = nil
     
@@ -17,7 +17,7 @@ struct PoolLayerOpt: LayerInOptProtocol {
     }
 }
 
-class PoolLayer: InnerLayer {
+public class PoolLayer: InnerLayer {
     var sx: Int
     var sy: Int
     var inDepth: Int
@@ -25,14 +25,14 @@ class PoolLayer: InnerLayer {
     var inSy: Int
     var stride: Int = 2
     var pad: Int = 0
-    var outDepth: Int
-    var outSx: Int
-    var outSy: Int
-    var layerType: LayerType
+    public var outDepth: Int
+    public var outSx: Int
+    public var outSy: Int
+    public var layerType: LayerType
     var switchx: [Int]
     var switchy: [Int]
     var inAct: Vol?
-    var outAct: Vol?
+    public var outAct: Vol?
     
     init(opt: PoolLayerOpt){
         
@@ -57,7 +57,7 @@ class PoolLayer: InnerLayer {
         switchy = ArrayUtils.zerosInt(outSx*outSy*outDepth)
     }
     
-    func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
+    public func forward(_ V: inout Vol, isTraining: Bool) -> Vol {
         inAct = V
         
         let A = Vol(sx: outSx, sy: outSy, depth: outDepth, c: 0.0)
@@ -108,7 +108,7 @@ class PoolLayer: InnerLayer {
         return outAct!
     }
     
-    func backward() -> () {
+    public func backward() -> () {
         // pooling layers have no parameters, so simply compute
         // gradient wrt data here
         guard let V = inAct else {
@@ -142,15 +142,15 @@ class PoolLayer: InnerLayer {
         }
     }
     
-    func getParamsAndGrads() -> [ParamsAndGrads] {
+    public func getParamsAndGrads() -> [ParamsAndGrads] {
         return []
     }
     
-    func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
+    public func assignParamsAndGrads(_ paramsAndGrads: [ParamsAndGrads]) {
         
     }
     
-    func toJSON() -> [String: AnyObject] {
+    public func toJSON() -> [String: AnyObject] {
         var json: [String: AnyObject] = [:]
         json["sx"] = sx as AnyObject?
         json["sy"] = sy as AnyObject?

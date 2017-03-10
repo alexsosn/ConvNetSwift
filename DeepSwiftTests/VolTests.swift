@@ -8,7 +8,7 @@
 
 import XCTest
 
-class VolTests: XCTestCase {
+public class VolTests: XCTestCase {
 
     override func setUp() {
         super.setUp()

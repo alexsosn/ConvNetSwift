@@ -1,6 +1,6 @@
 import Foundation
 
-enum TrainerType: String {
+public enum  TrainerType: String {
     case sgd = "sgd"
     case adam = "adam"
     case adagrad = "adagrad"
@@ -9,7 +9,7 @@ enum TrainerType: String {
     case nesterov = "nesterov"
 }
 
-struct TrainerOpt {
+public struct TrainerOpt {
     var method: TrainerType = .sgd
     var batchSize: Int = 1
     var l1Decay: Double = 0.0
@@ -22,7 +22,7 @@ struct TrainerOpt {
     var β2: Double = 0.999
 }
 
-class Trainer {
+public class Trainer {
     
     struct TrainResult {
         var forwardTime: Int

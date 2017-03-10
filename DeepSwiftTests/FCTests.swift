@@ -8,7 +8,7 @@
 
 import XCTest
 
-class FCTests: XCTestCase {
+public class FCTests: XCTestCase {
 
     func testRandomInitialisation() {
         
